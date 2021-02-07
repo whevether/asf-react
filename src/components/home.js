@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import * as fetchAction from 'store/actions/fetch';
+import { DatePicker } from 'antd';
 // import { List } from 'antd-mobile';   //测试代码
 /* eslint-disable react/no-multi-comp */ 
 const Home = (props) =>{
@@ -21,6 +22,7 @@ const Home = (props) =>{
         <>
             {head()}
             <h2 onClick={props.fetch_data}>主页</h2>
+            <DatePicker onChange={(date, dateString)=> {console.log(date, dateString);}} />
             <h5 style={{cursor: 'pointer'}} onClick={()=>setCount(count+1)}>react hook <span style={{color: 'green'}}>{count}</span></h5>
             {props.data  === null && <Fragment>点击主页文字获取数据</Fragment>}
             {props.data !== null && <div className="content">
