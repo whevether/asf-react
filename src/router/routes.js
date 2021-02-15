@@ -29,7 +29,7 @@ export const routes = [
     path: '/keep'
   },
   {
-    layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/errorLayout')),
+    layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/loginLayout')),
     path: '/login',
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../components/login'))
   },
