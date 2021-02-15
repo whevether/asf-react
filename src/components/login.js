@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import {setCookie} from 'utils/storage';
+// import {setCookie} from 'utils/storage';
 import PropTypes from 'prop-types';
 import { Button, Input, Tabs,Form,Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-const Login = (props) => {
+const Login = () => {
   const [zindex,setZindex] = useState({});
   const [type, setType] = useState('account');
   useEffect(() => {
     setTimeout(() => {
       setZindex({
         zIndex: '9999'
-      })
-    }, 1500)
-  },[])
+      });
+    }, 1500);
+  },[]);
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+    console.log(values);
   };
   return (
     <div className="login-content" style={zindex}>
@@ -43,17 +43,41 @@ const Login = (props) => {
         </Tabs>
         {
           <Form
-            name="normal_login"
+            name="login"
             className="login-form"
             initialValues={{ remember: true }}
             onFinish={onFinish}
           >
-            <Form.Item
-              name="username"
-              rules={[{ required: true, message: '请输入您的账户名或手机号码或邮箱地址' }]}
-            >
-              <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="账户名或手机号码或邮箱地址" />
-            </Form.Item>
+            {
+              type === 'account' && 
+                <Form.Item
+                name="username"
+                rules={[{ required: true, message: '请输入您的账户名' }]}
+              >
+                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="账户名" />
+              </Form.Item>
+            }
+            {
+              type === 'mobile' && 
+                <Form.Item
+                name="username"
+                rules={[{pattern: /^1[0-9]{10}$/,message: '输入的手机号码正确'},{ required: true, message: '请输入您的手机号码' }]}
+              >
+                <Input type="number"  prefix={<UserOutlined className="site-form-item-icon" />} placeholder="手机号码" />
+              </Form.Item>
+            }
+            {
+              type === 'email' && 
+                <Form.Item
+                name="username"
+                rules={[{
+                  type: 'email',
+                  message: '请输入正确的邮箱地址!',
+                },{ required: true, message: '请输入您的邮箱地址' }]}
+              >
+                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="邮箱地址" />
+              </Form.Item>
+            }
             <Form.Item
               name="password"
               rules={[{ required: true, message: '请输入您的账户密码' }]}
@@ -77,7 +101,10 @@ const Login = (props) => {
           </Form>
         }
       </div>
-      <div className="footer"></div>
+      <div className="footer">
+        github地址
+        
+      </div>
     </div>
   );
 };
