@@ -1,17 +1,84 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {setCookie} from 'utils/storage';
 import PropTypes from 'prop-types';
+import { Button, Input, Tabs,Form,Checkbox } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 const Login = (props) => {
-  const onLogin = () =>{
-    //链式异常操作
-    // console.log(props?.aaa);
-    setCookie('token','test','');
-    props.history.push('/');
+  const [zindex,setZindex] = useState({});
+  const [type, setType] = useState('account');
+  useEffect(() => {
+    setTimeout(() => {
+      setZindex({
+        zIndex: '9999'
+      })
+    }, 1500)
+  },[])
+  const onFinish = (values) => {
+    console.log('Received values of form: ', values);
   };
   return (
-    <>
-      <h3 style={{cursor: 'pointer'}} onClick={onLogin}>登入</h3>
-    </>
+    <div className="login-content" style={zindex}>
+      <div className="header">
+        <div className="logo">
+          <a href="https://www.keep-wan.me" target="_blank" />
+        </div>
+        <div className="title">
+          asf 多租户权限管理系统
+        </div>
+      </div>
+      <div className="content">
+        <Tabs activeKey={type} onChange={setType} centered>
+          <Tabs.TabPane
+            key="account"
+            tab="账户密码登录"
+          />
+          <Tabs.TabPane
+            key="mobile"
+            tab="手机号登录"
+          />
+          <Tabs.TabPane
+            key="email"
+            tab="邮箱登录"
+          />
+        </Tabs>
+        {
+          <Form
+            name="normal_login"
+            className="login-form"
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+          >
+            <Form.Item
+              name="username"
+              rules={[{ required: true, message: '请输入您的账户名或手机号码或邮箱地址' }]}
+            >
+              <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="账户名或手机号码或邮箱地址" />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: '请输入您的账户密码' }]}
+            >
+              <Input
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                type="password"
+                placeholder="账户密码"
+              />
+            </Form.Item>
+            <Form.Item>
+              <Form.Item name="remember" valuePropName="checked" noStyle>
+                <Checkbox>记住我</Checkbox>
+              </Form.Item>
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" className="login-form-button">
+                登录
+              </Button>
+            </Form.Item>
+          </Form>
+        }
+      </div>
+      <div className="footer"></div>
+    </div>
   );
 };
 Login.propTypes = {

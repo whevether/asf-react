@@ -339,7 +339,7 @@ for (var i = 0; i < elems.length; i++) {
 
 function drawCircle() {
     group.attr({
-        'transform': 'translate(500 500)'
+        'transform': 'translate(300 300)'
     });
 
     for (var i = 0; i < elems.length; i++) {
@@ -384,7 +384,7 @@ function groupMove() {
 
     Snap.animate(0, 1, function(v) {
         group.attr({
-            'transform': 'translate(500 500) skewX('+skew * v+') scale('+(1-scaleSub*v)+', '+(1-scaleSub*v)+')'
+            'transform': 'translate(300 300) skewX('+skew * v+') scale('+(1-scaleSub*v)+', '+(1-scaleSub*v)+')'
         });
 
         for(var i = 0; i < elems.length; i++) {

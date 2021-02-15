@@ -9,7 +9,7 @@ const LoginLayout = (props) => {
   useEffect(()=> {
    setTimeout(() => {
     start();
-   },1600)
+   },1500)
   },[]);
   return (
     <div className="login-wrapper" >
