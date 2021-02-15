@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 // import {setCookie} from 'utils/storage';
 import PropTypes from 'prop-types';
-import { Button, Input, Tabs,Form,Checkbox } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Button, Input, Tabs,Form,Checkbox,Tooltip } from 'antd';
+import { UserOutlined, LockOutlined, GithubOutlined } from '@ant-design/icons';
 const Login = () => {
   const [zindex,setZindex] = useState({});
   const [type, setType] = useState('account');
@@ -102,8 +102,9 @@ const Login = () => {
         }
       </div>
       <div className="footer">
-        github地址
-        
+        <Tooltip title="github地址">
+          <a title="github" target="_blank" href="https://github.com/whevether/asf"><GithubOutlined /></a>
+        </Tooltip>
       </div>
     </div>
   );
