@@ -6,6 +6,7 @@ import { Button, Input, Tabs,Form,Checkbox,Tooltip,Select } from 'antd';
 import { UserOutlined, LockOutlined, GithubOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {setCookie} from 'utils/storage';
 const Login = (props) => {
   const [zindex,setZindex] = useState({});
   const [type, setType] = useState('account');
@@ -19,6 +20,12 @@ const Login = (props) => {
     }, 1500);
   },[]);
   const onFinish = (values) => {
+    props?.loginUser(Object.assign(values,{loginType:type}))
+    .then(res => {
+      setCookie('token', res?.token);
+      setCookie('refreshToken', res?.refreshToken);
+      props?.history?.push('/');
+    });
     console.log(values);
   };
   return (
@@ -126,7 +133,8 @@ const Login = (props) => {
 Login.propTypes = {
   history: PropTypes.object.isRequired,
   tenancyList: PropTypes.arrayOf(Object),
-  fetchTenancyList: PropTypes.func.isRequired
+  fetchTenancyList: PropTypes.func.isRequired,
+  loginUser: PropTypes.func.isRequired
 };
 const mapStateToProps = (state)=>{
   return{

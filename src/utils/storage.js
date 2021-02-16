@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import {notification} from 'antd';
 /**
  * 
  */
@@ -18,21 +19,29 @@ export const getCookie = (name)=>{
       return Cookies.get(name);
     }
   }catch(err){
-    alert('获取cookie失败');
+    notification.open({
+      message: 'cookie错误',
+      description:
+        '获取cookie失败'
+    });
   }
 };
 //设置cookie
-export const setCookie = (name, value, domain='.keep-wan.me')=>{
+export const setCookie = (name, value, domain)=>{
   try{
     if(typeof name === 'string' && value){
       return Cookies.set(name,value,{path: '/', domain: domain});
     }
   }catch(err){
-    alert('设置cookie失败');
+    notification.open({
+      message: 'cookie错误',
+      description:
+        '设置cookie失败'
+    });
   }
 };
 // 移除 cookie
-export const removeCookie = (arr, domain='.keep-wan.me')=>{
+export const removeCookie = (arr, domain)=>{
   try{
     if (Array.isArray(arr)) {
       for(let value of arr.values()){
@@ -40,6 +49,10 @@ export const removeCookie = (arr, domain='.keep-wan.me')=>{
       }
     }
   }catch(err){
-    alert('删除cookie失败');
+    notification.open({
+      message: 'cookie错误',
+      description:
+        '删除cookie失败'
+    });
   }
 };
