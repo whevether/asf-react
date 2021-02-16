@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 // import {setCookie} from 'utils/storage';
 import PropTypes from 'prop-types';
-import { Button, Input, Tabs,Form,Checkbox,Tooltip } from 'antd';
+import * as loginAction from 'store/actions/login';
+import { Button, Input, Tabs,Form,Checkbox,Tooltip,Select } from 'antd';
 import { UserOutlined, LockOutlined, GithubOutlined } from '@ant-design/icons';
-const Login = () => {
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+const Login = (props) => {
   const [zindex,setZindex] = useState({});
   const [type, setType] = useState('account');
   useEffect(() => {
+    //获取租户列表
+    props?.fetchTenancyList();
     setTimeout(() => {
       setZindex({
         zIndex: '9999'
@@ -48,6 +53,15 @@ const Login = () => {
             initialValues={{ remember: true }}
             onFinish={onFinish}
           >
+            <Form.Item name="tenancyId" rules={[{ required: true, message: '请选择需要登录的租户' }]}>
+              <Select  style={{ width: '100%' }} placeholder="选择需要登录的租户">
+                {
+                  props?.tenancyList && props?.tenancyList.map((value,index)=> (
+                    <Select.Option value={value.id} key={index}>{value.name}</Select.Option>
+                  ))
+                }
+              </Select>
+            </Form.Item>
             {
               type === 'account' && 
                 <Form.Item
@@ -110,6 +124,16 @@ const Login = () => {
   );
 };
 Login.propTypes = {
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  tenancyList: PropTypes.arrayOf(Object),
+  fetchTenancyList: PropTypes.func.isRequired
 };
-export default Login;
+const mapStateToProps = (state)=>{
+  return{
+    tenancyList: state.login.tenancyList
+  };
+};
+const mapDispatchToProps = (dispatch)=>{
+  return bindActionCreators(loginAction,dispatch);
+};
+export default connect(mapStateToProps,mapDispatchToProps)(Login);

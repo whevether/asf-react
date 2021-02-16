@@ -40,7 +40,7 @@ browserSync({
   //   ]
   // },
   proxy: {
-    target: 'https://api.douban.com', 
+    target: 'http://localhost:5000', 
     middleware: [
       historyApiFallback(),
 
