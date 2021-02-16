@@ -14,15 +14,15 @@ export default function configureStore(history,initialState) {
     if(response.status === 200 && (response?.data?.status === 200 || response?.data?.status === 0)){
       return response?.data?.result;
     }else{
-      notification.open({
+      notification['error']({
         message: response?.data.message
       });
-      return response?.data;
+      return Promise.reject(response?.data);
     }
   },(err)=>{
     const {response} = err;
     if([401,403].indexOf(response?.status) > -1){
-      notification.open({
+      notification['error']({
         message: '请求错误',
         description:
           '没有权限'
@@ -33,14 +33,14 @@ export default function configureStore(history,initialState) {
       },500);
     }
     if([400].indexOf(response?.status) > -1){
-      notification.open({
+      notification['error']({
         message: '请求错误',
         description:
           response?.data.message
       });
     }
     if([500].indexOf(response?.status) > -1){
-      notification.open({
+      notification['error']({
         message: '请求错误',
         description:
           '服务器错误'
@@ -50,7 +50,7 @@ export default function configureStore(history,initialState) {
       },1500);
     }
     if([404].indexOf(response?.status) > -1){
-      notification.open({
+      notification['error']({
         message: '请求错误',
         description:
           '没有这个接口'
