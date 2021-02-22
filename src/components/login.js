@@ -24,6 +24,7 @@ const Login = (props) => {
     .then(res => {
       setCookie('token', res?.token);
       setCookie('refreshToken', res?.refreshToken);
+      document.getElementsByTagName('body')[0].className = 'login-svg-none';
       props?.history?.push('/');
     });
     console.log(values);
