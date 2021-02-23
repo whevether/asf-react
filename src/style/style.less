@@ -73,8 +73,22 @@ canvas {
     }
   }
 }
-ul{
+
+
+// 主页面布局
+.DefaultLayout-wrapper{
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: row;
-  list-style: none;
+  .slidebar{
+    width: auto;
+    height: 100%;
+  }
+  .ant-menu{
+    height: 100%;
+  }
+  .page-content{
+    flex: 1;
+  }
 }
