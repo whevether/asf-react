@@ -1,20 +1,75 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { Menu, Button } from 'antd';
 import {
-  AppstoreOutlined,
+  createFromIconfontCN,
   MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  ContainerOutlined,
-  MailOutlined,
+  MenuFoldOutlined
 } from '@ant-design/icons';
 const { SubMenu } = Menu;
 const NavBar = (props) => {
+  const IconFont = createFromIconfontCN({
+    scriptUrl: [
+      '//at.alicdn.com/t/font_1788044_0dwu4guekcwr.js', // icon-javascript, icon-java, icon-shoppingcart (overrided)
+      '//at.alicdn.com/t/font_1788592_a5xf2bdic3u.js', // icon-shoppingcart, icon-python
+    ],
+  });
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
+  };
+  // 获取菜单数据生成菜单
+  const getNavMenuItems = (menusData) => {
+    if (!menusData) {
+      return [];
+    }
+    return menusData.map((item) => {
+      if (!item.title) {
+        return null;
+      }
+      let itemPath;
+      if (item?.externalLink) {
+        itemPath = item?.externalLink;
+      } else {
+        itemPath = item?.menuUrl;
+      }
+      if (item?.children && item?.children.some(child => child.title)) {
+        return (
+          <SubMenu
+            title={
+              item.icon ? (
+                <span>
+                  <IconFont type={item.icon} />
+                  <span>{item.title}</span>
+                </span>
+              ) : item.title
+            }
+            key={item.id || item.menuUrl}
+          >
+            {getNavMenuItems(item?.children)}
+          </SubMenu>
+        );
+      }
+      const icon = item.icon && <IconFont type={item.icon} />;
+      return (
+        <Menu.Item key={item.id || item.menuUrl}>
+          {
+            /^https?:\/\//.test(itemPath) ? (
+              <a href={itemPath} target="_blank">
+                {icon}<span>{item.title}</span>
+              </a>
+            ) : (
+              <Link
+                to={itemPath}
+                replace
+              >
+                {icon}<span>{item.title}</span>
+              </Link>
+            )
+          }
+        </Menu.Item>
+      );
+    });
   };
   return (
     <div className="slidebar">
@@ -28,7 +83,8 @@ const NavBar = (props) => {
         theme="dark"
         inlineCollapsed={collapsed}
       >
-        <Menu.Item key="1" icon={<PieChartOutlined />}>
+        {getNavMenuItems(props?.userinfo?.permissionMenu)}
+        {/* <Menu.Item key="1" icon={<PieChartOutlined />}>
           Option 1
       </Menu.Item>
         <Menu.Item key="2" icon={<DesktopOutlined />}>
@@ -50,7 +106,7 @@ const NavBar = (props) => {
             <Menu.Item key="11">Option 11</Menu.Item>
             <Menu.Item key="12">Option 12</Menu.Item>
           </SubMenu>
-        </SubMenu>
+        </SubMenu> */}
       </Menu>
     </div>
   );
