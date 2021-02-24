@@ -17,7 +17,7 @@ const DefaultLayout = (props) => {
       setToken(getCookie('token'));
       props?.fetchUserInfo();
     }else{
-      props.history.push('/login')
+      props.history.push('/login');
     }
   }, []);
   return (
@@ -40,7 +40,8 @@ DefaultLayout.propTypes = {
   routes: PropTypes.object.isRequired,
   fetchUserInfo: PropTypes.func.isRequired,
   state: PropTypes.object,
-  toggleMenu: PropTypes.func.isRequired
+  toggleMenu: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 export default withRouter(connect(state => ({
   state: state
