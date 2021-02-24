@@ -28,10 +28,8 @@ export default function configureStore(history,initialState) {
           '没有权限'
       });
       removeCookie(['token','refreshToken']);
-      setTimeout(() => {
-        window.location.href = '/login';
-        // history.push('/login');
-      },500);
+      window.location.href = '/login';
+      // history.push('/login');
     }
     if([400].indexOf(response?.status) > -1){
       notification['error']({
@@ -46,10 +44,8 @@ export default function configureStore(history,initialState) {
         description:
           '服务器错误'
       });
-      setTimeout(() => {
-        window.location.href = '/500';
-        // history.push('/500');
-      },1500);
+      window.location.href = '/500';
+      // history.push('/500');
     }
     if([404].indexOf(response?.status) > -1){
       notification['error']({
