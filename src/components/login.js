@@ -27,7 +27,6 @@ const Login = (props) => {
       document.getElementsByTagName('body')[0].className = 'login-svg-none';
       props?.history?.push('/');
     });
-    console.log(values);
   };
   return (
     <div className="login-content" style={zindex}>

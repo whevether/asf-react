@@ -8,8 +8,8 @@ const ErrorLayout = (props) => {
   return (
     <div className="ErrorLayout-wrapper" >
       <div>登入页面布局</div>
-      {props.routes &&
-          <Route  key={props.routes.path} exact={props.routes.exact} path={props.routes.path} component={props.routes.component} />
+      {props?.routes &&
+          <Route  key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} />
         }
     </div>
   );

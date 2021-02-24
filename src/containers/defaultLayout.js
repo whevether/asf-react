@@ -8,23 +8,25 @@ import { bindActionCreators } from 'redux';
 import { getCookie } from 'utils/storage';
 import { setToken } from 'utils/request';
 import ProtectedRoute from 'router/ProtectedRoute';
+import Tabbar from 'components/tabbar';
 // 登入页布局
 
 const DefaultLayout = (props) => {
   useEffect(() => {
     if (getCookie('token')) {
       setToken(getCookie('token'));
-      props.fetchUserInfo();
+      props?.fetchUserInfo();
     }
   }, []);
   return (
     <>
       {
         props?.state?.home?.data && <div className="DefaultLayout-wrapper" >
-          <Navbar userinfo = {props?.state?.home?.data}/>
+          <Navbar userinfo = {props?.state?.home?.data} collapsed={props?.state?.home?.collapsed}/>
           { props?.routes &&
             <div className="page-content">
-              <ProtectedRoute key={props.routes.path} exact={props.routes.exact} path={props.routes.path} component={props.routes.component} permission={props.routes.permission} />
+              <Tabbar collapsed={props?.state?.home?.collapsed} toggleMenu = {props?.toggleMenu}/>
+              <ProtectedRoute key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} permission={props?.routes?.permission} />
             </div>
           }
         </div>

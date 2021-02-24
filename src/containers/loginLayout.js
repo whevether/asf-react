@@ -13,8 +13,8 @@ const LoginLayout = (props) => {
   },[]);
   return (
     <div className="login-wrapper" >
-      {props.routes &&
-          <Route  key={props.routes.path} exact={props.routes.exact} path={props.routes.path} component={props.routes.component} />
+      {props?.routes &&
+          <Route  key={props?.routes.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} />
         }
     </div>
   );
