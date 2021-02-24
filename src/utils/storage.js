@@ -44,8 +44,8 @@ export const setCookie = (name, value, domain)=>{
 export const removeCookie = (arr, domain)=>{
   try{
     if (Array.isArray(arr)) {
-      for(let value of arr.values()){
-        return Cookies.remove(value,{domain: domain});
+      for(let value of arr){
+        Cookies.remove(value,{domain: domain});
       }
     }
   }catch(err){

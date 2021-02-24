@@ -29,7 +29,8 @@ export default function configureStore(history,initialState) {
       });
       removeCookie(['token','refreshToken']);
       setTimeout(() => {
-        history.push('/login');
+        window.location.href = '/login';
+        // history.push('/login');
       },500);
     }
     if([400].indexOf(response?.status) > -1){
@@ -46,7 +47,8 @@ export default function configureStore(history,initialState) {
           '服务器错误'
       });
       setTimeout(() => {
-        history.push('/404');
+        window.location.href = '/500';
+        // history.push('/500');
       },1500);
     }
     if([404].indexOf(response?.status) > -1){
