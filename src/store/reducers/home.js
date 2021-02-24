@@ -12,7 +12,7 @@ export default function home(state=initData,action){
       }
       break;
     case types.TOGGLE_MENU:
-      return {...state,collapsed: !state.collapsed}
+      return {...state,collapsed: !state.collapsed};
     default: 
       return state;
   }

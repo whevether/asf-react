@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { Menu } from 'antd';
 import {
   createFromIconfontCN
@@ -11,7 +12,6 @@ const NavBar = (props) => {
       '//at.alicdn.com/t/font_2384333_rsw4qhrwjur.js'
     ],
   });
-  const [collapsed, setCollapsed] = useState(false);
   // 获取菜单数据生成菜单
   const getNavMenuItems = (menusData) => {
     if (!menusData) {
@@ -84,5 +84,9 @@ const NavBar = (props) => {
       </Button> */}
     </div>
   );
+};
+NavBar.propTypes = {
+  collapsed: PropTypes.bool.isRequired,
+  userinfo: PropTypes.object
 };
 export default NavBar;

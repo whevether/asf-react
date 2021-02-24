@@ -37,7 +37,8 @@ const DefaultLayout = (props) => {
 DefaultLayout.propTypes = {
   routes: PropTypes.object.isRequired,
   fetchUserInfo: PropTypes.func.isRequired,
-  state: PropTypes.object
+  state: PropTypes.object,
+  toggleMenu: PropTypes.func.isRequired
 };
 export default withRouter(connect(state => ({
   state: state

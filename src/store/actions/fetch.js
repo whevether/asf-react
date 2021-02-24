@@ -7,7 +7,7 @@ export const fetchUserInfo = ()=> async (dispatch,getState,api)=>{
     payload: res
   });
 };
-export const toggleMenu = () => (dispatch,getState,api)=>{
+export const toggleMenu = () => (dispatch)=>{
   dispatch({
     type: types.TOGGLE_MENU
   });

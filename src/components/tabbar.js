@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {MenuUnfoldOutlined,MenuFoldOutlined} from '@ant-design/icons';
 const Tabbar = (props) => {
   return(
@@ -8,5 +9,9 @@ const Tabbar = (props) => {
       </div>
     </div>
   );
+};
+Tabbar.propTypes = {
+  toggleMenu: PropTypes.func.isRequired,
+  collapsed: PropTypes.bool.isRequired
 };
 export default Tabbar;
