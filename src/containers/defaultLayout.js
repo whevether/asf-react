@@ -16,6 +16,8 @@ const DefaultLayout = (props) => {
     if (getCookie('token')) {
       setToken(getCookie('token'));
       props?.fetchUserInfo();
+    }else{
+      props.history.push('/login')
     }
   }, []);
   return (
