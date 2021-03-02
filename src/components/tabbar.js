@@ -34,6 +34,8 @@ const Tabbar = (props) => {
   );
 };
 Tabbar.propTypes = {
+  history: PropTypes.object.isRequired,
+  userinfo: PropTypes.object,
   toggleMenu: PropTypes.func.isRequired,
   collapsed: PropTypes.bool.isRequired
 };
