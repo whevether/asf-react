@@ -4,7 +4,7 @@ import {notification} from 'antd';
  * 
  */
 export const isGranted = (permission)=>{
-  let mock = ['home','redbull','snacks','keep'];
+  let mock = ['dash','redbull','snacks','keep'];
   // console.log(permission);
   // console.log(mock.indexOf(permission) !== -1);
   return mock.indexOf(permission) !== -1;

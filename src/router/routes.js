@@ -7,8 +7,8 @@ export const routes = [
     path: '/',
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
     exact: true,
-    permission: 'home',
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../components/home'))
+    permission: 'dash',
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../components/dash'))
   },
   {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
