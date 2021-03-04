@@ -2,7 +2,9 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 const NotFoundPage = () => {
   // staticContext.notFound = true;
-  return <><h1>没有找到页面.....</h1></>;
+  return (<div className="notfound">
+    <img src="assets/404.svg"/>
+  </div>);
 };
 // NotFoundPage.propTypes = {
 //   staticContext: PropTypes.object

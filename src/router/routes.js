@@ -8,38 +8,38 @@ export const routes = [
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
     exact: true,
     permission: 'dash',
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../components/dash'))
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/dash'))
   },
   {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../components/redBull')),
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/redBull')),
     permission: 'redbull',
     path: '/redbull'
   },
   {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../components/snacks')),
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/snacks')),
     permission: 'snacks',
     path: '/snacks'
   },
   {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../components/keep')),
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/keep')),
     permission: 'keep',
     path: '/keep'
   },
   {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/loginLayout')),
     path: '/login',
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../components/login'))
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/login'))
   },
   {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/errorLayout')),
     path: '/401',
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../components/401'))
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/401'))
   }, 
   {
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../components/nodeFound')),
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/nodeFound')),
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/errorLayout')),
     path: '*'
   }
