@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import {head} from 'utils/help';
 import Chart from 'components/chart';
 import geoMap from 'assets/geo.json';
 // import PropTypes from 'prop-types';
@@ -832,18 +832,9 @@ const renderChart = () => {
     return optionXyMap01;
 };
 const Dash = () => {
-    //  这是一个使用redux 封装axios中间件请求示例
-    const head = () => {
-        return (
-            <Helmet>
-                <title>控制台</title>
-                <meta property="og:title" content="控制台" />
-            </Helmet>
-        );
-    };
     return (
         <div className="dash">
-            {head()}
+            {head('控制台')}
             <Chart options={renderChart()} typeObj={{'type':'map','value':'china'}} mapData = {geoMap}/>
         </div>
     );
