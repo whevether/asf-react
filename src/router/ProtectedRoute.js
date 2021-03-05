@@ -1,15 +1,29 @@
 import React from 'react';
 import {Route,Redirect} from 'react-router-dom';
-import {isGranted} from 'utils/storage';
 import PropTypes from 'prop-types';
 const ProtectedRoute = ({component: Component,permission,...rest}) => {
+  const grantedPermission = (permissionMenu, path) => {
+    // console.log(permissionMenu);
+      let isPermission = permissionMenu.some((item)=>{
+        if(Array.isArray(item?.actions) && item?.actions.length >0 && item?.actions.includes(path)){
+          return true;
+        } else if(Array.isArray(item?.children) && item?.children.length > 0){
+          // console.log(item?.children);
+          return grantedPermission(item?.children,path);
+        }else {
+          return false;
+        }
+      });
+      return isPermission;
+    };
   return (
     <Route {...rest} render={
       props=>{
+        // console.log(a);
         /**
          * 没有权限跳转到 401页面
          */
-        if(permission && !isGranted(permission)) {
+        if(permission && !grantedPermission(rest?.userinfo?.permissionMenu,permission)) {
           return (
             <Redirect 
               to={{

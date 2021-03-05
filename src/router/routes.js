@@ -7,7 +7,7 @@ export const routes = [
     path: '/',
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
     exact: true,
-    permission: 'dash',
+    permission: 'dash.getdetails',
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/dash'))
   },
   {

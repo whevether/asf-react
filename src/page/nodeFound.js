@@ -3,7 +3,7 @@ import React from 'react';
 const NotFoundPage = () => {
   // staticContext.notFound = true;
   return (<div className="notfound">
-    <img src="assets/404.svg"/>
+    <img src="../../assets/404.svg"/>
   </div>);
 };
 // NotFoundPage.propTypes = {

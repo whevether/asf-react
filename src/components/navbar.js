@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 const { SubMenu } = Menu;
 const NavBar = (props) => {
+  // console.log(window.location.pathname);
   const IconFont = createFromIconfontCN({
     scriptUrl: [
       '//at.alicdn.com/t/font_2384333_rsw4qhrwjur.js'
@@ -25,7 +26,7 @@ const NavBar = (props) => {
       if (item?.externalLink) {
         itemPath = item?.externalLink;
       } else {
-        itemPath = item?.menuUrl;
+        itemPath = item?.menuUrl ?? '';
       }
       if (item?.children && item?.children.some(child => child.title)) {
         return (
@@ -38,7 +39,7 @@ const NavBar = (props) => {
                 </span>
               ) : item.title
             }
-            key={item.id || item.menuUrl}
+            key={item.menuUrl || item.id}
           >
             {getNavMenuItems(item?.children)}
           </SubMenu>
@@ -46,7 +47,7 @@ const NavBar = (props) => {
       }
       const icon = item.icon && <IconFont type={item.icon} />;
       return (
-        <Menu.Item key={item.id || item.menuUrl}>
+        <Menu.Item key={item.menuUrl || item.id}>
           {
             /^https?:\/\//.test(itemPath) ? (
               <a href={itemPath} target="_blank">
@@ -73,6 +74,7 @@ const NavBar = (props) => {
       <Menu
         // defaultSelectedKeys={['1']}
         // defaultOpenKeys={['sub1']}
+        selectedKeys={[window.location.pathname ?? '']}
         mode="inline"
         theme="dark"
         inlineCollapsed={props?.collapsed}

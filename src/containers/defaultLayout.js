@@ -28,7 +28,7 @@ const DefaultLayout = (props) => {
           { props?.routes &&
             <div className="page-content">
               <Tabbar collapsed={props?.state?.home?.collapsed} userinfo = {props?.state?.home?.data} toggleMenu = {props?.toggleMenu} history={props?.history}/>
-              <ProtectedRoute key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} permission={props?.routes?.permission} />
+              <ProtectedRoute key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} permission={props?.routes?.permission} userinfo = {props?.state?.home?.data}/>
             </div>
           }
         </div>

@@ -1,15 +1,5 @@
 import Cookies from 'js-cookie';
 import {notification} from 'antd';
-/**
- * 
- */
-export const isGranted = (permission)=>{
-  let mock = ['dash','redbull','snacks','keep'];
-  // console.log(permission);
-  // console.log(mock.indexOf(permission) !== -1);
-  return mock.indexOf(permission) !== -1;
-};
-
 /*
 获取/设置cookie/移除coolkie
 */
