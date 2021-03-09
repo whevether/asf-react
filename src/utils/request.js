@@ -17,24 +17,30 @@ export const request = (history,store) => {
     });
     return config;
   },(error) =>{
-    store.dispatch({
-      type: types.LOAD,
-      payload: false
-    });
+    setTimeout(() => {
+      store.dispatch({
+        type: types.LOAD,
+        payload: false
+      });
+    },900);
     return Promise.reject(error);
   });
   axiosInstance.interceptors.response.use((response)=>{
     if(response.status === 200 && (response?.data?.status === 200 || response?.data?.status === 0)){
-      store.dispatch({
-        type: types.LOAD,
-        payload: false
-      });
+      setTimeout(() => {
+        store.dispatch({
+          type: types.LOAD,
+          payload: false
+        });
+      },900);
       return response?.data;
     }else{
-      store.dispatch({
-        type: types.LOAD,
-        payload: false
-      });
+      setTimeout(() => {
+        store.dispatch({
+          type: types.LOAD,
+          payload: false
+        });
+      },900);
       notification['error']({
         message: response?.data.message
       });
@@ -74,10 +80,12 @@ export const request = (history,store) => {
           '没有这个接口'
       });
     }
-    store.dispatch({
-      type: types.LOAD,
-      payload: false
-    });
+    setTimeout(() => {
+      store.dispatch({
+        type: types.LOAD,
+        payload: false
+      });
+    },900);
     return Promise.reject(err);
   });
   // return axiosInstance;
