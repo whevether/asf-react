@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Menu, Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import BaseTable from 'components/tabble';
 const AccountList = (props) => {
-  
   const from = [{
     title: '账户名',
     fromType: 'input',
@@ -33,10 +34,62 @@ const AccountList = (props) => {
   useEffect(() => {
     props.fetchAccountList();
   },[]);
+  // 分页对象
+  const pagination = {
+    total: props?.account?.total,
+    onChange: (page,pageSize)=>{
+      console.log(page,pageSize);
+    },
+    onShowSizeChange: (current,size)=> {
+      console.log(current,size);
+    },
+    pageSizeOptions: ['10','20','50','100'],
+    showTotal: (total)=> `总条目: ${total} 条`,
+    showSizeChanger: true
+  };
   // 提交表格查询
   const querySubmit = (e)=>{
     console.log(e);
   };
+  const menu = (
+    <Menu>
+      <Menu.Item key="0">
+        修改账户
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="1">
+        分配账户角色
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="2">
+        分配账户部门
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="3">
+        分配账户岗位
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="4">
+        删除账户
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="5">
+        修改账户密码
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="6">
+        修改账户手机
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="7">
+        修改账户邮箱
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="8">
+        修改账户头像
+      </Menu.Item>
+    </Menu>
+  );
   const columns = [{
     title: '账户ID',
     dataIndex: 'id',
@@ -108,12 +161,22 @@ const AccountList = (props) => {
     render: (text)=>{
       return timeToDate(text,'YYYY-MM-DD  HH:mm:ss');
     }
+  },{
+    title: '操作',
+    key: 'action',
+    render: (text, record) => (
+      <Dropdown overlay={menu}>
+        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+          操作 <DownOutlined />
+        </a>
+      </Dropdown>
+    )
   }];
   return(
     <div className="account-list">
       {head('账户列表')}
       {
-        props?.account?.list && <BaseTable formObj={from} querySubmit={querySubmit} dataSource={props?.account?.list} columns= {columns}/>
+        props?.account?.list && <BaseTable formObj={from} querySubmit={querySubmit} dataSource={props?.account?.list} columns= {columns} pagination={pagination}/>
       }
     </div>
   );

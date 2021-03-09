@@ -59,7 +59,7 @@ const BaseTabble = (props) => {
         </Form.Item>
       </Form>
       </div>}
-      { props?.dataSource&&props?.columns && <Table  dataSource={props?.dataSource} columns={props?.columns} scroll={{x: 968}}/>
+      { props?.dataSource&&props?.columns && <Table  dataSource={props?.dataSource} columns={props?.columns} scroll={{x: 968}} pagination={props?.pagination}/>
       }
     </div>
   );
@@ -68,6 +68,7 @@ BaseTabble.propTypes = {
   dataSource: PropTypes.arrayOf(Object).isRequired,
   columns: PropTypes.arrayOf(Object).isRequired,
   querySubmit: PropTypes.func,
+  pagination: PropTypes.object,
   formObj: PropTypes.arrayOf(Object)
 };
 export default BaseTabble;
