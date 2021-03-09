@@ -1,23 +1,40 @@
 import axios from 'axios';
 import {removeCookie} from 'utils/storage';
 import {notification} from 'antd';
-const axiosInstance = axios.create({
+import * as types from 'constants/types';
+export const axiosInstance = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? '/api' : '/api'
 });
 //设置 token api 请求头
 export const setToken = (token) => {
   axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
-export const request = (history) => {
+export const request = (history,store) => {
   axiosInstance.interceptors.request.use((config) => {
+    store.dispatch({
+      type: types.LOAD,
+      payload: true
+    });
     return config;
   },(error) =>{
+    store.dispatch({
+      type: types.LOAD,
+      payload: false
+    });
     return Promise.reject(error);
   });
   axiosInstance.interceptors.response.use((response)=>{
     if(response.status === 200 && (response?.data?.status === 200 || response?.data?.status === 0)){
+      store.dispatch({
+        type: types.LOAD,
+        payload: false
+      });
       return response?.data;
     }else{
+      store.dispatch({
+        type: types.LOAD,
+        payload: false
+      });
       notification['error']({
         message: response?.data.message
       });
@@ -57,7 +74,11 @@ export const request = (history) => {
           '没有这个接口'
       });
     }
+    store.dispatch({
+      type: types.LOAD,
+      payload: false
+    });
     return Promise.reject(err);
   });
-  return axiosInstance;
+  // return axiosInstance;
 };

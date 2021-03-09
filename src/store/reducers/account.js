@@ -30,4 +30,4 @@ export default function account(state = initState, action){
     default:
       return state;
   }
-};
+}

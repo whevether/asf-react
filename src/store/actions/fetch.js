@@ -7,6 +7,7 @@ export const fetchUserInfo = ()=> async (dispatch,getState,api)=>{
     payload: res?.result
   });
 };
+// 切换菜单
 export const toggleMenu = () => (dispatch)=>{
   dispatch({
     type: types.TOGGLE_MENU

@@ -2,6 +2,8 @@
 export const FETCH_TENANCY_LIST_DATA = 'FETCH_TENANCY_LIST_DATA';
 // 用户账户数据
 export const FETCH_USER_DATA = 'FETCH_USER_DATA';
+// 加载数据中
+export const LOAD = 'LOAD';
 // 切换菜单
 export const TOGGLE_MENU = 'TOGGLE_MENU';
 // 获取账户列表

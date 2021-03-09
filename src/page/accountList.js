@@ -29,6 +29,7 @@ const AccountList = (props) => {
     inputType: 'text',
     placeholder: '请输入邮箱地址号码',
     name: 'email',
+    // eslint-disable-next-line  no-useless-escape
     rules: [{type: 'string',pattern:/^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/,message: '输入的邮箱地址不正确不正确'}]
   }];
   useEffect(() => {
@@ -100,8 +101,9 @@ const AccountList = (props) => {
     dataIndex: 'avatar',
     key: 'avatar',
     width: '100px',
+    // eslint-disable-next-line
     render: (text) => {
-      return <img src="../../assets/avatar.jpeg" style={{width:'50px',height:'50px',borderRadius:'50%',lineHeight:'50px'}}/>
+      return <img name="avatar" src="../../assets/avatar.jpeg" style={{width:'50px',height:'50px',borderRadius:'50%',lineHeight:'50px'}} crossOrigin={text}/>;
     }
   },{
     title: '账户昵称',
@@ -164,13 +166,16 @@ const AccountList = (props) => {
   },{
     title: '操作',
     key: 'action',
-    render: (text, record) => (
-      <Dropdown overlay={menu}>
+    // eslint-disable-next-line
+    render: (text, record) => {
+      console.log(text);
+      console.log(record);
+      return (<Dropdown overlay={menu} name="action">
         <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
           操作 <DownOutlined />
         </a>
-      </Dropdown>
-    )
+      </Dropdown>);
+    }
   }];
   return(
     <div className="account-list">
@@ -182,7 +187,8 @@ const AccountList = (props) => {
   );
 };
 AccountList.propTypes = {
-
+  fetchAccountList: PropTypes.func,
+  account: PropTypes.object
 };
 export default connect(state => ({
   account: state?.account

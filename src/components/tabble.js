@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import {Form,Input,Button, InputNumber,notification,Table} from 'antd';
 const BaseTabble = (props) => {
   const form  = useRef(null);
@@ -11,7 +11,7 @@ const BaseTabble = (props) => {
       if(e[f]){
          data = {
            [f]: e[f]
-         }
+         };
       }
     });
     if(data === null){
@@ -22,7 +22,7 @@ const BaseTabble = (props) => {
       props?.querySubmit(data);
     }
   };
-  const onFinishFailed = (e) => {
+  const onFinishFailed = () => {
     form?.current?.resetFields();
     notification['error']({
       message: '表单错误'
