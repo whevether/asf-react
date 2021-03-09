@@ -1,12 +1,13 @@
 import * as types from 'constants/types';
 let initState = {
-  list: null
+  list: null,
+  listTotal: 0
 };
 export default function account(state = initState, action){
   switch(action.type){
     case types.GET_ACCOUNT_LIST:
       if(action.payload){
-        let data = action.payload.map(item => {
+        let data = action.payload.result.map(item => {
           return{
             key: item.accounts.id,
             id: item.accounts.id,
@@ -23,7 +24,7 @@ export default function account(state = initState, action){
             departmentName: item.department.name
           };
         });
-        return {...state,list:data};
+        return {...state,list:data,listTotal: action.payload.totalCount};
       }
       break;
     default:

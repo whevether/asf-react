@@ -16,7 +16,7 @@ export const request = (history) => {
   });
   axiosInstance.interceptors.response.use((response)=>{
     if(response.status === 200 && (response?.data?.status === 200 || response?.data?.status === 0)){
-      return response?.data?.result;
+      return response?.data;
     }else{
       notification['error']({
         message: response?.data.message
