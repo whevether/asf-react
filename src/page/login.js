@@ -6,7 +6,7 @@ import { Button, Input, Tabs, Form, Checkbox, Tooltip, Select } from 'antd';
 import { UserOutlined, LockOutlined, GithubOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { setCookie } from 'utils/storage';
+import { setCookie, getCookie } from 'utils/storage';
 import {head} from 'utils/help';
 const Login = (props) => {
   const [zindex, setZindex] = useState({});
@@ -23,7 +23,11 @@ const Login = (props) => {
   useEffect(() => {
     //获取租户列表
     props?.fetchTenancyList();
+    if(getCookie('token')){
+      props?.history?.push('/');
+    }
     setTimeout(() => {
+      document.getElementsByTagName('body')[0].className = '';
       setZindex({
         zIndex: '9999'
       });
@@ -34,7 +38,6 @@ const Login = (props) => {
       .then(res => {
         setCookie('token', res?.token);
         setCookie('refreshToken', res?.refreshToken);
-        document.getElementsByTagName('body')[0].className = 'login-svg-none';
         props?.history?.push('/');
       });
   };

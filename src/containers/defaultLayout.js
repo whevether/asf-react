@@ -14,6 +14,7 @@ import Tabbar from 'components/tabbar';
 const DefaultLayout = (props) => {
   useEffect(() => {
     if (getCookie('token')) {
+      document.getElementsByTagName('body')[0].className = 'login-svg-none';
       setToken(getCookie('token'));
       props?.fetchUserInfo();
     }else{
