@@ -11,23 +11,20 @@ export const routes = [
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/dash'))
   },
   {
+    path: '/control/account',
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/redBull')),
-    permission: 'redbull',
-    path: '/redbull'
+    permission: 'account.getlist',
+    pageHeader:{
+      name : '账户管理'
+    },
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/accountList'))
   },
-  {
-    layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/snacks')),
-    permission: 'snacks',
-    path: '/snacks'
-  },
-  {
-    layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/keep')),
-    permission: 'keep',
-    path: '/keep'
-  },
+  // {
+  //   layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
+  //   component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/keep')),
+  //   permission: 'keep',
+  //   path: '/keep'
+  // },
   {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/loginLayout')),
     path: '/login',

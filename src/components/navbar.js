@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Menu } from 'antd';
@@ -13,6 +13,9 @@ const NavBar = (props) => {
       '//at.alicdn.com/t/font_2384333_rsw4qhrwjur.js'
     ],
   });
+  const mapRouter = {
+    '/control/account': ['/control']
+  };
   // 获取菜单数据生成菜单
   const getNavMenuItems = (menusData) => {
     if (!menusData) {
@@ -75,6 +78,7 @@ const NavBar = (props) => {
         // defaultSelectedKeys={['1']}
         // defaultOpenKeys={['sub1']}
         selectedKeys={[window.location.pathname ?? '']}
+        openKeys={mapRouter[window.location.pathname ?? '']}
         mode="inline"
         theme="dark"
         inlineCollapsed={props?.collapsed}

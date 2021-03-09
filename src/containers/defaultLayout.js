@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Navbar from 'components/navbar';
+import PageHeader from 'components/pageHeader';
 import * as fetchAction from 'store/actions/fetch';
 import { bindActionCreators } from 'redux';
 import { getCookie } from 'utils/storage';
@@ -29,6 +30,7 @@ const DefaultLayout = (props) => {
           { props?.routes &&
             <div className="page-content">
               <Tabbar collapsed={props?.state?.home?.collapsed} userinfo = {props?.state?.home?.data} toggleMenu = {props?.toggleMenu} history={props?.history}/>
+              {props?.routes.pageHeader && <PageHeader data={props?.routes.pageHeader}/>}
               <ProtectedRoute key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} permission={props?.routes?.permission} userinfo = {props?.state?.home?.data}/>
             </div>
           }
@@ -42,7 +44,8 @@ DefaultLayout.propTypes = {
   fetchUserInfo: PropTypes.func.isRequired,
   state: PropTypes.object,
   toggleMenu: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  pageHeader: PropTypes.object
 };
 export default withRouter(connect(state => ({
   state: state
