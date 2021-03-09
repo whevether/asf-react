@@ -24,6 +24,6 @@ const PageHeader = (props) => {
   );
 };
 PageHeader.propTypes = {
-  
+  data: PropTypes.object.isRequired
 };
 export default PageHeader;

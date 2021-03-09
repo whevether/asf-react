@@ -18,7 +18,7 @@ const DefaultLayout = (props) => {
       document.getElementsByTagName('body')[0].className = 'login-svg-none';
       setToken(getCookie('token'));
       // 当数据存在于 store中就不请求加载
-      if(!props?.state?.home?.data){
+      if(!props?.home?.data){
         props?.fetchUserInfo();
       }
     }else{
@@ -28,13 +28,13 @@ const DefaultLayout = (props) => {
   return (
     <>
       {
-        props?.state?.home?.data && <div className="DefaultLayout-wrapper" >
-          <Navbar userinfo = {props?.state?.home?.data} collapsed={props?.state?.home?.collapsed}/>
+        props?.home?.data && <div className="DefaultLayout-wrapper" >
+          <Navbar userinfo = {props?.home?.data} collapsed={props?.home?.collapsed}/>
           { props?.routes &&
             <div className="page-content">
-              <Tabbar collapsed={props?.state?.home?.collapsed} userinfo = {props?.state?.home?.data} toggleMenu = {props?.toggleMenu} history={props?.history}/>
+              <Tabbar collapsed={props?.home?.collapsed} userinfo = {props?.home?.data} toggleMenu = {props?.toggleMenu} history={props?.history}/>
               {props?.routes.pageHeader && <PageHeader data={props?.routes.pageHeader}/>}
-              <ProtectedRoute key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} permission={props?.routes?.permission} userinfo = {props?.state?.home?.data}/>
+              <ProtectedRoute key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} permission={props?.routes?.permission} userinfo = {props?.home?.data}/>
             </div>
           }
         </div>
@@ -45,11 +45,11 @@ const DefaultLayout = (props) => {
 DefaultLayout.propTypes = {
   routes: PropTypes.object.isRequired,
   fetchUserInfo: PropTypes.func.isRequired,
-  state: PropTypes.object,
+  home: PropTypes.object,
   toggleMenu: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   pageHeader: PropTypes.object
 };
 export default withRouter(connect(state => ({
-  state: state
+  home: state?.home
 }), dispatch => bindActionCreators(fetchAction, dispatch))(DefaultLayout));

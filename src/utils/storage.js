@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 import {notification} from 'antd';
+import * as dayjs from 'dayjs';
 /*
 获取/设置cookie/移除coolkie
 */
@@ -45,4 +46,8 @@ export const removeCookie = (arr, domain)=>{
         '删除cookie失败'
     });
   }
+};
+// 时间戳转时间
+export const timeToDate = (date,params) => {
+  return dayjs.unix(date).format(params);
 };
