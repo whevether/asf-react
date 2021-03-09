@@ -1,10 +1,10 @@
 import React from 'react';
-import {head} from 'utils/help';
+import {head} from 'utils/head';
 import PropTypes from 'prop-types';
 const AccountList = (props) => {
   return(
-    <div className="account-list">
-      
+    <div className="tabble-list">
+      {head('账户列表')}
     </div>
   );
 };

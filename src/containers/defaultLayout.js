@@ -17,7 +17,10 @@ const DefaultLayout = (props) => {
     if (getCookie('token')) {
       document.getElementsByTagName('body')[0].className = 'login-svg-none';
       setToken(getCookie('token'));
-      props?.fetchUserInfo();
+      // 当数据存在于 store中就不请求加载
+      if(!props?.state?.home?.data){
+        props?.fetchUserInfo();
+      }
     }else{
       props.history.push('/login');
     }

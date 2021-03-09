@@ -19,7 +19,7 @@ const PageHeader = (props) => {
           <span>{props?.data?.name}</span>
         </Breadcrumb.Item>
       </Breadcrumb>
-      <h3>{props?.data?.name}</h3>
+      <h3 style={{marginBottom:'0px'}}>{props?.data?.name}</h3>
     </div>
   );
 };

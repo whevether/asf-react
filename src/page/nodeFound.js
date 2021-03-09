@@ -1,5 +1,5 @@
 import React from 'react';
-import {head} from 'utils/help';
+import {head} from 'utils/head';
 // import PropTypes from 'prop-types';
 const NotFoundPage = () => {
   // staticContext.notFound = true;

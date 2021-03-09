@@ -7,7 +7,7 @@ import { UserOutlined, LockOutlined, GithubOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setCookie, getCookie } from 'utils/storage';
-import {head} from 'utils/help';
+import {head} from 'utils/head';
 const Login = (props) => {
   const [zindex, setZindex] = useState({});
   const [type, setType] = useState('account');

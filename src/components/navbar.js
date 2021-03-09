@@ -13,9 +13,15 @@ const NavBar = (props) => {
       '//at.alicdn.com/t/font_2384333_rsw4qhrwjur.js'
     ],
   });
-  const mapRouter = {
+  const mapOpenRouter = {
     '/control/account': ['/control']
   };
+  const mapSelectRouter = {
+    '/': '/',
+    '/control/account': '/control/account'
+  };
+  const [openKeys, setOpenKeys] = useState(mapOpenRouter[window.location.pathname] ?? []);
+  const [selectKeys,setSelectKeys] = useState(mapSelectRouter[window.location.pathname] ?? []);
   // 获取菜单数据生成菜单
   const getNavMenuItems = (menusData) => {
     if (!menusData) {
@@ -69,18 +75,24 @@ const NavBar = (props) => {
       );
     });
   };
+  const onOpenChange = (e) => {
+    setOpenKeys(e);
+  };
+  const onSelectChange = (e) => {
+    setSelectKeys(e);
+  };
   return (
     <div className="slidebar">
       <div className="logo">
         <a href="https://www.keep-wan.me" target="_blank" />
       </div>
       <Menu
-        // defaultSelectedKeys={['1']}
-        // defaultOpenKeys={['sub1']}
-        selectedKeys={[window.location.pathname ?? '']}
-        openKeys={mapRouter[window.location.pathname ?? '']}
+        selectedKeys={selectKeys}
+        openKeys={openKeys}
         mode="inline"
         theme="dark"
+        onOpenChange={onOpenChange}
+        onSelect = {onSelectChange}
         inlineCollapsed={props?.collapsed}
       >
         {getNavMenuItems(props?.userinfo?.permissionMenu)}
