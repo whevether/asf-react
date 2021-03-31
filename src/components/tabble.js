@@ -31,6 +31,13 @@ const BaseTabble = (props) => {
   const onCancel = () => {
     form?.current?.resetFields();
   };
+  const rederSearch = (item) => {
+    if(item?.fromType === 'inputNumber'){
+      return <InputNumber placeholder={item?.placeholder} />;
+    }else{
+      return  <Input placeholder={item?.placeholder} />;
+    }
+  };
   return(
     <div className="tabble-list">
       {props?.formObj && <div className="tabble-header">
@@ -44,7 +51,7 @@ const BaseTabble = (props) => {
         {
           props?.formObj.map((item,index) => (
             <Form.Item label={item.title} key={index} name = {item?.name} rules={item?.rules} style={{marginBottom:'10px'}}>
-              {item?.fromType === 'inputNumber' ? <InputNumber placeholder={item?.placeholder} /> : <Input placeholder={item?.placeholder} />}
+              {rederSearch(item)}
             </Form.Item>
           ))
         }

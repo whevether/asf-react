@@ -7,7 +7,7 @@ const ProtectedRoute = ({ component: Component, permission, permissionMenu, ...r
     // console.log(permissionMenu);
     let isPermission = menu.some((item) => {
       if (Array.isArray(item?.actions) && item?.actions.length > 0 && item?.actions.includes(path)) {
-        arr.push(...item?.actions)
+        arr.push(...item?.actions);
         return true;
       } else if (Array.isArray(item?.children) && item?.children.length > 0) {
         // console.log(item?.children);
@@ -43,6 +43,7 @@ const ProtectedRoute = ({ component: Component, permission, permissionMenu, ...r
 ProtectedRoute.propTypes = {
   component: PropTypes.object,
   permission: PropTypes.string,
-  location: PropTypes.object
+  location: PropTypes.object,
+  permissionMenu: PropTypes.arrayOf(Object)
 };
 export default ProtectedRoute;
