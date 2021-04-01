@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Menu, Dropdown } from 'antd';
+import { Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import BaseTable from 'components/tabble';
+import AuthControl from 'components/AuthControl';
 const AccountList = (props) => {
   const from = [{
     title: '账户名',
@@ -52,81 +53,76 @@ const AccountList = (props) => {
   const querySubmit = (e) => {
     console.log(e);
   };
-  // 修改账户
-  const onModifyAccount = (data) => {
-    console.log(data);
-  };
-  //分配账户角色
-  const onAssignAccountRole = (data) => {
-    console.log(data);
-  };
-  //分配账户部门
-  const onAssignAccountDepr = (data) => {
-    console.log(data);
-  };
-  //分配账户岗位
-  const onAssignAccountPost = (data) => {
-    console.log(data);
-  };
-  //删除账户
-  const onDeleteAccount = (data) => {
-    console.log(data);
-  };
-  // 修改账户密码
-  const onModifyAccountPassword = (data) => {
-    console.log(data);
-  };
-  // 修改账户手机
-  const onModifyTelPhone = (data) => {
-    console.log(data);
-  };
-  //修改账户邮箱
-  const onModifyEmail = (data) => {
-    console.log(data);
-  };
-  // 修改账户头像
-  const onModifyAvatar = (data) => {
-    console.log(data);
-  };
+  const list = [{
+    name: '账户详情',
+    permission: 'account.details',
+    click: (data)=>{
+      console.log(data);
+    }
+  },{
+    name: '修改账户',
+    permission: 'account.modify',
+    click: (data)=>{
+      console.log(data);
+    }
+  },{
+    name: '分配账户角色',
+    permission: 'account.assignrole',
+    click: (data)=>{
+      console.log(data);
+    }
+  },{
+    name: '分配账户部门',
+    permission: 'account.assigndepartment',
+    click: (data)=>{
+      console.log(data);
+    }
+  },{
+    name: '分配账户岗位',
+    permission: 'account.assignpost',
+    click: (data)=>{
+      console.log(data);
+    }
+  },{
+    name: '删除账户',
+    permission: 'account.delete.[0-9]{1,12}',
+    click: (data)=>{
+      console.log(data);
+    }
+  },{
+    name: '修改账户密码',
+    permission: 'account.resetpassword',
+    click: (data)=>{
+      console.log(data);
+    }
+  },{
+    name: '修改账户手机',
+    permission: 'account.modifytelphone',
+    click: (data)=>{
+      console.log(data);
+    }
+  },{
+    name: '修改账户邮箱',
+    permission: 'account.modifyemail',
+    click: (data)=>{
+      console.log(data);
+    }
+  },{
+    name: '修改账户头像',
+    permission: 'account.modifyavatar',
+    click: (data)=>{
+      console.log(data);
+    }
+  },{
+    name: '修改账户状态',
+    permission: 'account.modifystatus',
+    click: (data)=>{
+      console.log(data);
+    }
+  }];
   const menu = (record) => {
     return (
-      <Menu>
-        <Menu.Item key="0" onClick={() => onModifyAccount(record)}>
-          修改账户
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="1" onClick={() => onAssignAccountRole(record)}>
-          分配账户角色
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="2" onClick={() => onAssignAccountDepr(record)}>
-          分配账户部门
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="3" onClick={() => onAssignAccountPost(record)}>
-          分配账户岗位
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="4" onClick={() => onDeleteAccount(record)}>
-          删除账户
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="5" onClick={() => onModifyAccountPassword(record)}>
-          修改账户密码
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="6" onClick={() => onModifyTelPhone(record)}>
-          修改账户手机
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="7" onClick={() => onModifyEmail(record)}>
-          修改账户邮箱
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="8" onClick={() => onModifyAvatar(record)}>
-          修改账户头像
-        </Menu.Item>
-      </Menu>
+      <AuthControl action={props?.action} list={list} record={record} type="menu"/>
     );
   };
   const columns = [{
@@ -224,7 +220,8 @@ const AccountList = (props) => {
 };
 AccountList.propTypes = {
   fetchAccountList: PropTypes.func,
-  account: PropTypes.object
+  account: PropTypes.object,
+  action: PropTypes.array
 };
 export default connect(state => ({
   account: state?.account
