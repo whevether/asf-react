@@ -14,9 +14,7 @@ export const routes = [
     path: '/control/account',
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
     permission: 'account.getlist',
-    pageHeader:{
-      name : '账户管理'
-    },
+    name: '账户管理',
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/accountList'))
   },
   // {

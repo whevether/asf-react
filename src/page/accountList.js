@@ -1,38 +1,16 @@
 import React, { useEffect } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
+import {accountPageFrom} from 'utils/json'; 
 import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Dropdown } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined,PlusCircleOutlined } from '@ant-design/icons';
 import BaseTable from 'components/tabble';
 import AuthControl from 'components/AuthControl';
 const AccountList = (props) => {
-  const from = [{
-    title: '账户名',
-    fromType: 'input',
-    inputType: 'text',
-    name: 'username',
-    placeholder: '请输入账户名',
-    rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的账户名或最多输入50个字符的账户名' }]
-  }, {
-    title: '手机号码',
-    fromType: 'input',
-    inputType: 'text',
-    placeholder: '请输入手机号码',
-    name: 'telphone',
-    rules: [{ type: 'string', pattern: /^1[0-9]{10}$/, message: '输入的手机号码不正确' }]
-  }, {
-    title: '邮箱地址',
-    fromType: 'input',
-    inputType: 'text',
-    placeholder: '请输入邮箱地址号码',
-    name: 'email',
-    // eslint-disable-next-line  no-useless-escape
-    rules: [{ type: 'string', pattern: /^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/, message: '输入的邮箱地址不正确不正确' }]
-  }];
   useEffect(() => {
     props.fetchAccountList();
   }, []);
@@ -213,7 +191,7 @@ const AccountList = (props) => {
     <div className="account-list">
       {head('账户列表')}
       {
-        props?.account?.list && <BaseTable formObj={from} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} />
+        props?.account?.list && <BaseTable formObj={accountPageFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{name:'添加账户',permission:'account.create',type:'primary', icon: <PlusCircleOutlined />,click: (e)=>{console.log(e);}}]}/>
       }
     </div>
   );

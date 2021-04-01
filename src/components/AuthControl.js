@@ -13,7 +13,7 @@ const AuthControl = (props) => {
                 </Menu>);
             } else {
                 return props?.list.map((item, i) => {
-                    return props?.action.includes(item.permission) ? <Button key={i} onClick={() => item?.click(props?.record)} type={item?.type} icon={item?.icon} loading={item?.loading} size={item?.size}>{item?.name}</Button> : null;
+                    return props?.action.includes(item.permission) ? <Button key={i} onClick={(e) => item?.click(e)} type={item?.type} icon={item?.icon} loading={item?.loading} size={item?.size} style={{marginLeft:'10px'}}>{item?.name}</Button> : null;
 
                 });
             }

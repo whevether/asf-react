@@ -13,17 +13,17 @@ const PageHeader = (props) => {
           <Link to="/">首页</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <span>{pageHeaderMap[props?.data?.name]}</span>
+          <span>{pageHeaderMap[props?.name]}</span>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <span>{props?.data?.name}</span>
+          <span>{props?.name}</span>
         </Breadcrumb.Item>
       </Breadcrumb>
-      <h3 style={{marginBottom:'0px'}}>{props?.data?.name}</h3>
+      <h3 style={{marginBottom:'0px'}}>{props?.name}</h3>
     </div>
   );
 };
 PageHeader.propTypes = {
-  data: PropTypes.object.isRequired
+  name: PropTypes.string.isRequired
 };
 export default PageHeader;

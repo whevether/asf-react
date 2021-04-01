@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import {Form,Input,Button, InputNumber,notification,Table} from 'antd';
+import AuthControl from 'components/AuthControl';
 const BaseTabble = (props) => {
   const form  = useRef(null);
   // console.log(props);
@@ -55,7 +56,6 @@ const BaseTabble = (props) => {
             </Form.Item>
           ))
         }
-
         <Form.Item>
           <Button type="primary" htmlType="submit">
             查询
@@ -63,10 +63,13 @@ const BaseTabble = (props) => {
           <Button htmlType="button" style={{marginLeft:'10px'}} onClick={onCancel}>
             重置
           </Button>
+          {/* 权限按钮 */}
+          <AuthControl action={props?.action} list={props?.list} type="button"/>
         </Form.Item>
       </Form>
       </div>}
-      { props?.dataSource&&props?.columns && <Table  dataSource={props?.dataSource} columns={props?.columns} scroll={{x: 968}} pagination={props?.pagination}/>
+      { 
+        props?.dataSource&&props?.columns && <Table  dataSource={props?.dataSource} columns={props?.columns} scroll={{x: 968}} pagination={props?.pagination}/>
       }
     </div>
   );
