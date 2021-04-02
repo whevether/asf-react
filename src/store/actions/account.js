@@ -12,3 +12,8 @@ export const getDepartmentList = ()=> async (dispatch,getState,api)=>{
   const res = await api.get('/asf/department/getLists');
   return res?.result;
 };
+// 创建账户
+export const createAccount = (params) => async(dispatch,getState,api) => {
+  const res = await api.post('/asf/account/create',params);
+  return res?.result;
+};

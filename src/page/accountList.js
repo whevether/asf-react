@@ -46,7 +46,10 @@ const AccountList = (props) => {
   };
   //提交表单
   const onFinish = (data) => {
-    console.log(data);
+    props?.createAccount(data)
+      .then(res => {
+        console.log(res);
+      });
   };
   // 提交表格查询
   const querySubmit = (e) => {
@@ -229,7 +232,8 @@ AccountList.propTypes = {
   fetchAccountList: PropTypes.func,
   account: PropTypes.object,
   action: PropTypes.array,
-  getDepartmentList: PropTypes.func
+  getDepartmentList: PropTypes.func,
+  createAccount: PropTypes.func
 };
 export default connect(state => ({
   account: state?.account

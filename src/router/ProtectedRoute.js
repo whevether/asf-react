@@ -22,7 +22,7 @@ const ProtectedRoute = ({ component: Component, permission, permissionMenu, ...r
     <Route {...rest} render={
       props => {
         /**
-         * 没有权限跳转到 401页面,控制页面路由
+         * 没有权限跳转到 401页面,控制页面路由路由权限
          */
         if (permission && !grantedPermission(permissionMenu, permission)) {
           return (

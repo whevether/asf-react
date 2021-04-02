@@ -97,6 +97,7 @@ const NavBar = (props) => {
 };
 NavBar.propTypes = {
   collapsed: PropTypes.bool.isRequired,
-  userinfo: PropTypes.object
+  userinfo: PropTypes.object,
+  path: PropTypes.string
 };
 export default NavBar;
