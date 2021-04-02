@@ -7,21 +7,13 @@ import {
 } from '@ant-design/icons';
 const { SubMenu } = Menu;
 const NavBar = (props) => {
-  // console.log(window.location.pathname);
   const IconFont = createFromIconfontCN({
     scriptUrl: [
       '//at.alicdn.com/t/font_2384333_rsw4qhrwjur.js'
     ],
   });
-  const mapOpenRouter = {
-    '/control/account': ['/control']
-  };
-  const mapSelectRouter = {
-    '/': '/',
-    '/control/account': '/control/account'
-  };
-  const [openKeys, setOpenKeys] = useState(mapOpenRouter[window.location.pathname] ?? []);
-  const [selectKeys,setSelectKeys] = useState(mapSelectRouter[window.location.pathname] ?? []);
+  const [openKeys, setOpenKeys] = useState(['/'+props?.path.split('/')[1]]);
+  const [selectKeys,setSelectKeys] = useState([props?.path]);
   // 获取菜单数据生成菜单
   const getNavMenuItems = (menusData) => {
     if (!menusData) {

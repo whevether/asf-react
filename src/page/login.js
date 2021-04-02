@@ -12,8 +12,6 @@ const Login = (props) => {
   const [zindex, setZindex] = useState({});
   const [type, setType] = useState('account');
   useEffect(() => {
-    //获取租户列表
-    props?.fetchTenancyList();
     if(getCookie('token')){
       props?.history?.push('/');
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Button } from 'antd';
-/* 控制权限按钮 */
+/* 批量控制权限按钮 */
 const AuthControl = (props) => {
     const RenderAuthMenu = () => {
         if (Array.isArray(props?.list) && props?.list.length > 0) {

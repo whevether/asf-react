@@ -7,7 +7,7 @@ export const fetchAccountList = (params) => async (dispatch,getState,api)=> {
     payload: res
   });
 };
-// 获取租户列表
+// 获取部门列表
 export const getDepartmentList = ()=> async (dispatch,getState,api)=>{
   const res = await api.get('/asf/department/getLists');
   return res?.result;

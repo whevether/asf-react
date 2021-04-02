@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import {Form,Input,Button, InputNumber,notification,Table} from 'antd';
-import AuthControl from 'components/AuthControl';
-const BaseTabble = (props) => {
+import AuthControl from './authControl';
+const BaseTable = (props) => {
   const form  = useRef(null);
   // console.log(props);
   const onFinish = (e)=> {
@@ -23,12 +23,6 @@ const BaseTabble = (props) => {
       props?.querySubmit(data);
     }
   };
-  const onFinishFailed = () => {
-    form?.current?.resetFields();
-    notification['error']({
-      message: '表单错误'
-    });
-  };
   const onCancel = () => {
     form?.current?.resetFields();
   };
@@ -47,7 +41,6 @@ const BaseTabble = (props) => {
         layout="inline"
         name="tabble"
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
       >
         {
           props?.formObj.map((item,index) => (
@@ -74,7 +67,7 @@ const BaseTabble = (props) => {
     </div>
   );
 };
-BaseTabble.propTypes = {
+BaseTable.propTypes = {
   dataSource: PropTypes.arrayOf(Object).isRequired,
   columns: PropTypes.arrayOf(Object).isRequired,
   querySubmit: PropTypes.func,
@@ -83,4 +76,4 @@ BaseTabble.propTypes = {
   action: PropTypes.arrayOf(String),
   list: PropTypes.arrayOf(Object)
 };
-export default BaseTabble;
+export default BaseTable;

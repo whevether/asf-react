@@ -3,7 +3,8 @@ import {removeCookie} from 'utils/storage';
 import {notification} from 'antd';
 import * as types from 'constants/types';
 export const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? '/api' : '/api'
+  baseURL: process.env.NODE_ENV === 'production' ? '/api' : '/api',
+  timeout: 5000
 });
 //设置 token api 请求头
 export const setToken = (token) => {
@@ -76,8 +77,13 @@ export const request = (history,store) => {
     if([404].indexOf(response?.status) > -1){
       notification['error']({
         message: '请求错误',
-        description:
-          '没有这个接口'
+        description:'没有这个接口'
+      });
+    }
+    if(err.stack.indexOf('timeout') > -1){
+      notification['error']({
+        message: '请求超时',
+        description:'请求超时了。请检查网络或接口'
       });
     }
     setTimeout(() => {

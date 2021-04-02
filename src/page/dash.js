@@ -1,6 +1,6 @@
 import React from 'react';
 import {head} from 'utils/head';
-import Chart from 'components/chart';
+import {Chart} from 'components/index';
 import geoMap from 'assets/geo.json';
 // import PropTypes from 'prop-types';
 const renderChart = () => {

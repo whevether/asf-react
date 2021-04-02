@@ -8,12 +8,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Dropdown,Drawer} from 'antd';
 import { DownOutlined,PlusCircleOutlined } from '@ant-design/icons';
-import BaseTable from 'components/tabble';
-import AuthControl from 'components/AuthControl';
-import BaseFrom from 'components/baseFrom';
+import {BaseFrom, BaseTable,AuthControl} from 'components/index';
 const AccountList = (props) => {
   const [showDarw,setShowDarw] = useState(false);
   const [fromData,setFromData] = useState(null);
+  const [darwTitle,setDarwTitle] = useState('');
+  //获取账户列表
   useEffect(() => {
     props.fetchAccountList();
   }, []);
@@ -31,7 +31,7 @@ const AccountList = (props) => {
     showSizeChanger: true
   };
   // 打开抽屉
-  const onOpenDarw = ()=>{
+  const onOpenDarw = (title)=>{
     props?.getDepartmentList().then(res => {
       let from = accountFrom.filter(f => {
         if(f.name === 'departmentId'){
@@ -39,9 +39,14 @@ const AccountList = (props) => {
         }
         return f;
       });
+      setDarwTitle(title);
       setFromData(from);
       setShowDarw(true);
     });
+  };
+  //提交表单
+  const onFinish = (data) => {
+    console.log(data);
   };
   // 提交表格查询
   const querySubmit = (e) => {
@@ -207,15 +212,15 @@ const AccountList = (props) => {
     <div className="account-list">
       {head('账户列表')}
       {
-        props?.account?.list && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{name:'添加账户',permission:'account.create',type:'primary', icon: <PlusCircleOutlined />,click: ()=>{onOpenDarw();}}]}/>
+        props?.account?.list && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{name:'添加账户',permission:'account.create',type:'primary', icon: <PlusCircleOutlined />,click: ()=>{onOpenDarw('创建账户');}}]}/>
       }
       <Drawer
-        title="创建账户"
+        title={darwTitle}
         width={720}
         visible={showDarw}
         onClose={() => setShowDarw(false)}
       >
-        <BaseFrom list={fromData} />
+        <BaseFrom list={fromData} onFinish={onFinish}/>
       </Drawer>
     </div>
   );

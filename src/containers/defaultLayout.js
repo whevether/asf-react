@@ -2,14 +2,13 @@ import React, { useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Navbar from 'components/navbar';
 import PageHeader from 'components/pageHeader';
 import * as fetchAction from 'store/actions/fetch';
 import { bindActionCreators } from 'redux';
 import { getCookie } from 'utils/storage';
 import { setToken } from 'utils/request';
 import ProtectedRoute from 'router/ProtectedRoute';
-import Tabbar from 'components/tabbar';
+import {Tabbar,Navbar} from 'components/index';
 import { Spin } from 'antd';
 // 登入页布局
 
@@ -31,11 +30,11 @@ const DefaultLayout = (props) => {
   return (
     <>
       {
-         props?.home?.loading && <Spin tip="请求中。。。。。"  spinning={props?.home?.loading} style={style} delay={500}/>
+         props?.home?.loading && <Spin tip="请求中。。。。。"  spinning={props?.home?.loading} style={style}/>
       }
       {
         props?.home?.data && <div className="DefaultLayout-wrapper" >
-          <Navbar userinfo = {props?.home?.data} collapsed={props?.home?.collapsed}/>
+          <Navbar userinfo = {props?.home?.data} collapsed={props?.home?.collapsed} path={props?.history?.location?.pathname}/>
             <div className="page-content">
               <Tabbar collapsed={props?.home?.collapsed} userinfo = {props?.home?.data} toggleMenu = {props?.toggleMenu} history={props?.history}/>
               {
