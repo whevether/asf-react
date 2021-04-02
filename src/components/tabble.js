@@ -79,6 +79,8 @@ BaseTabble.propTypes = {
   columns: PropTypes.arrayOf(Object).isRequired,
   querySubmit: PropTypes.func,
   pagination: PropTypes.object,
-  formObj: PropTypes.arrayOf(Object)
+  formObj: PropTypes.arrayOf(Object),
+  action: PropTypes.arrayOf(String),
+  list: PropTypes.arrayOf(Object)
 };
 export default BaseTabble;

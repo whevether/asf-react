@@ -11,15 +11,6 @@ import {head} from 'utils/head';
 const Login = (props) => {
   const [zindex, setZindex] = useState({});
   const [type, setType] = useState('account');
-  //  这是一个使用redux 封装axios中间件请求示例
-  // const head = () => {
-  //   return (
-  //     <Helmet>
-  //       <title>登录</title>
-  //       <meta property="og:title" content="登录" />
-  //     </Helmet>
-  //   );
-  // };
   useEffect(() => {
     //获取租户列表
     props?.fetchTenancyList();

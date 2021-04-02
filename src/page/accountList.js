@@ -1,16 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import {accountPageFrom} from 'utils/json'; 
+import {accountSearchFrom,accountFrom} from 'utils/json'; 
 import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown } from 'antd';
+import { Dropdown,Drawer} from 'antd';
 import { DownOutlined,PlusCircleOutlined } from '@ant-design/icons';
 import BaseTable from 'components/tabble';
 import AuthControl from 'components/AuthControl';
+import BaseFrom from 'components/baseFrom';
 const AccountList = (props) => {
+  const [showDarw,setShowDarw] = useState(false);
+  const [fromData,setFromData] = useState(null);
   useEffect(() => {
     props.fetchAccountList();
   }, []);
@@ -26,6 +29,19 @@ const AccountList = (props) => {
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
+  };
+  // 打开抽屉
+  const onAddAccount = ()=>{
+    props?.getDepartmentList().then(res => {
+      let from = accountFrom.filter(f => {
+        if(f.name === 'departmentId'){
+          f.selOption = res;
+        }
+        return f;
+      });
+      setFromData(from);
+      setShowDarw(true);
+    });
   };
   // 提交表格查询
   const querySubmit = (e) => {
@@ -191,15 +207,24 @@ const AccountList = (props) => {
     <div className="account-list">
       {head('账户列表')}
       {
-        props?.account?.list && <BaseTable formObj={accountPageFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{name:'添加账户',permission:'account.create',type:'primary', icon: <PlusCircleOutlined />,click: (e)=>{console.log(e);}}]}/>
+        props?.account?.list && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{name:'添加账户',permission:'account.create',type:'primary', icon: <PlusCircleOutlined />,click: ()=>{onAddAccount();}}]}/>
       }
+      <Drawer
+        title="创建账户"
+        width={720}
+        visible={showDarw}
+        onClose={() => setShowDarw(false)}
+      >
+        <BaseFrom list={fromData} />
+      </Drawer>
     </div>
   );
 };
 AccountList.propTypes = {
   fetchAccountList: PropTypes.func,
   account: PropTypes.object,
-  action: PropTypes.array
+  action: PropTypes.array,
+  getDepartmentList: PropTypes.func
 };
 export default connect(state => ({
   account: state?.account
