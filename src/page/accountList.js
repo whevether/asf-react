@@ -31,7 +31,7 @@ const AccountList = (props) => {
     showSizeChanger: true
   };
   // 打开抽屉
-  const onAddAccount = ()=>{
+  const onOpenDarw = ()=>{
     props?.getDepartmentList().then(res => {
       let from = accountFrom.filter(f => {
         if(f.name === 'departmentId'){
@@ -207,7 +207,7 @@ const AccountList = (props) => {
     <div className="account-list">
       {head('账户列表')}
       {
-        props?.account?.list && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{name:'添加账户',permission:'account.create',type:'primary', icon: <PlusCircleOutlined />,click: ()=>{onAddAccount();}}]}/>
+        props?.account?.list && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{name:'添加账户',permission:'account.create',type:'primary', icon: <PlusCircleOutlined />,click: ()=>{onOpenDarw();}}]}/>
       }
       <Drawer
         title="创建账户"
