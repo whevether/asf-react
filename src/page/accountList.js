@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer,notification } from 'antd';
+import { Dropdown, Drawer,notification, Switch } from 'antd';
 import { DownOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const AccountList = (props) => {
@@ -145,12 +145,6 @@ const AccountList = (props) => {
     click: (data) => {
       console.log(data);
     }
-  }, {
-    name: '修改账户状态',
-    permission: 'account.modifystatus',
-    click: (data) => {
-      console.log(data);
-    }
   }];
   const menu = (record) => {
     return (
@@ -203,12 +197,14 @@ const AccountList = (props) => {
     title: '状态',
     dataIndex: 'status',
     key: 'status',
+    // eslint-disable-next-line
     render: (text) => {
       let statusMap = {
         0: '禁用',
         1: '启用'
       };
-      return statusMap[text];
+      return props?.action.includes('account.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
+      unCheckedChildren="禁用"/> : statusMap[text];
     }
   }, {
     title: '登录ip',
