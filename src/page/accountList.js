@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import {accountSearchFrom,accountFrom} from 'utils/json'; 
+import { accountSearchFrom, accountFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown,Drawer} from 'antd';
-import { DownOutlined,PlusCircleOutlined } from '@ant-design/icons';
-import {BaseFrom, BaseTable,AuthControl} from 'components/index';
+import { Dropdown, Drawer } from 'antd';
+import { DownOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const AccountList = (props) => {
-  const [showDarw,setShowDarw] = useState(false);
-  const [fromData,setFromData] = useState(null);
-  const [darwTitle,setDarwTitle] = useState('');
+  const [showDarw, setShowDarw] = useState(false);
+  const [fromData, setFromData] = useState(null);
+  const [darwTitle, setDarwTitle] = useState('');
   //获取账户列表
   useEffect(() => {
     props.fetchAccountList();
@@ -31,14 +31,28 @@ const AccountList = (props) => {
     showSizeChanger: true
   };
   // 打开抽屉
-  const onOpenDarw = (title)=>{
+  const onOpenDarw = (title) => {
     props?.getDepartmentList().then(res => {
       let from = accountFrom.filter(f => {
-        if(f.name === 'departmentId'){
+        if (f.name === 'departmentId') {
           f.selOption = res;
         }
         return f;
       });
+      //判断是否为超级管理员。如果为则显示选择租户
+      if (props?.roleName.indexOf('superadmin') > -1) {
+        from.unshift({
+          title: '租户',
+          fromType: 'select',
+          name: 'tenancyId',
+          selOption: props?.tenancyList,
+          placeholder: '请选择租户',
+          rules: [{ required: true, message: '租户不能为空' }],
+          options: {
+            allowClear: true//是否显示清除框
+          }
+        });
+      }
       setDarwTitle(title);
       setFromData(from);
       setShowDarw(true);
@@ -58,73 +72,73 @@ const AccountList = (props) => {
   const list = [{
     name: '账户详情',
     permission: 'account.details',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
-  },{
+  }, {
     name: '修改账户',
     permission: 'account.modify',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
-  },{
+  }, {
     name: '分配账户角色',
     permission: 'account.assignrole',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
-  },{
+  }, {
     name: '分配账户部门',
     permission: 'account.assigndepartment',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
-  },{
+  }, {
     name: '分配账户岗位',
     permission: 'account.assignpost',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
-  },{
+  }, {
     name: '删除账户',
     permission: 'account.delete.[0-9]{1,12}',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
-  },{
+  }, {
     name: '修改账户密码',
     permission: 'account.resetpassword',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
-  },{
+  }, {
     name: '修改账户手机',
     permission: 'account.modifytelphone',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
-  },{
+  }, {
     name: '修改账户邮箱',
     permission: 'account.modifyemail',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
-  },{
+  }, {
     name: '修改账户头像',
     permission: 'account.modifyavatar',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
-  },{
+  }, {
     name: '修改账户状态',
     permission: 'account.modifystatus',
-    click: (data)=>{
+    click: (data) => {
       console.log(data);
     }
   }];
   const menu = (record) => {
     return (
-      <AuthControl action={props?.action} list={list} record={record} type="menu"/>
+      <AuthControl action={props?.action} list={list} record={record} type="menu" />
     );
   };
   const columns = [{
@@ -215,7 +229,7 @@ const AccountList = (props) => {
     <div className="account-list">
       {head('账户列表')}
       {
-        props?.account?.list && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{name:'添加账户',permission:'account.create',type:'primary', icon: <PlusCircleOutlined />,click: ()=>{onOpenDarw('创建账户');}}]}/>
+        props?.account?.list && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { onOpenDarw('创建账户'); } }]} />
       }
       <Drawer
         title={darwTitle}
@@ -223,7 +237,7 @@ const AccountList = (props) => {
         visible={showDarw}
         onClose={() => setShowDarw(false)}
       >
-        <BaseFrom list={fromData} onFinish={onFinish}/>
+        <BaseFrom list={fromData} onFinish={onFinish} />
       </Drawer>
     </div>
   );
@@ -233,8 +247,12 @@ AccountList.propTypes = {
   account: PropTypes.object,
   action: PropTypes.array,
   getDepartmentList: PropTypes.func,
-  createAccount: PropTypes.func
+  createAccount: PropTypes.func,
+  tenancyList: PropTypes.arrayOf(Object),
+  roleName: PropTypes.string,
+  initialValues: PropTypes.object
 };
 export default connect(state => ({
-  account: state?.account
+  account: state?.account,
+  tenancyList: state?.login?.tenancyList
 }), dispatch => bindActionCreators(accountAction, dispatch))(AccountList);

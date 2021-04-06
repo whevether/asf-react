@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-const ProtectedRoute = ({ component: Component, permission, permissionMenu, ...rest }) => {
+const ProtectedRoute = ({ component: Component, permission, permissionMenu,roleName, ...rest }) => {
   let arr = [];
   const grantedPermission = (menu, path) => {
     // console.log(permissionMenu);
@@ -29,12 +29,12 @@ const ProtectedRoute = ({ component: Component, permission, permissionMenu, ...r
             <Redirect
               to={{
                 pathname: '/401',
-                state: { from: props.location }
+                state: { from: props.location,roleName: roleName }
               }}
             />
           );
         }
-        props = {...props,action:arr};
+        props = {...props,action:arr,roleName:roleName};
         return Component ? <Component {...props} /> : null;
       }}
     />
@@ -44,6 +44,7 @@ ProtectedRoute.propTypes = {
   component: PropTypes.object,
   permission: PropTypes.string,
   location: PropTypes.object,
-  permissionMenu: PropTypes.arrayOf(Object)
+  permissionMenu: PropTypes.arrayOf(Object),
+  roleName: PropTypes.string
 };
 export default ProtectedRoute;

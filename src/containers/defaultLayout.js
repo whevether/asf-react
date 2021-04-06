@@ -40,7 +40,7 @@ const DefaultLayout = (props) => {
               {
                  props?.routes && <> 
                   {props?.routes.name && <PageHeader name={props?.routes.name}/>}
-                    <ProtectedRoute key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} permission={props?.routes?.permission} permissionMenu = {props?.home?.data?.permissionMenu}/>
+                    <ProtectedRoute key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} permission={props?.routes?.permission} permissionMenu = {props?.home?.data?.permissionMenu} roleName={props?.home?.data?.roleName}/>
                   </>
               }
             </div>

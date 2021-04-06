@@ -22,7 +22,7 @@ const BaseFrom = (props) => {
     }
   };
   return(
-    <Form layout={props?.layout ?? 'vertical'} className="base-from" ref={fromRef} name="basefrom" onFinish={props?.onFinish}>
+    <Form layout={props?.layout ?? 'vertical'} className="base-from" ref={fromRef} name="basefrom" onFinish={props?.onFinish} initialValues={props?.initialValues}>
        {
          props?.list &&  props.list.map((item,i)=>(
           <Form.Item name={item?.name} label={item?.title} key={i} rules={item?.rules}>
@@ -44,6 +44,7 @@ const BaseFrom = (props) => {
 BaseFrom.propTypes = {
   list: PropTypes.arrayOf(Object),
   layout: PropTypes.string,
-  onFinish: PropTypes.func
+  onFinish: PropTypes.func,
+  initialValues: PropTypes.object
 };
 export default BaseFrom;
