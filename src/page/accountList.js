@@ -6,13 +6,14 @@ import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer } from 'antd';
+import { Dropdown, Drawer,notification } from 'antd';
 import { DownOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const AccountList = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [darwTitle, setDarwTitle] = useState('');
+  const [initFromValue,setInitFromValue] = useState(null);
   //获取账户列表
   useEffect(() => {
     props.fetchAccountList();
@@ -60,9 +61,14 @@ const AccountList = (props) => {
   };
   //提交表单
   const onFinish = (data) => {
+    data.departmentId = data.departmentId.slice(-1)[0];
     props?.createAccount(data)
-      .then(res => {
-        console.log(res);
+      .then(() => {
+        notification['success']({
+          message: '添加成功',
+          description: '添加账户成功'
+        });
+        setShowDarw(false);
       });
   };
   // 提交表格查询
@@ -79,7 +85,17 @@ const AccountList = (props) => {
     name: '修改账户',
     permission: 'account.modify',
     click: (data) => {
-      console.log(data);
+      setInitFromValue({
+        'tenancyId': data?.tenancyId,
+        'departmentId': [data?.department?.pid,data?.department?.id],
+        'username': data?.name,
+        'password': data?.password,
+        'telphone': data?.telPhone.replace('86+',''),
+        'email': data?.email,
+        'name': data?.name,
+        'sex': data?.sex
+      });
+      onOpenDarw('编辑账户');
     }
   }, {
     name: '分配账户角色',
@@ -165,8 +181,8 @@ const AccountList = (props) => {
     key: 'username'
   }, {
     title: '手机号码',
-    dataIndex: 'telephone',
-    key: 'telephone'
+    dataIndex: 'telPhone',
+    key: 'telPhone'
   }, {
     title: '邮箱',
     dataIndex: 'email',
@@ -204,8 +220,12 @@ const AccountList = (props) => {
     key: 'loginLocation'
   }, {
     title: '所属部门',
-    dataIndex: 'departmentName',
-    key: 'departmentName'
+    dataIndex: 'department',
+    key: 'department',
+    // eslint-disable-next-line
+    render: (text) => {
+      return <span>{text?.name}</span>;
+    }
   }, {
     title: '创建时间',
     dataIndex: 'createTime',
@@ -229,7 +249,7 @@ const AccountList = (props) => {
     <div className="account-list">
       {head('账户列表')}
       {
-        props?.account?.list && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { onOpenDarw('创建账户'); } }]} />
+        props?.account?.list && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.action} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null);onOpenDarw('创建账户');  } }]} />
       }
       <Drawer
         title={darwTitle}
@@ -237,7 +257,7 @@ const AccountList = (props) => {
         visible={showDarw}
         onClose={() => setShowDarw(false)}
       >
-        <BaseFrom list={fromData} onFinish={onFinish} />
+        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue}/>
       </Drawer>
     </div>
   );

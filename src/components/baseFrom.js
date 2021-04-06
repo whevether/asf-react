@@ -11,7 +11,7 @@ const BaseFrom = (props) => {
       return (<Select placeholder={item?.placeholder} allowClear={item?.options?.allowClear}>
         {
           item?.selOption && item?.selOption.map((data,i)=>(
-            <Select.Option value={data?.value} key={i}>{data?.name}</Select.Option>
+            <Select.Option value={data?.id} key={i}>{data?.name}</Select.Option>
           ))
         }
       </Select>);
