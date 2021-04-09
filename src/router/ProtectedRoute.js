@@ -22,14 +22,14 @@ const ProtectedRoute = ({ component: Component, permission, permissionMenu,roleN
     <Route {...rest} render={
       props => {
         /**
-         * 没有权限跳转到 401页面,控制页面路由路由权限
+         * 没有权限跳转到 403页面,控制页面路由路由权限
          */
         if (permission && !grantedPermission(permissionMenu, permission)) {
           return (
             <Redirect
               to={{
                 pathname: '/403',
-                state: { from: props.location,roleName: roleName }
+                state: { from: props.location }
               }}
             />
           );

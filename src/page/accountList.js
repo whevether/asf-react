@@ -4,6 +4,7 @@ import { timeToDate } from 'utils/storage';
 import { accountSearchFrom, accountFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
+import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer,notification, Switch } from 'antd';
@@ -16,7 +17,7 @@ const AccountList = (props) => {
   const [initFromValue,setInitFromValue] = useState(null);
   //获取账户列表
   useEffect(() => {
-    props.fetchAccountList();
+    props?.accountFunc?.fetchAccountList();
   }, []);
   // 分页对象
   const pagination = {
@@ -33,7 +34,7 @@ const AccountList = (props) => {
   };
   // 打开抽屉
   const onOpenDarw = (title) => {
-    props?.getDepartmentList().then(res => {
+    props?.commonFunc?.getDepartmentList().then(res => {
       let from = accountFrom.filter(f => {
         if (f.name === 'departmentId') {
           f.selOption = res;
@@ -62,7 +63,7 @@ const AccountList = (props) => {
   //提交表单
   const onFinish = (data) => {
     data.departmentId = data.departmentId.slice(-1)[0];
-    props?.createAccount(data)
+    props?.accountFunc?.createAccount(data)
       .then(() => {
         notification['success']({
           message: '添加成功',
@@ -75,6 +76,7 @@ const AccountList = (props) => {
   const querySubmit = (e) => {
     console.log(e);
   };
+  // 修改
   const list = [{
     name: '账户详情',
     permission: 'account.details',
@@ -198,13 +200,17 @@ const AccountList = (props) => {
     dataIndex: 'status',
     key: 'status',
     // eslint-disable-next-line
-    render: (text) => {
+    render: (text,record) => {
       let statusMap = {
         0: '禁用',
         1: '启用'
       };
       return props?.action.includes('account.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
-      unCheckedChildren="禁用"/> : statusMap[text];
+      unCheckedChildren="禁用" onChange={(e) => {
+        props?.accountFunc?.modifyAccountStatus({id:record?.id,status:Number(e)}).then(() => {
+          props?.accountFunc?.fetchAccountList();
+        });
+      }}/> : statusMap[text];
     }
   }, {
     title: '登录ip',
@@ -259,6 +265,8 @@ const AccountList = (props) => {
   );
 };
 AccountList.propTypes = {
+  accountFunc: PropTypes.object,
+  commonFunc: PropTypes.object,
   fetchAccountList: PropTypes.func,
   account: PropTypes.object,
   action: PropTypes.array,
@@ -271,4 +279,9 @@ AccountList.propTypes = {
 export default connect(state => ({
   account: state?.account,
   tenancyList: state?.login?.tenancyList
-}), dispatch => bindActionCreators(accountAction, dispatch))(AccountList);
+}), dispatch => {
+  return{
+    accountFunc:bindActionCreators(accountAction, dispatch),
+    commonFunc: bindActionCreators(commonAction,dispatch)
+  };
+})(AccountList);

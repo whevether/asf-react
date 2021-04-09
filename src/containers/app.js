@@ -4,7 +4,7 @@ import { withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { RouteWithSubRoutes, routes } from 'router/routes';
 import { bindActionCreators } from 'redux';
-import * as loginAction from 'store/actions/login';
+import * as commonAction from 'store/actions/common';
 /*把switch 包裹在这里面使用withRouter 保证同步路由数据*/
 const ConnectedSwitch = withRouter(connect(state => ({
   state: state
@@ -34,4 +34,4 @@ App.propTypes = {
 };
 export default withRouter(connect(state => ({
   state: state,
-}),dispatch => bindActionCreators(loginAction,dispatch))(App));
+}),dispatch => bindActionCreators(commonAction,dispatch))(App));

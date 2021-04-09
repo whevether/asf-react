@@ -136,7 +136,6 @@ const Login = (props) => {
 Login.propTypes = {
   history: PropTypes.object.isRequired,
   tenancyList: PropTypes.arrayOf(Object),
-  fetchTenancyList: PropTypes.func.isRequired,
   loginUser: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => {

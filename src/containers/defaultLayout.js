@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PageHeader from 'components/pageHeader';
-import * as fetchAction from 'store/actions/fetch';
+import * as commonAction from 'store/actions/common';
 import { bindActionCreators } from 'redux';
 import { getCookie } from 'utils/storage';
 import { setToken } from 'utils/request';
@@ -19,7 +19,7 @@ const DefaultLayout = (props) => {
       document.getElementsByTagName('body')[0].className = 'login-svg-none';
       setToken(getCookie('token'));
       // 当数据存在于 store中就不请求加载
-      if(!props?.home?.data){
+      if(!props?.common?.data){
         props?.fetchUserInfo();
       }
     }else{
@@ -30,17 +30,17 @@ const DefaultLayout = (props) => {
   return (
     <>
       {
-         props?.home?.loading && <Spin tip="请求中。。。。。"  spinning={props?.home?.loading} style={style}/>
+         props?.common?.loading && <Spin tip="请求中。。。。。"  spinning={props?.common?.loading} style={style}/>
       }
       {
-        props?.home?.data && <div className="DefaultLayout-wrapper" >
-          <Navbar userinfo = {props?.home?.data} collapsed={props?.home?.collapsed} path={props?.history?.location?.pathname}/>
+        props?.common?.data && <div className="DefaultLayout-wrapper" >
+          <Navbar userinfo = {props?.common?.data} collapsed={props?.common?.collapsed} path={props?.history?.location?.pathname}/>
             <div className="page-content">
-              <Tabbar collapsed={props?.home?.collapsed} userinfo = {props?.home?.data} toggleMenu = {props?.toggleMenu} history={props?.history}/>
+              <Tabbar collapsed={props?.common?.collapsed} userinfo = {props?.common?.data} toggleMenu = {props?.toggleMenu} history={props?.history}/>
               {
                  props?.routes && <> 
                   {props?.routes.name && <PageHeader name={props?.routes.name}/>}
-                    <ProtectedRoute key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} permission={props?.routes?.permission} permissionMenu = {props?.home?.data?.permissionMenu} roleName={props?.home?.data?.roleName}/>
+                    <ProtectedRoute key={props?.routes?.path} exact={props?.routes?.exact} path={props?.routes?.path} component={props?.routes?.component} permission={props?.routes?.permission} permissionMenu = {props?.common?.data?.permissionMenu} roleName={props?.common?.data?.roleName}/>
                   </>
               }
             </div>
@@ -53,11 +53,11 @@ const DefaultLayout = (props) => {
 DefaultLayout.propTypes = {
   routes: PropTypes.object.isRequired,
   fetchUserInfo: PropTypes.func.isRequired,
-  home: PropTypes.object,
+  common: PropTypes.object,
   toggleMenu: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   pageHeader: PropTypes.object
 };
 export default withRouter(connect(state => ({
-  home: state?.home
-}), dispatch => bindActionCreators(fetchAction, dispatch))(DefaultLayout));
+  common: state?.common
+}), dispatch => bindActionCreators(commonAction, dispatch))(DefaultLayout));

@@ -1,10 +1,10 @@
 import {combineReducers} from 'redux';
-import home from './home';
+import common from './common';
 import login from './login';
 import account from './account';
 import { connectRouter } from 'connected-react-router';
 const rootReducer = (history) => combineReducers({
-    home: home,
+    common: common,
     login: login,
     account: account,
     router: connectRouter(history)

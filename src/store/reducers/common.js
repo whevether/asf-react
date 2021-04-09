@@ -5,7 +5,7 @@ let initData = {
   collapsed: false,
   loading: false
 };
-export default function home(state=initData,action){
+export default function common(state=initData,action){
   switch(action.type){
     case types.FETCH_USER_DATA:
       if(action.payload){
