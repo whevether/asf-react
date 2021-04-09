@@ -8,7 +8,7 @@ export const fetchTenancyList = ()=> async (dispatch,getState,api)=>{
   });
 };
 // 获取部门列表
-export const getDepartmentList = ()=> async ({api})=>{
+export const getDepartmentList = ()=> async (dispatch,getState,api)=>{
   const res = await api.get('/asf/department/getLists');
   return res?.result;
 };
