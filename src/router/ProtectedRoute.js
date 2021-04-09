@@ -28,7 +28,7 @@ const ProtectedRoute = ({ component: Component, permission, permissionMenu,roleN
           return (
             <Redirect
               to={{
-                pathname: '/401',
+                pathname: '/403',
                 state: { from: props.location,roleName: roleName }
               }}
             />

@@ -30,8 +30,8 @@ export const routes = [
   },
   {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/errorLayout')),
-    path: '/401',
-    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/401'))
+    path: '/403',
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/403'))
   }, 
   {
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/nodeFound')),
