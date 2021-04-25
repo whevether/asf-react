@@ -17,12 +17,13 @@ export const routes = [
     name: '账户管理',
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/accountList'))
   },
-  // {
-  //   layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
-  //   component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/keep')),
-  //   permission: 'keep',
-  //   path: '/keep'
-  // },
+  {
+    path: '/control/permission',
+    layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
+    permission: 'permission.getlist',
+    name: '权限管理',
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/permissionList'))
+  },
   {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/loginLayout')),
     path: '/login',

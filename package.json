@@ -26,7 +26,7 @@
   "dependencies": {
     "@loadable/component": "^5.14.1",
     "@tinymce/tinymce-react": "^3.12.2",
-    "antd": "^4.13.1",
+    "antd": "^4.15.2",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "axios": "^0.21.1",
     "classnames": "^2.2.6",

@@ -106,3 +106,12 @@ export const accountFrom = [{
     allowClear: true//是否显示清除框
   }
 }];
+
+export const permissionSearchFrom = [{
+  title: '权限名',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入权限名',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名' }]
+}];

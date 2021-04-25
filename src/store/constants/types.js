@@ -8,3 +8,5 @@ export const LOAD = 'LOAD';
 export const TOGGLE_MENU = 'TOGGLE_MENU';
 // 获取账户列表
 export const GET_ACCOUNT_LIST = 'GET_ACCOUNT_LIST';
+// 获取权限列表
+export const GET_PEERMISSION_LIST = 'GET_PEERMISSION_LIST';
