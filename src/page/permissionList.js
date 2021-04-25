@@ -20,12 +20,9 @@ const PermissionList = (props) => {
   }, []);
   // 分页对象
   const pagination = {
-    total: props?.permission?.total,
+    total: props?.permission?.listTotal,
     onChange: (page, pageSize) => {
-      console.log(page, pageSize);
-    },
-    onShowSizeChange: (current, size) => {
-      console.log(current, size);
+      props?.permissionFunc?.fetchPermissionList({pageNo:page,pageSize:pageSize});
     },
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
@@ -161,7 +158,7 @@ const PermissionList = (props) => {
   }];
   return (
     <div className="account-list">
-      {head('账户列表')}
+      {head('权限列表')}
       {
         props?.permission?.list && <BaseTable formObj={permissionSearchFrom} querySubmit={querySubmit} dataSource={props?.permission?.list} columns={columns} pagination={pagination} action={props?.action} list={[{ name: '添加权限', permission: 'permission.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null);onOpenDarw('添加权限');  } }]} />
       }

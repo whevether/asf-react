@@ -21,12 +21,9 @@ const AccountList = (props) => {
   }, []);
   // 分页对象
   const pagination = {
-    total: props?.account?.total,
+    total: props?.account?.listTotal,
     onChange: (page, pageSize) => {
-      console.log(page, pageSize);
-    },
-    onShowSizeChange: (current, size) => {
-      console.log(current, size);
+      props?.accountFunc?.fetchAccountList({pageNo:page,pageSize:pageSize});
     },
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
