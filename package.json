@@ -10,7 +10,7 @@
     "start-message": "node tools/startMessage.js",
     "prestart": "npm-run-all --parallel start-message remove-dist",
     "start": "npm-run-all --parallel  open:src lint:watch test:watch",
-    "open:src": "node tools/srcServer.js",
+    "open:src": " webpack serve --mode development",
     "open:dist": "node tools/distServer.js",
     "lint": "esw webpack.config.* src tools --color",
     "lint:watch": "npm run lint -- --watch",
@@ -98,8 +98,8 @@
     "terser-webpack-plugin": "^5.1.1",
     "url-loader": "^4.1.1",
     "webpack": "^5.21.1",
-    "webpack-dev-middleware": "^4.1.0",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "browserslist": [
     "last 15 versions",
