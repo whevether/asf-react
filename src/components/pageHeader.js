@@ -4,7 +4,8 @@ import { Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 const PageHeader = (props) => {
   const pageHeaderMap = {
-    '账户管理': '控制面板'
+    '账户管理': '控制面板',
+    '权限管理': '控制面板'
   };
   return(
     <div className="pageheader">

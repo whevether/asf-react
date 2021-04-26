@@ -25,6 +25,12 @@ export const routes = [
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/permissionList'))
   },
   {
+    path: '/editor',
+    layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
+    permission: 'account.accountinfo',
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/tinyeditor'))
+  },
+  {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/loginLayout')),
     path: '/login',
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/login'))
