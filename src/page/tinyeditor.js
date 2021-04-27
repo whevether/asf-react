@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 // import PropTypes from 'prop-types';
 import { head } from 'utils/head';
 import { Editor } from '@tinymce/tinymce-react';
-const TinyEditor = (props) => {
+import { Button } from 'antd';
+const TinyEditor = () => {
   
   const [editorValue,setEditorValue] = useState(`
   <!DOCTYPE html>
@@ -22,13 +23,13 @@ const TinyEditor = (props) => {
   <link rel="stylesheet" type="text/css" href="https://react.keep-wan.me/skin/css/style.css" />
   <script type="text/javascript" src="https://react.keep-wan.me/skin/js/jquery.min.js"></script>
   <script type="text/javascript" src="https://react.keep-wan.me/skin/js/pintuer.js"></script>
-  <script src="https://react.keep-wan.me/skin/js/jquery.flexslider-min.js"></script>
-  <script src="https://react.keep-wan.me/skin/js/owl.carousel.js"></script>
-  <script src="https://react.keep-wan.me/skin/js/main.js"></script>
-  <script src="https://react.keep-wan.me/skin/js/index.js"></script>
+  <script type="text/javascript" src="https://react.keep-wan.me/skin/js/jquery.flexslider-min.js"></script>
+  <script type="text/javascript" src="https://react.keep-wan.me/skin/js/owl.carousel.js"></script>
+  <script type="text/javascript" src="https://react.keep-wan.me/skin/js/main.js"></script>
+  <script type="text/javascript" src="https://react.keep-wan.me/skin/js/index.js"></script>
   <!-- FOR IE9 below -->
   <!--[if lt IE 9]>
-    <script src="https://react.keep-wan.me/skin/js/respond.js"></script>
+    <script type="text/javascript" src="https://react.keep-wan.me/skin/js/respond.js"></script>
     <![endif]-->
   
   </head>
@@ -59,7 +60,7 @@ const TinyEditor = (props) => {
             <div class="nav-navicon" id="nav-main1">
               <ul class="nav  nav-inline  nav-menu nav-right">
                 <li  class='current'><a class="first-level" href='index.html'>首页</a></li>
-                <li class=''><a class="first-level" href='a/gongsigaikuang/index.html'>关于我们 <span class="downward"></span></a> 
+                <li class=''><a class="first-level" href='https://react.keep-wan.me/a/gongsigaikuang/index.html'>关于我们 <span class="downward"></span></a> 
                   <ul class="drop-menu">
                     
                     
@@ -642,23 +643,34 @@ const TinyEditor = (props) => {
   const handleEditor = (value) => {
     setEditorValue(value);
   };
+  const onSubmit = () => {
+    console.log(editorValue);
+  };
+  const onReset = () =>{
+    
+  };
   return(
     <div className="editor">
       {head('富文本编辑器')}
       <Editor id="editor" apiKey="f0ujtvkxmw64jnj6xstg4adv3vgxh73c5wbsgusq7si3pi1n" init={{
         'plugins': 'print preview fullpage  searchreplace autolink directionality  visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount  imagetools textpattern help', 
-        'min_height': 500,
+        'min_height': 1200,
         'insert_button_items': 'insertfile',
         'language': 'zh_CN',
         'language_url': 'assets/langs/zh_CN.js',
         'importcss_append': true,
         'toolbar': 'formatselect | bold | file italic strikethrough forecolor backcolor  | link image media  | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment',
         'image_advtab': true,
-        'images_upload_handler': (blobInfo,success,failure)=>{
-          console.log(blobInfo);
+        // 'images_upload_handler': (blobInfo,success,failure)=>{
+        //   console.log(blobInfo);
           
-        }
+        // }
       }} outputFormat= "html"  value={editorValue} onEditorChange= {handleEditor} tagName="t_editor"/>
+      <div className="editor-btn">
+        <Button type="primary" htmlType="button" onClick={onSubmit}>提交修改内容</Button>
+        <Button type="primary" htmlType="button" danger onClick={onReset}>重置内容</Button>
+      </div>
+      
     </div>
   );
 };
