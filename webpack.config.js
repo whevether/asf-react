@@ -41,7 +41,7 @@ const config = {
     hot: true,
     open: true,
     proxy: {
-      '/api': 'http://localhost:5000',
+      '/api': 'http://localhost:5900',
     },
     historyApiFallback: true
   },
