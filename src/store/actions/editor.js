@@ -7,3 +7,8 @@ export const getEditorList = () => async (dispatch,getState,api)=>{
     payload: res?.result
   });
 };
+// 修改富文本
+export const modifyEditor = (params) => async (dispatch,getState,api) => {
+  const res = await api.put('/asf/editor/modify',params);
+  return res?.result;
+};

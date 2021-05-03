@@ -93,13 +93,13 @@ export const accountFrom = [{
   placeholder: '请选择性别',
   selOption: [{
     name: '未知',
-    value: 0
+    id: 0
   },{
     name: '男',
-    value: 1
+    id: 1
   },{
     name: '女',
-    value: 2
+    id: 2
   }],
   rules: [{required:true,message:'性别不能为空'}],
   options: {
@@ -114,4 +114,20 @@ export const permissionSearchFrom = [{
   name: 'name',
   placeholder: '请输入权限名',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名' }]
+}];
+//添加轮播图
+export const imagesFrom = [{
+  title: '首页轮播图',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'indexBanner',
+  placeholder: '以英文逗号分割开首页轮播图片',
+  rules: [{ type: 'string', min: 2, max: 1000, message: '最少输入2个字符的权限名或最多输入1000个字符的首页轮播图地址' }]
+},{
+  title: '设备图',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'deviceBanner',
+  placeholder: '以英文逗号分割开设备图片',
+  rules: [{ type: 'string', min: 2, max: 1000, message: '最少输入2个字符的权限名或最多输入1000个字符的设备图地址' }]
 }];

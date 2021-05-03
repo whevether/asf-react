@@ -2,24 +2,63 @@ import React, { useEffect, useState,Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { head } from 'utils/head';
 import { Editor } from '@tinymce/tinymce-react';
-import { Button,Modal,Select } from 'antd';
+import { Button,Drawer,notification,Select } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as editorAction from 'store/actions/editor';
+import { imagesFrom } from 'utils/json';
+import { BaseFrom } from 'components/index';
 const TinyEditor = (props) => {
   const [visable,setVisable] = useState(false);
   const [editorValue,setEditorValue] = useState(null);
+  const [oldValue,setOldValue] = useState('');
+  const [pageId, setPageId] = useState(0);
   const handleEditor = (value) => {
     setEditorValue(value);
   };
   const onSubmit = () => {
-    setVisable(true);
+    let data = {
+      id: pageId,
+      newContent: editorValue
+    };
+    props.modifyEditor(data).then(() => {
+      notification['success']({
+        message: '修改成功',
+        description: ''
+      });
+    });
   };
   const onReset = () =>{
-    
+    setEditorValue(oldValue);
   };
   const onSelectEditor = (value)=>{
-    setEditorValue(value);
+    setEditorValue(value[1]);
+    setPageId(value[2]);
+    setOldValue(value[3]);
+  };
+  const onAddImages = () => {
+    if(pageId === 0){
+      notification['error']({
+        message: '请先选择需要修改的页面',
+        description: '请先选择需要修改的页面'
+      });
+    }else{
+      setVisable(true);
+    }
+  };
+  const onFinish = (e)=>{
+    let data = {
+      id: pageId,
+      banner: JSON.stringify(e)
+    };
+    props.modifyEditor(data).then(() => {
+      notification['success']({
+        message: '修改成功',
+        description: ''
+      });
+      setVisable(false);
+    });
+   
   };
   useEffect(() => {
     props.getEditorList();
@@ -29,11 +68,11 @@ const TinyEditor = (props) => {
     <div className="editor">
       {head('富文本编辑器')}
       <div className="select-editor">
-        <Button type="primary">添加轮播图片</Button>
+        <Button type="primary" onClick={onAddImages}>添加轮播图片</Button>
         <Select onChange={onSelectEditor} placeholder="选择需要编辑的页面">
           {
             props?.list && props?.list.map((item,index)=>(
-              <Select.Option key={index} value={item?.oldContent}>
+              <Select.Option key={index} value={[item?.name,item?.newContent ?? item?.oldContent,item.id,item?.oldContent]}>
                 {item?.name}
               </Select.Option>
             ))
@@ -56,9 +95,6 @@ const TinyEditor = (props) => {
             
           // }
         }} outputFormat= "html"  value={editorValue} onEditorChange= {handleEditor} tagName="t_editor"/>
-        <Modal width="100%" visible={visable} title="测试编辑html" onOk={() => {setVisable(false)}} onCancel={()=>{setVisable(false)}}>
-          <div dangerouslySetInnerHTML={{__html:editorValue}} style={{width:'968',height:'100%'}} />
-        </Modal>
         <div className="editor-btn">
           <Button type="primary" htmlType="button" onClick={onSubmit}>提交修改内容</Button>
           <Button type="primary" htmlType="button" danger onClick={onReset}>重置内容</Button>
@@ -66,12 +102,20 @@ const TinyEditor = (props) => {
         </Fragment>
       }
       
-      
+      <Drawer
+        title="添加轮播图"
+        width={720}
+        visible={visable}
+        onClose={() => setVisable(false)}
+      >
+        <BaseFrom list={imagesFrom} onFinish={onFinish}/>
+      </Drawer>
     </div>
   );
 };
 TinyEditor.propTypes = {
-  editor: PropTypes.object,
+  modifyEditor: PropTypes.func,
+  getEditorList: PropTypes.func,
   list: PropTypes.arrayOf(Object)
 };
 export default connect(state => ({
