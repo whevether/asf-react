@@ -86,6 +86,7 @@ const TinyEditor = (props) => {
           'min_height': 1200,
           'insert_button_items': 'insertfile',
           'language': 'zh_CN',
+          'fontsize_formats': "8pt 10pt 12pt 14pt 16pt 18pt 22pt 24pt 36pt", // 第二步
           'language_url': 'assets/langs/zh_CN.js',
           'importcss_append': true,
           'toolbar': 'formatselect | bold | file italic strikethrough forecolor backcolor  | link image media  | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment',

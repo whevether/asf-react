@@ -10,9 +10,7 @@ const BaseTable = (props) => {
     // 过滤空值
     Object.keys(e).forEach(f => {
       if(e[f]){
-         data = {
-           [f]: e[f]
-         };
+        data = Object.assign({...data,[f]: e[f]});
       }
     });
     if(data === null){
