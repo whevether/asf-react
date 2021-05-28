@@ -5,15 +5,19 @@ import "regenerator-runtime/runtime";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import {ConfigProvider} from 'antd';
 import { createBrowserHistory } from 'history';
 import configureStore from 'store/configureStore';
 import { ConnectedRouter } from 'connected-react-router';
-//GYGBZ-MB5WR-DPZWK-WTKS2-UWBVS-VXBKW
+import App from 'containers/app';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import locale from 'antd/lib/locale/zh_CN';
 //服务端渲染的时候样式需要放在入口这里。放别的地方环境会报错; 
 import 'style/style.less';
 const history = createBrowserHistory();
 const store = configureStore(history); //第二个参数是初始状态
-import App from 'containers/app';
+dayjs.locale('zh-cn');
 const loading = () => {
   setTimeout(() => {
     if (document.getElementById('scene')) {
@@ -30,7 +34,9 @@ loading();
 ReactDOM.render(
   <Provider store={store} >
     <ConnectedRouter history={history}>
-      <App />
+      <ConfigProvider locale={locale}>
+        <App />
+      </ConfigProvider>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('app')
