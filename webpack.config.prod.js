@@ -238,9 +238,8 @@ const config = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: () => [
-                  require('autoprefixer'),
-                  require('cssnano'),
+                plugins: [
+                  ['autoprefixer',{/*options*/}],
                   require('postcss-pxtorem')({
                     rootValue: 16,
                     unitPrecision: 5,
