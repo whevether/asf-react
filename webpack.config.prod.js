@@ -3,8 +3,8 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //打包压缩css
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //生成html并注入
 const CopyWebpackPlugin = require('copy-webpack-plugin'); //拷贝资源文件
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const path = require('path');
 // 设置node.js生产环境变量
 const GLOBALS = {
@@ -67,12 +67,12 @@ const config = {
           safari10: false,
         },
       }),
-      new OptimizeCSSAssetsPlugin({
-        assetNameRegExp: /\.css|\.less$/g,
-        cssProcessor: require('cssnano'),
-        cssProcessorOptions: { discardComments: { removeAll: true } },
-        canPrint: true
-      })
+      // new OptimizeCSSAssetsPlugin({
+      //   assetNameRegExp: /\.css|\.less$/g,
+      //   cssProcessor: require('cssnano'),
+      //   cssProcessorOptions: { discardComments: { removeAll: true } },
+      //   canPrint: true
+      // })
     ],
     splitChunks: {
       chunks: "all",
