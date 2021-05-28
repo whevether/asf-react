@@ -67,12 +67,7 @@ const config = {
           safari10: false,
         },
       }),
-      // new OptimizeCSSAssetsPlugin({
-      //   assetNameRegExp: /\.css|\.less$/g,
-      //   cssProcessor: require('cssnano'),
-      //   cssProcessorOptions: { discardComments: { removeAll: true } },
-      //   canPrint: true
-      // })
+      new CssMinimizerPlugin()
     ],
     splitChunks: {
       chunks: "all",
