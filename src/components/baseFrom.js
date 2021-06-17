@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Input, Select, Cascader } from 'antd';
 const BaseFrom = (props) => {
@@ -6,6 +6,13 @@ const BaseFrom = (props) => {
   const onReset = () => {
     fromRef?.current?.resetFields();
   };
+  useEffect(()=>{
+    if(props.initialValues){
+      fromRef?.current?.setFieldsValue(props?.initialValues);
+    }else{
+      fromRef?.current?.resetFields()
+    }
+  },[props?.initialValues]);
   const renderFromItem = (item) => {
     if(item?.fromType === 'select'){
       return (<Select placeholder={item?.placeholder} allowClear={item?.options?.allowClear}>
@@ -22,7 +29,7 @@ const BaseFrom = (props) => {
     }
   };
   return(
-    <Form layout={props?.layout ?? 'vertical'} className="base-from" ref={fromRef} name="basefrom" onFinish={props?.onFinish} initialValues={props?.initialValues}>
+    <Form layout={props?.layout ?? 'vertical'} className="base-from" ref={fromRef} name="basefrom" onFinish={props?.onFinish}>
        {
          props?.list &&  props.list.map((item,i)=>(
           <Form.Item name={item?.name} label={item?.title} key={i} rules={item?.rules}>
