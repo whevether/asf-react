@@ -56,6 +56,7 @@ export const request = (history,store) => {
           '没有权限'
       });
       removeCookie(['token','refreshToken']);
+      setToken('');
       // window.location.href = '/login';
       history.push('/login');
     }
