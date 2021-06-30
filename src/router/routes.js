@@ -27,8 +27,14 @@ export const routes = [
   {
     path: '/editor',
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
-    permission: 'account.accountinfo',
+    permission: 'editor.getlists',
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/tinyeditor'))
+  },
+  {
+    path: '/center/account',
+    layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
+    permission: 'center.getaccountlist',
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/center/accountList'))
   },
   {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/loginLayout')),

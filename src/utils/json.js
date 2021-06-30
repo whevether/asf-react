@@ -115,6 +115,18 @@ export const permissionSearchFrom = [{
   placeholder: '请输入权限名',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名' }]
 }];
+
+// 中心端账户
+export const centerAccountSearchFrom = [{
+  title: '账户名',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'username',
+  placeholder: '请输入账户名',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的账户名或最多输入50个字符的账户名' }]
+}];
+
+
 //添加轮播图
 export const imagesFrom = [{
   title: '首页轮播图',

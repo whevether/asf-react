@@ -12,3 +12,5 @@ export const GET_ACCOUNT_LIST = 'GET_ACCOUNT_LIST';
 export const GET_PEERMISSION_LIST = 'GET_PEERMISSION_LIST';
 // 获取富文本列表
 export const GET_EDITOR_LIST = 'GET_EDITOR_LIST';
+// 获取中心端账户列表
+export const GET_CENTER_ACCOUNT_LIST = 'GET_CENTER_ACCOUNT_LIST';

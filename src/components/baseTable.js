@@ -60,7 +60,7 @@ const BaseTable = (props) => {
       </Form>
       </div>}
       { 
-        props?.dataSource&&props?.columns && <Table  dataSource={props?.dataSource} columns={props?.columns} scroll={{x: 968}} pagination={props?.pagination}/>
+        props?.dataSource&&props?.columns && <Table  dataSource={props?.dataSource} columns={props?.columns} scroll={{x: props?.x ?? 968}} pagination={props?.pagination} />
       }
     </div>
   );
