@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
-import { timeToDate } from 'utils/storage';
 import { centerAccountSearchFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as centerAction from 'store/actions/center';
@@ -15,13 +14,13 @@ const AccountList = (props) => {
   const [initFromValue,setInitFromValue] = useState(null);
   //获取账户列表
   useEffect(() => {
-    props?.centerFunc?.getCenterAccountList();
+    props?.centerFunc?.getCenterList(props?.history?.location?.pathname);
   }, []);
   // 分页对象
   const pagination = {
     total: props?.center?.listTotal,
     onChange: (page, pageSize) => {
-      props?.centerFunc?.getCenterAccountList({pageNo:page,pageSize:pageSize});
+      props?.centerFunc?.getCenterList(props?.history?.location?.pathname,{pageNo:page,pageSize:pageSize});
     },
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
@@ -46,7 +45,7 @@ const AccountList = (props) => {
   };
   // 提交表格查询
   const querySubmit = (e) => {
-    console.log(e);
+    props?.centerFunc?.getCenterList(props?.history?.location?.pathname,{name:e.name});
   };
   // 修改
   const list = [{
@@ -140,8 +139,8 @@ const AccountList = (props) => {
     dataIndex: 'allowShopType',
     width: 100,
     key: 'allowShopType',
-    render: (text,row)=>{
-      return row?.allowShopTypeValue[text];
+    render: (text)=>{
+      return '';
     }
   }, {
     title: '账户抵消金额',
@@ -158,8 +157,9 @@ const AccountList = (props) => {
         false: '禁用',
         true: '启用'
       };
-      return props?.action.includes('account.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
+      return props?.action.includes('center.modifyenable') ? <Switch checked={Boolean(text)} checkedChildren="启用"
       unCheckedChildren="禁用" onChange={(e) => {
+        console.log(e);
         // props?.centerFunc?.modifyAccountStatus({id:record?.id,status:Number(e)}).then(() => {
         //   props?.centerFunc?.fetchAccountList();
         // });
@@ -291,7 +291,7 @@ const AccountList = (props) => {
     <div className="account-list">
       {head('账户列表')}
       {
-        props?.center?.list && <BaseTable formObj={centerAccountSearchFrom} querySubmit={querySubmit} dataSource={props?.center?.list} columns={columns} pagination={pagination} action={props?.action} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null);onOpenDarw('创建账户');  } }]} x={2000}/>
+        props?.center?.list && <BaseTable formObj={centerAccountSearchFrom} querySubmit={querySubmit} dataSource={props?.center?.list} columns={columns} pagination={pagination} action={props?.action} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null);onOpenDarw('创建账户');  } }]} x={2300}/>
       }
       <Drawer
         title={darwTitle}
@@ -307,9 +307,10 @@ const AccountList = (props) => {
 AccountList.propTypes = {
   x: PropTypes.number,
   centerFunc: PropTypes.object,
-  getCenterAccountList: PropTypes.func,
+  getCenterList: PropTypes.func,
   center: PropTypes.object,
   action: PropTypes.array,
+  history: PropTypes.object,
   createAccount: PropTypes.func,
   tenancyList: PropTypes.arrayOf(Object),
   initialValues: PropTypes.object

@@ -5,7 +5,7 @@ let initState = {
 };
 export default function center(state=initState,action){
   switch(action.type){
-    case types.GET_CENTER_ACCOUNT_LIST:
+    case types.GET_CENTER_LIST:
       return {...state,list:action?.payload?.result,listTotal: action.payload.totalCount};
     default:
       return state;

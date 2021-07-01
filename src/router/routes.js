@@ -37,6 +37,18 @@ export const routes = [
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/center/accountList'))
   },
   {
+    path: '/center/shop',
+    layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
+    permission: 'center.getshoplist',
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/center/shopList'))
+  },
+  {
+    path: '/center/program',
+    layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/defaultLayout')),
+    permission: 'center.getshoplist',
+    component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/center/programList'))
+  },
+  {
     layout: LoadableComponent(() => import(/* webpackPrefetch: true */ '../containers/loginLayout')),
     path: '/login',
     component: LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/login'))

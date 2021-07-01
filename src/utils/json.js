@@ -121,9 +121,26 @@ export const centerAccountSearchFrom = [{
   title: '账户名',
   fromType: 'input',
   inputType: 'text',
-  name: 'username',
+  name: 'name',
   placeholder: '请输入账户名',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的账户名或最多输入50个字符的账户名' }]
+}];
+
+export const centerShopSearchFrom = [{
+  title: '商户名',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入商户名',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的商户名或最多输入50个字符的商户名' }]
+}];
+export const centerProgramSearchFrom = [{
+  title: '应用名',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入应用名',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的应用名或最多输入50个字符的应用名' }]
 }];
 
 

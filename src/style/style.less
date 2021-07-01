@@ -86,15 +86,21 @@ canvas {
   flex-direction: row;
   background-color: #f0f2f5;
   .slidebar{
-    width: auto;
     z-index: 1;
     height: 100%;
+    overflow-y: scroll;
+    position: relative;
+    background-color: #001529;
     .logo{
+      position: fixed;
+      left: 0px;
+      top: 0px;
       background-image: url('assets/logo.png');
       background-repeat: no-repeat;
       background-size: 100% 40px;
       background-position: 0px 0px;
       height: 40px;
+      z-index: 10;
       line-height: 40px; 
       a{
         width: 100%;
@@ -103,8 +109,9 @@ canvas {
       }
      }
   }
-  .ant-menu{
+  .ant-menu-root{
     height: 100%;
+    margin-top: 40px;
   }
   .page-content{
     // flex: 1;

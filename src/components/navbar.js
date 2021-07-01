@@ -74,9 +74,9 @@ const NavBar = (props) => {
     setSelectKeys(e);
   };
   return (
-    <div className="slidebar">
-      <div className="logo">
-        <a href="https://www.keep-wan.me" target="_blank" />
+    <div className="slidebar" style={{minWidth:!props?.collapsed?'200px':'80px' }}>
+      <div className="logo" >
+        <a href="https://www.keep-wan.me" target="_blank" style={{minWidth:!props?.collapsed?'200px':'80px' }}/>
       </div>
       <Menu
         selectedKeys={selectKeys}
