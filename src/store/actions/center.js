@@ -14,3 +14,8 @@ export const getCenterList = (path,params)=>async(dispatch,getState,api)=>{
     payload: res
   });
 };
+//修改账户状态
+export const modifyAccountStatus = (data)=>async(dispatch,getState,api)=>{
+  const res = await api.put('/asf/center/modifystatus',data);
+  return res;
+};

@@ -136,11 +136,11 @@ const AccountList = (props) => {
     width: 100
   }, {
     title: '商户类型',
-    dataIndex: 'allowShopType',
+    dataIndex: 'shopTypeStr',
     width: 100,
-    key: 'allowShopType',
+    key: 'shopTypeStr',
     render: (text)=>{
-      return '';
+      return <p style={{wordBreak:'break-all'}}>{text}</p>;
     }
   }, {
     title: '账户抵消金额',
@@ -157,12 +157,12 @@ const AccountList = (props) => {
         false: '禁用',
         true: '启用'
       };
-      return props?.action.includes('center.modifyenable') ? <Switch checked={Boolean(text)} checkedChildren="启用"
+      return props?.action.includes('center.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
       unCheckedChildren="禁用" onChange={(e) => {
-        console.log(e);
-        // props?.centerFunc?.modifyAccountStatus({id:record?.id,status:Number(e)}).then(() => {
-        //   props?.centerFunc?.fetchAccountList();
-        // });
+        
+        props?.centerFunc?.modifyAccountStatus({id:record?.accountId,status:Number(e),type: 1}).then(() => {
+          props?.centerFunc?.getCenterList(props?.history?.location?.pathname);
+        });
       }}/> : statusMap[text];
     }
   }, {
@@ -170,40 +170,90 @@ const AccountList = (props) => {
     dataIndex: 'isPlatform',
     key: 'isPlatform',
     width: 100,
-    render: (text) => {
-      return text === true ? '是': '否';
+    render: (text,record) => {
+      let statusMap = {
+        false: '否',
+        true: '是'
+      };
+      return props?.action.includes('center.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="是"
+      unCheckedChildren="否" onChange={(e) => {
+        
+        props?.centerFunc?.modifyAccountStatus({id:record?.accountId,status:Number(e),type:2}).then(() => {
+          props?.centerFunc?.getCenterList(props?.history?.location?.pathname);
+        });
+      }}/> : statusMap[text];
     }
   }, {
     title: '是否为虚拟账户',
-    dataIndex: 'IsVisual',
+    dataIndex: 'isVisual',
     width: 100,
-    key: 'IsVisual',
-    render: (text) => {
-      return text === true ? '是': '否';
+    key: 'isVisual',
+    render: (text,record) => {
+      let statusMap = {
+        false: '否',
+        true: '是'
+      };
+      return props?.action.includes('center.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="是"
+      unCheckedChildren="否" onChange={(e) => {
+        
+        props?.centerFunc?.modifyAccountStatus({id:record?.accountId,status:Number(e),type:3}).then(() => {
+          props?.centerFunc?.getCenterList(props?.history?.location?.pathname);
+        });
+      }}/> : statusMap[text];
     }
   }, {
     title: '是否允许提款',
     dataIndex: 'allowCashOut',
     width: 100,
     key: 'allowCashOut',
-    render: (text)=>{
-      return text === true ? '是': '否';
+    render: (text,record) => {
+      let statusMap = {
+        false: '否',
+        true: '是'
+      };
+      return props?.action.includes('center.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="是"
+      unCheckedChildren="否" onChange={(e) => {
+        
+        props?.centerFunc?.modifyAccountStatus({id:record?.accountId,status:Number(e),type:4}).then(() => {
+          props?.centerFunc?.getCenterList(props?.history?.location?.pathname);
+        });
+      }}/> : statusMap[text];
     }
   }, {
     title: '是否允许收款',
     dataIndex: 'allowCashIn',
     key: 'allowCashIn',
     width: 100,
-    render: (text)=>{
-      return text === true ? '是': '否';
+    render: (text,record) => {
+      let statusMap = {
+        false: '否',
+        true: '是'
+      };
+      return props?.action.includes('center.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="是"
+      unCheckedChildren="否" onChange={(e) => {
+        
+        props?.centerFunc?.modifyAccountStatus({id:record?.accountId,status:Number(e),type:5}).then(() => {
+          props?.centerFunc?.getCenterList(props?.history?.location?.pathname);
+        });
+      }}/> : statusMap[text];
     }
   }, {
     title: '是否允许自动提款',
     dataIndex: 'autoCashOut',
     key: 'autoCashOut',
     width: 100,
-    render: (text) => {
-      return text === true ? '是': '否';
+    render: (text,record) => {
+      let statusMap = {
+        false: '否',
+        true: '是'
+      };
+      return props?.action.includes('center.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="是"
+      unCheckedChildren="否" onChange={(e) => {
+        
+        props?.centerFunc?.modifyAccountStatus({id:record?.accountId,status:Number(e),type:6}).then(() => {
+          props?.centerFunc?.getCenterList(props?.history?.location?.pathname);
+        });
+      }}/> : statusMap[text];
     }
   }, {
     title: '最小提款金额',
@@ -278,6 +328,7 @@ const AccountList = (props) => {
   }, {
     title: '操作',
     key: 'action',
+    width: 200,
     // eslint-disable-next-line
     render: (text) => {
       return (<Dropdown overlay={menu(text)} name="action">

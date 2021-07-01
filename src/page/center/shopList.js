@@ -26,6 +26,8 @@ const ShopList = (props) => {
   const querySubmit = (e) => {
     props?.centerFunc?.getCenterList(props?.history?.location?.pathname,{name:e.name});
   };
+  /* eslint-disable react/display-name */
+  /* eslint-disable  react/no-multi-comp */
   const columns = [{
     title: '商铺ID',
     dataIndex: 'shopId',
@@ -43,17 +45,20 @@ const ShopList = (props) => {
     width: 100
   },{
     title: '商铺类型',
-    dataIndex: 'shopTypeClass',
-    key: 'shopTypeClass',
-    width: 100,
+    dataIndex: 'shopTypeStr',
+    key: 'shopTypeStr',
+    width: 200,
     render: (text)=>{
-      return '';
+      return <p style={{wordBreak:'break-all'}}>{text}</p>;
     }
   },{
     title: '商铺版本',
-    dataIndex: 'editionType',
-    key: 'editionType',
-    width: 100
+    dataIndex: 'editionTypeStr',
+    key: 'editionTypeStr',
+    width: 200,
+    render: (text)=>{
+      return <p style={{wordBreak:'break-all'}}>{text}</p>;
+    }
   },{
     title: '商户昵称',
     dataIndex: 'nickName',
