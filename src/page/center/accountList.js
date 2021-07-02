@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
-import { centerAccountSearchFrom } from 'utils/json';
+import { centerAccountSearchFrom,centerCreateAccountFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as centerAction from 'store/actions/center';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ import { DownOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const AccountList = (props) => {
   const [showDarw, setShowDarw] = useState(false);
-  const [darwTitle, setDarwTitle] = useState('');
+  const [handleType, setHandleType] = useState('');//提交事件句柄
   const [initFromValue,setInitFromValue] = useState(null);
   //获取账户列表
   useEffect(() => {
@@ -27,18 +27,38 @@ const AccountList = (props) => {
     showSizeChanger: true
   };
   // 打开抽屉
-  const onOpenDarw = (title) => {
-      setDarwTitle(title);
+  const onOpenDarw = () => {
+      setHandleType('create');
       setShowDarw(true);
+      setInitFromValue({
+        'isEnable': true,
+        'isPlatform': true,
+        'isVisual': false,
+        'allowCashOut': false,
+        'allowCashIn': false,
+        'autoCashOut': false,
+        'payTypeEnable': 1
+      });
+  };
+  //关闭抽屉
+  const onClose = () =>{
+    setShowDarw(false);
+    setInitFromValue(null);
+  }; 
+  const mapHandleType = {
+    'create': '添加账户',
+    'modify': '修改账户'
   };
   //提交表单
   const onFinish = (data) => {
-    data.departmentId = data.departmentId.slice(-1)[0];
-    props?.centerFunc?.createAccount(data)
-      .then(() => {
+    let obj = data?.allowShopType.reduce((total,item)=>{
+      return total+item;
+    },0);
+    props?.centerFunc?.handleAccount(handleType,Object.assign(data,{allowShopType: obj,AccountId:initFromValue.accountId}))
+      .then(()=>{
         notification['success']({
-          message: '添加成功',
-          description: '添加账户成功'
+          message: `${mapHandleType[handleType]}成功`,
+          description: `${mapHandleType[handleType]}成功`
         });
         setShowDarw(false);
       });
@@ -47,83 +67,22 @@ const AccountList = (props) => {
   const querySubmit = (e) => {
     props?.centerFunc?.getCenterList(props?.history?.location?.pathname,{name:e.name});
   };
-  // 修改
-  const list = [{
-    name: '账户详情',
-    permission: 'account.details',
-    click: (data) => {
-      console.log(data);
-    }
-  }, {
-    name: '修改账户',
-    permission: 'account.modify',
-    click: (data) => {
-      setInitFromValue({
-        'tenancyId': data?.tenancyId,
-        'departmentId': [data?.department?.pid,data?.department?.id],
-        'username': data?.name,
-        'password': data?.password,
-        'telphone': data?.telPhone.replace('86+',''),
-        'email': data?.email,
-        'name': data?.name,
-        'sex': data?.sex
-      });
-      onOpenDarw('编辑账户');
-    }
-  }, {
-    name: '分配账户角色',
-    permission: 'account.assignrole',
-    click: (data) => {
-      console.log(data);
-    }
-  }, {
-    name: '分配账户部门',
-    permission: 'account.assigndepartment',
-    click: (data) => {
-      console.log(data);
-    }
-  }, {
-    name: '分配账户岗位',
-    permission: 'account.assignpost',
-    click: (data) => {
-      console.log(data);
-    }
-  }, {
-    name: '删除账户',
-    permission: 'account.delete.[0-9]{1,12}',
-    click: (data) => {
-      console.log(data);
-    }
-  }, {
-    name: '修改账户密码',
-    permission: 'account.resetpassword',
-    click: (data) => {
-      console.log(data);
-    }
-  }, {
-    name: '修改账户手机',
-    permission: 'account.modifytelphone',
-    click: (data) => {
-      console.log(data);
-    }
-  }, {
-    name: '修改账户邮箱',
-    permission: 'account.modifyemail',
-    click: (data) => {
-      console.log(data);
-    }
-  }, {
-    name: '修改账户头像',
-    permission: 'account.modifyavatar',
-    click: (data) => {
-      console.log(data);
-    }
-  }];
   const menu = (record) => {
+    const list = [{
+      name: '修改账户',
+      permission: 'center.modifyaccount',
+      click: (data) => {
+        setInitFromValue(data);
+        setHandleType('modify');
+        setShowDarw(true);
+      }
+    }];
     return (
       <AuthControl action={props?.action} list={list} record={record} type="menu" />
     );
   };
+  /* eslint-disable react/display-name */
+  /* eslint-disable  react/no-multi-comp */
   const columns = [{
     title: '账户ID',
     dataIndex: 'accountId',
@@ -137,7 +96,7 @@ const AccountList = (props) => {
   }, {
     title: '商户类型',
     dataIndex: 'shopTypeStr',
-    width: 100,
+    width: 200,
     key: 'shopTypeStr',
     render: (text)=>{
       return <p style={{wordBreak:'break-all'}}>{text}</p>;
@@ -158,8 +117,7 @@ const AccountList = (props) => {
         true: '启用'
       };
       return props?.action.includes('center.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
-      unCheckedChildren="禁用" onChange={(e) => {
-        
+      unCheckedChildren="禁用" onChange={(e) => { 
         props?.centerFunc?.modifyAccountStatus({id:record?.accountId,status:Number(e),type: 1}).then(() => {
           props?.centerFunc?.getCenterList(props?.history?.location?.pathname);
         });
@@ -342,15 +300,15 @@ const AccountList = (props) => {
     <div className="account-list">
       {head('账户列表')}
       {
-        props?.center?.list && <BaseTable formObj={centerAccountSearchFrom} querySubmit={querySubmit} dataSource={props?.center?.list} columns={columns} pagination={pagination} action={props?.action} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null);onOpenDarw('创建账户');  } }]} x={2300}/>
+        props?.center?.list && <BaseTable formObj={centerAccountSearchFrom} querySubmit={querySubmit} dataSource={props?.center?.list} columns={columns} pagination={pagination} action={props?.action} list={[{ name: '添加账户', permission: 'center.addaccount', type: 'primary', icon: <PlusCircleOutlined />, click: () => { onOpenDarw();  } }]} x={2300}/>
       }
       <Drawer
-        title={darwTitle}
+        title={mapHandleType[handleType]}
         width={720}
         visible={showDarw}
-        onClose={() => setShowDarw(false)}
+        onClose={onClose}
       >
-        {/* <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue}/> */}
+        <BaseFrom list={centerCreateAccountFrom()} onFinish={onFinish} initialValues={initFromValue} onClose={onClose}/>
       </Drawer>
     </div>
   );
@@ -358,13 +316,9 @@ const AccountList = (props) => {
 AccountList.propTypes = {
   x: PropTypes.number,
   centerFunc: PropTypes.object,
-  getCenterList: PropTypes.func,
   center: PropTypes.object,
   action: PropTypes.array,
-  history: PropTypes.object,
-  createAccount: PropTypes.func,
-  tenancyList: PropTypes.arrayOf(Object),
-  initialValues: PropTypes.object
+  history: PropTypes.object
 };
 export default connect(state => ({
   center: state?.center,

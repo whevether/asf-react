@@ -66,6 +66,7 @@ const BaseTable = (props) => {
   );
 };
 BaseTable.propTypes = {
+  x: PropTypes.number,
   dataSource: PropTypes.arrayOf(Object).isRequired,
   columns: PropTypes.arrayOf(Object).isRequired,
   querySubmit: PropTypes.func,
