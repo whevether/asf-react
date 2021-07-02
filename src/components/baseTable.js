@@ -1,25 +1,26 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import {Form,Input,Button, InputNumber,notification,Table} from 'antd';
+import {Form,Input,Button, InputNumber,Table} from 'antd';
 import AuthControl from './authControl';
 const BaseTable = (props) => {
   const form  = useRef(null);
   // console.log(props);
   const onFinish = (e)=> {
-    let data = null;
-    // 过滤空值
-    Object.keys(e).forEach(f => {
-      if(e[f]){
-        data = Object.assign({...data,[f]: e[f]});
-      }
-    });
-    if(data === null){
-      notification['error']({
-        message: '至少输入一个查询值'
-      });
-    }else{
-      props?.querySubmit(data);
-    }
+    props?.querySubmit(e);
+    // let data = null;
+    // // 过滤空值
+    // Object.keys(e).forEach(f => {
+    //   if(e[f]){
+    //     data = Object.assign({...data,[f]: e[f]});
+    //   }
+    // });
+    // if(data === null){
+    //   notification['error']({
+    //     message: '至少输入一个查询值'
+    //   });
+    // }else{
+    //   props?.querySubmit(data);
+    // }
   };
   const onCancel = () => {
     form?.current?.resetFields();
