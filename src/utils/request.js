@@ -23,7 +23,7 @@ export const request = (history,store) => {
         type: types.LOAD,
         payload: false
       });
-    },900);
+    },500);
     return Promise.reject(error);
   });
   axiosInstance.interceptors.response.use((response)=>{
@@ -33,7 +33,7 @@ export const request = (history,store) => {
           type: types.LOAD,
           payload: false
         });
-      },900);
+      },500);
       return response?.data;
     }else{
       setTimeout(() => {
@@ -41,7 +41,7 @@ export const request = (history,store) => {
           type: types.LOAD,
           payload: false
         });
-      },900);
+      },500);
       notification['error']({
         message: response?.data.message
       });
@@ -92,7 +92,7 @@ export const request = (history,store) => {
         type: types.LOAD,
         payload: false
       });
-    },900);
+    },500);
     return Promise.reject(err);
   });
   // return axiosInstance;
