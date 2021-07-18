@@ -513,10 +513,17 @@ export const imagesFrom = [{
   placeholder: '以英文逗号分割开首页轮播图片',
   rules: [{ type: 'string', min: 2, max: 1000, message: '最少输入2个字符的权限名或最多输入1000个字符的首页轮播图地址' }]
 }, {
-  title: '设备图',
+  title: '资质证书',
   fromType: 'input',
   inputType: 'text',
   name: 'deviceBanner',
-  placeholder: '以英文逗号分割开设备图片',
-  rules: [{ type: 'string', min: 2, max: 1000, message: '最少输入2个字符的权限名或最多输入1000个字符的设备图地址' }]
+  placeholder: '以英文逗号分割开资质证书图片',
+  rules: [{ type: 'string', min: 2, max: 1000, message: '最少输入2个字符的资质证书地址或最多输入1000个字符的资质证书地址' }]
+}, {
+  title: '合作伙伴',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'hezuo',
+  placeholder: '以英文逗号分割开合作伙伴图片',
+  rules: [{ type: 'string', min: 2, max: 1000, message: '最少输入2个字符的合作伙伴图片或最多输入1000个字符的合作伙伴图地址' }]
 }];
