@@ -3,7 +3,7 @@ import {removeCookie} from 'utils/storage';
 import {notification} from 'antd';
 import * as types from 'constants/types';
 export const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? 'http://192.168.1.22:8081/api' : '/api',
+  baseURL: process.env.NODE_ENV === 'production' ? '/api' : '/api',
   timeout: 15000
 });
 //设置 token api 请求头
