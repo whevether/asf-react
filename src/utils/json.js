@@ -248,6 +248,18 @@ export const fundamentalsFrom = [{
   }, {
     name: '现金流',
     id: 'cash_flow'
+  }, {
+    name: '上市公司股本变动',
+    id: 'finance.STK_XR_XD'
+  },{
+    name: '合并利润表',
+    id: 'finance.STK_INCOME_STATEMENT'
+  },{
+    name: '合并现金流表',
+    id: 'finance.STK_CASHFLOW_STATEMENT'
+  },{
+    name: '合并资产负债表',
+    id: 'finance.STK_BALANCE_SHEET'
   }],
   rules: [{ required: true, message: '数据表不能为空' }],
   options: {

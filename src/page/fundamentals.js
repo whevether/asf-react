@@ -10,7 +10,7 @@ const Fundamentals = (props) => {
   const [from,setFrom]  = useState(null);
   // 提交表格查询
   const querySubmit = (e) => {
-    props?.commonFunc?.getFundamentals(e);
+    props?.commonFunc?.getFundamentals(e,e.table.includes('finance') ? 1 : 0);
   };
   useEffect(()=>{
     props?.commonFunc?.getAllSecurities()

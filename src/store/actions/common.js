@@ -32,8 +32,12 @@ export const getAllSecurities = ()=>async(dispatch,getState,api)=>{
   return res;
 };
 //获取股票收益信息
-export const getFundamentals = (params)=>async(dispatch,getState,api)=>{
-  const res = await api.get('/asf/jqdata/getFundamentals',{
+export const getFundamentals = (params,type)=>async(dispatch,getState,api)=>{
+  const mapUrl = {
+    0: '/asf/jqdata/getFundamentals',
+    1: '/asf/jqdata/runQuery'
+  };
+  const res = await api.get(mapUrl[type],{
     params: params
   });
   dispatch({
