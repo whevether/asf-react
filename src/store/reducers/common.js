@@ -2,7 +2,10 @@ import * as types from 'constants/types';
 // 初始数据
 let initData = {
   data: null,
-  fundamentalsList: [],
+  fundamentals: {
+    columns: [],
+    list:[]
+  },
   tenancyList: null,
   collapsed: false,
   loading: false
@@ -21,7 +24,7 @@ export default function common(state=initData,action){
     case types.FETCH_TENANCY_LIST_DATA:
       return {...state,tenancyList:action?.payload};
     case types.GET_FUND_LIST:
-      return{...state,fundamentalsList: action?.payload.map((item,index)=>{item.key = index;return item;})};
+      return{...state,fundamentals: action?.payload};
     default: 
       return state;
   }
