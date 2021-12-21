@@ -249,6 +249,9 @@ export const fundamentalsFrom = [{
     name: '现金流',
     id: 'cash_flow'
   }, {
+    name: '市值数据',
+    id: 'valuation'
+  }, {
     name: '上市公司股本变动',
     id: 'finance.STK_XR_XD'
   },{
@@ -269,6 +272,15 @@ export const fundamentalsFrom = [{
   },{
     name: '股票上市信息',
     id: 'finance.STK_LIST'
+  },{
+    name: '获取所有股票信息',
+    id: 'all_securities'
+  },{
+    name: '获取融资融券信息',
+    id: 'getMtss'
+  },{
+    name: '沪深市场每日成交概况',
+    id: 'finance.STK_EXCHANGE_TRADE_INFO'
   }],
   rules: [{ required: true, message: '数据表不能为空' }],
   options: {

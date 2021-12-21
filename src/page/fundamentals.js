@@ -3,19 +3,30 @@ import { head } from 'utils/head';
 import { fundamentalsFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as commonAction from 'store/actions/common';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { BaseTable } from 'components/index';
 import { Tooltip } from 'antd';
 const Fundamentals = (props) => {
   const [from,setFrom]  = useState(null);
+  const [temp,setTemp] = useState({columns: [],
+    list:[]});
+  const dispatch = useDispatch();
   // 提交表格查询
   const querySubmit = (e) => {
-    props?.commonFunc?.getFundamentals(e,e.table.includes('finance') ? 1 : 0);
+    if(e.table === 'all_securities'){
+      dispatch({
+        type: 'GET_FUND_LIST',
+        payload: temp
+      });
+    }else{
+      props?.commonFunc?.getFundamentals(e);
+    }
   };
   useEffect(()=>{
     props?.commonFunc?.getAllSecurities()
       .then(res=>{
+        setTemp(res?.result);
         const filterData = res?.result?.list.map(item=>{
           item.name = item?.display_name;
           item.id = item?.code;
