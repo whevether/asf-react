@@ -260,6 +260,15 @@ export const fundamentalsFrom = [{
   },{
     name: '合并资产负债表',
     id: 'finance.STK_BALANCE_SHEET'
+  },{
+    name: '上市公司基本信息',
+    id: 'finance.STK_COMPANY_INFO'
+  },{
+    name: '上市公司状态变动',
+    id: 'finance.STK_STATUS_CHANGE'
+  },{
+    name: '股票上市信息',
+    id: 'finance.STK_LIST'
   }],
   rules: [{ required: true, message: '数据表不能为空' }],
   options: {

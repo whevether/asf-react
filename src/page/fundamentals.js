@@ -6,6 +6,7 @@ import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { BaseTable } from 'components/index';
+import { Tooltip } from 'antd';
 const Fundamentals = (props) => {
   const [from,setFrom]  = useState(null);
   // 提交表格查询
@@ -39,7 +40,14 @@ const Fundamentals = (props) => {
     <div className="list">
       {head('股票收益列表')}
       {
-        from && <BaseTable formObj={from} querySubmit={querySubmit} dataSource={props?.fundamentals?.list} columns={props?.fundamentals?.columns}  />
+        from && <BaseTable formObj={from} querySubmit={querySubmit} dataSource={props?.fundamentals?.list} columns={props?.fundamentals?.columns.map(item=>{
+          item.render = data => (
+            <Tooltip placement="topLeft" title={data}>
+              {data}
+            </Tooltip>
+          );
+          return item;
+        })}  />
       }
     </div>
   );
