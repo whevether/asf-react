@@ -34,7 +34,7 @@ const DefaultLayout = (props) => {
       if (Array.isArray(item?.actions) && item?.actions.length > 0 && item?.actions.includes(path)) {
         // console.log(item);
         // console.log(path);
-        arr.push(...item?.actions);
+        arr.push(...item.actions);
         return true;
       } else if (Array.isArray(item?.children) && item?.children.length > 0) {
         // console.log(item?.children);
