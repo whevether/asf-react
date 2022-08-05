@@ -28,7 +28,7 @@ const Chart = (props) => {
     // return [
     //   window.removeEventListener('resize', resize)
     // ];
-  }, []);
+  }, [props?.options]);
   return (
     <div className="chart" ref={node} />
   );
