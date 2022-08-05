@@ -135,6 +135,11 @@ canvas {
     height: 100%;
     flex: 1 1 0%;
     overflow: hidden auto;
+    scrollbar-width: none; /* firefox */
+   -ms-overflow-style: none; /* IE 10+ */
+    &::-webkit-scrollbar{
+      display: none; /* Chrome Safari */
+    }
   }
   .page-content{
     // flex: 1;
