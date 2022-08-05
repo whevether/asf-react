@@ -3,7 +3,7 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 // 路由句柄
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
 import { createBrowserHistory } from 'history';
@@ -30,14 +30,14 @@ const loading = () => {
   }, 1500);
 };
 loading();
+const container = document.getElementById('app');
+const root = createRoot(container);
 // ReactDOM.hydrate  服务端渲染用
-ReactDOM.render(
+root.render(
   <Provider store={store} >
     <ConfigProvider locale={locale}>
       <Router history={h}>
         <Routes />
       </Router>
     </ConfigProvider>
-  </Provider>,
-  document.getElementById('app')
-);
+  </Provider>);

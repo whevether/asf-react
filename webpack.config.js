@@ -3,6 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //生成html并注入
 const CopyWebpackPlugin = require('copy-webpack-plugin'); //拷贝资源文件
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const config = {
   resolve: {
     extensions: ['*', '.js', '.jsx', '.json'],
@@ -56,6 +57,10 @@ const config = {
     hot: true,
     open: true,
   },
+  cache: {
+    type: 'filesystem',
+    allowCollectingMemory: true,
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
@@ -72,6 +77,7 @@ const config = {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new ReactRefreshWebpackPlugin(),
     //moment.js 替换为dayjs
     new AntdDayjsWebpackPlugin(),
     new HtmlWebpackPlugin({     // Create HTML file that includes references to bundled CSS and JS.
@@ -91,7 +97,12 @@ const config = {
       {
         test: /\.(jsx|js)?$/,
         exclude: /node_modules/,
-        use: ['react-hot-loader/webpack','babel-loader']
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            plugins: [require.resolve('react-refresh/babel')].filter(Boolean),
+          },
+        }]
       },
       {
         test: /\.eot(\?v=\d+.\d+.\d+)?$/,
