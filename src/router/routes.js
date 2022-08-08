@@ -16,7 +16,6 @@ const EditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '.
 const ModifyEditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/editor/modify'));
 const CreateEditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/editor/add'));
 const PermissionPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/permissionList'));
-const FundamentalsPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/fundamentals'));
 const routes = [{
   path: "/",
   element: <RootLayout />,
@@ -43,9 +42,6 @@ const routes = [{
     },{
       path: 'control/audio/getlog',
       element: <LogsPage />
-    },{
-      path: 'jqdata/getfundamentals',
-      element: <FundamentalsPage />
     }]
   },{
     path: '/login',
