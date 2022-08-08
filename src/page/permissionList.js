@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
-import { timeToDate,getCookie } from 'utils/storage';
+import { timeToDate } from 'utils/storage';
 import { permissionSearchFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as permissionAction from 'store/actions/permission';
@@ -14,10 +14,9 @@ const PermissionList = (props) => {
   const [fromData, setFromData] = useState(null);
   const [darwTitle, setDarwTitle] = useState('');
   const [initFromValue,setInitFromValue] = useState(null);
-  const [action] = useState(getCookie('permission') ? JSON.parse(getCookie('permission')) : []);
   //获取账户列表
   useEffect(() => {
-    props?.permissionFunc?.fetchPermissionList();
+    props?.permissionFunc?.fetchPermissionList({pageSize: 200,pageNo: 1});
   }, []);
   // 分页对象
   const pagination = {
@@ -25,7 +24,7 @@ const PermissionList = (props) => {
     onChange: (page, pageSize) => {
       props?.permissionFunc?.fetchPermissionList({pageNo:page,pageSize:pageSize});
     },
-    pageSize: 20,
+    pageSize: 200,
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
@@ -69,7 +68,7 @@ const PermissionList = (props) => {
   }];
   const menu = (record) => {
     return (
-      <AuthControl action={action} list={list} record={record} type="menu" />
+      <AuthControl action={props?.userInfo?.actions} list={list} record={record} type="menu" />
     );
   };
   const columns = [{
@@ -128,7 +127,7 @@ const PermissionList = (props) => {
         0: '禁用',
         1: '启用'
       };
-      return action.includes('permission.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
+      return props?.userInfo?.actions.includes('permission.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
       unCheckedChildren="禁用" onChange={(e) => {
         props?.permissionFunc?.modifyAccountStatus({id:record?.id,status:Number(e)}).then(() => {
           props?.permissionFunc?.fetchPermissionList();
@@ -162,7 +161,7 @@ const PermissionList = (props) => {
     <div className="list">
       {head('权限列表')}
       {
-        props?.permission?.list.length>0 && <BaseTable formObj={permissionSearchFrom} querySubmit={querySubmit} dataSource={props?.permission?.list} columns={columns} pagination={pagination} action={action} list={[{ name: '添加权限', permission: 'permission.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null);onOpenDarw('添加权限');  } }]} />
+        props?.permission?.list.length>0 && <BaseTable formObj={permissionSearchFrom} querySubmit={querySubmit} dataSource={props?.permission?.list} columns={columns} pagination={pagination} action={props?.userInfo?.actions} list={[{ name: '添加权限', permission: 'permission.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null);onOpenDarw('添加权限');  } }]} />
       }
       {
         props?.permission.list.length == 0 && <Empty />
@@ -181,12 +180,12 @@ const PermissionList = (props) => {
 PermissionList.propTypes = {
   permissionFunc: PropTypes.object,
   permission: PropTypes.object,
-  action: PropTypes.array,
   tenancyList: PropTypes.arrayOf(Object),
   roleName: PropTypes.string,
   initialValues: PropTypes.object
 };
 export default connect(state => ({
+  userInfo:  state?.common?.data,
   permission: state?.permission,
   tenancyList: state?.common?.tenancyList
 }), dispatch => {
