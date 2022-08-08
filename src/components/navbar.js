@@ -9,7 +9,7 @@ const { SubMenu } = Menu;
 const NavBar = (props) => {
   const IconFont = createFromIconfontCN({
     scriptUrl: [
-      '//at.alicdn.com/t/font_2384333_rsw4qhrwjur.js'
+      'https://at.alicdn.com/t/font_2384333_rsw4qhrwjur.js'
     ],
   });
   let o = props?.path.split('/');
@@ -72,7 +72,7 @@ const NavBar = (props) => {
     setOpenKeys(e);
   };
   const onSelectChange = (e) => {
-    setSelectKeys(e);
+    setSelectKeys(e.key);
   };
   return (
     <div className="slidebar" style={{minWidth:!props?.collapsed?'200px':'80px' }}>
