@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
-import { timeToDate,getCookie } from 'utils/storage';
+import { timeToDate } from 'utils/storage';
 import { accountSearchFrom, accountFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
@@ -15,7 +15,6 @@ const AccountList = (props) => {
   const [fromData, setFromData] = useState(null);
   const [darwTitle, setDarwTitle] = useState('');
   const [initFromValue,setInitFromValue] = useState(null);
-  const [action] = useState(getCookie('permission') ? JSON.parse(getCookie('permission')) : []);
   //获取账户列表
   useEffect(() => {
     props?.accountFunc?.fetchAccountList();
@@ -149,7 +148,7 @@ const AccountList = (props) => {
   }];
   const menu = (record) => {
     return (
-      <AuthControl action={action} list={list} record={record} type="menu" />
+      <AuthControl action={props?.userInfo.actions} list={list} record={record} type="menu" />
     );
   };
   const columns = [{
@@ -204,7 +203,7 @@ const AccountList = (props) => {
         0: '禁用',
         1: '启用'
       };
-      return action.includes('account.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
+      return props?.userInfo.actions.includes('account.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
       unCheckedChildren="禁用" onChange={(e) => {
         props?.accountFunc?.modifyAccountStatus({id:record?.id,status:Number(e)}).then(() => {
           props?.accountFunc?.fetchAccountList();
@@ -250,7 +249,7 @@ const AccountList = (props) => {
     <div className="list">
       {head('账户列表')}
       {
-        props?.account?.list.length>0 && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={action} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null);onOpenDarw('创建账户');  } }]} />
+        props?.account?.list.length>0 && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.userInfo?.actions} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null);onOpenDarw('创建账户');  } }]} />
       }
       {
         props?.account.list.length == 0 && <Empty />
@@ -271,7 +270,6 @@ AccountList.propTypes = {
   commonFunc: PropTypes.object,
   fetchAccountList: PropTypes.func,
   account: PropTypes.object,
-  action: PropTypes.array,
   getDepartmentList: PropTypes.func,
   createAccount: PropTypes.func,
   tenancyList: PropTypes.arrayOf(Object),

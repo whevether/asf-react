@@ -51,7 +51,7 @@ const LogsList = (props) => {
   }];
   const menu = (record) => {
     return (
-      <AuthControl action={props?.action} list={list} record={record} type="menu" />
+      <AuthControl action={props?.userInfo.actions} list={list} record={record} type="menu" />
     );
   };
   const columns = [{
@@ -115,20 +115,21 @@ const LogsList = (props) => {
   }];
   return (
     <div className="list">
-      {head('权限列表')}
-      <BaseTable formObj={audioSearchFrom} querySubmit={querySubmit} dataSource={props?.audio?.list} columns={columns} pagination={pagination} action={props?.action} />
+      {head('审计日志')}
+      <BaseTable formObj={audioSearchFrom} querySubmit={querySubmit} dataSource={props?.audio?.list} columns={columns} pagination={pagination} action={props?.userInfo?.actions} />
     </div>
   );
 };
 LogsList.propTypes = {
   audioFunc: PropTypes.object,
+  userInfo: PropTypes.object,
   audio: PropTypes.object,
-  action: PropTypes.array,
   tenancyList: PropTypes.arrayOf(Object),
   roleName: PropTypes.string,
   initialValues: PropTypes.object
 };
 export default connect(state => ({
+  userInfo:  state?.common?.data,
   audio: state?.audio
 }), dispatch => {
   return {

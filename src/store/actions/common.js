@@ -26,18 +26,3 @@ export const toggleMenu = () => (dispatch)=>{
     type: types.TOGGLE_MENU
   });
 };
-// 获取股票指标
-export const getAllSecurities = ()=>async(dispatch,getState,api)=>{
-  const res = await api.get('/asf/jqdata/getAllSecurities');
-  return res;
-};
-//获取股票收益信息
-export const getFundamentals = (params)=>async(dispatch,getState,api)=>{
-  const res = await api.get('/asf/jqdata/runQuery',{
-    params: params
-  });
-  dispatch({
-    type: types.GET_FUND_LIST,
-    payload: res?.result
-  });
-};

@@ -6,5 +6,4 @@ export const permissionMeta = {
   '/editor/getlist': 'editor.getlist',
   '/editor/modify': 'editor.modify',
   '/editor/create': 'editor.create',
-  '/jqdata/getfundamentals': 'jqdata.getfundamentals'
 };

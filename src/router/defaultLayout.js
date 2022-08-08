@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 // import PageHeader from 'components/pageHeader';
 import * as commonAction from 'store/actions/common';
 import { bindActionCreators } from 'redux';
-import { getCookie,setCookie } from 'utils/storage';
+import { getCookie } from 'utils/storage';
 import { setToken } from 'utils/request';
 import { permissionMeta } from 'utils/permission';
 import { Tabbar, Navbar } from 'components/index';
 // 默认布局
 const DefaultLayout = (props) => {
   let localtion = useLocation();
-  let navigate = useNavigate();
+  let navigate = useNavigate(); 
   useEffect(() => {
     if (getCookie('token')) {
       document.getElementsByTagName('body')[0].className = 'login-svg-none';
@@ -25,29 +25,22 @@ const DefaultLayout = (props) => {
       navigate('/login');
     }
   }, []);
-  let arr = [];
   //权限拦截
   const grantedPermission = (menu, path) => {
-    // console.log(permissionMenu);
-    // console.log(permission);
     let isPermission = menu.some((item) => {
-      if (Array.isArray(item?.actions) && item?.actions.length > 0 && item?.actions.includes(path)) {
-        // console.log(item);
-        // console.log(path);
-        arr.push(...item.actions);
-        return true;
-      } else if (Array.isArray(item?.children) && item?.children.length > 0) {
+      if (Array.isArray(item?.children) && item?.children.length > 0) {
         // console.log(item?.children);
         return grantedPermission(item?.children, path);
-      } else {
+      }else if (item.code === path) {
+        return true;
+      }  else {
         return false;
       }
     });
-    setCookie('permission',JSON.stringify(arr));
     return isPermission;
   };
   const renderProtectedRoute = () => {
-    if (permissionMeta[localtion.pathname] && !grantedPermission(props?.common?.data?.permissionMenu, permissionMeta[localtion.pathname])) {
+    if (permissionMeta[localtion.pathname] && !grantedPermission(props?.common?.data?.permissionMenu, localtion.pathname)) {
       return (
         <Navigate to="/403" replace />
       );

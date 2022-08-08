@@ -16,5 +16,3 @@ export const GET_AUDIO_LIST = 'GET_AUDIO_LIST';
 export const GET_EDITOR_LIST = 'GET_EDITOR_LIST';
 // 获取富文本标题列表
 export const GET_EDITOR_LISTTITLE = 'GET_EDITOR_LISTTITLE';
-// 获取股票分析数据
-export const GET_FUND_LIST = 'GET_FUND_LIST';
