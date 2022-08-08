@@ -8,7 +8,7 @@ const Error401 = ()=>{
       {head('403没有权限')}
       <img src="assets/403.svg"/>
       <span style={{marginTop:'15px'}}>403错误,没有权限</span>
-      <Link to="/login" replace style={{marginTop:'15px'}}><Button type="primary">返回登录</Button></Link>
+      <Link to="/" replace style={{marginTop:'15px'}}><Button type="primary">返回</Button></Link>
     </div>
   );
 };
