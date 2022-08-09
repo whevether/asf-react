@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { accountSearchFrom, accountFrom } from 'utils/json';
+import { accountSearchFrom, accountFrom, assignFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
 import * as commonAction from 'store/actions/common';
@@ -13,7 +13,7 @@ import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const AccountList = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
-  const [drawType, setDrawType] = useState(0);
+  const [drawType, setDrawType] = useState(0); //0 添加账户 1修改账户, 2分配账户角色 3: 分配账户部门， 4分配账户岗位， 5 删除账户 6 修改账户密码， 7 修改账户手机， 8 修改账户邮箱, 9 修改账户头像
   const [initFromValue, setInitFromValue] = useState(null);
   //获取账户列表
   useEffect(() => {
@@ -32,40 +32,66 @@ const AccountList = (props) => {
   };
   // 打开抽屉
   const onOpenDarw = (type) => {
-    Promise.all([props?.commonFunc?.getDepartmentList(), props?.commonFunc?.getPostList()])
-      .then(res => {
-        let from = accountFrom.filter(f => {
-          if (f.name === 'departmentId') {
-            f.selOption = res[0];
-          }
-          if(f.name === 'postId') {
-            f.selOption = res[1];
-          }
-          return f;
-        });
-        //判断是否为超级管理员。如果为则显示选择租户
-        if (props?.userInfo?.roleName?.indexOf('superadmin') > -1) {
-          from.unshift({
-            title: '租户',
-            fromType: 'select',
-            name: 'tenancyId',
-            selOption: props?.tenancyList,
-            placeholder: '请选择租户',
-            rules: [{ required: true, message: '租户不能为空' }],
-            options: {
-              allowClear: true//是否显示清除框
+    if (type === 0 || type === 1) {
+      Promise.all([props?.commonFunc?.getDepartmentList(), props?.commonFunc?.getPostList()])
+        .then(res => {
+          let from = accountFrom.filter(f => {
+            if (f.name === 'departmentId') {
+              f.selOption = res[0];
             }
+            if (f.name === 'postId') {
+              f.selOption = res[1];
+            }
+            return f;
           });
-        }
-        setDrawType(type);
-        setFromData(from);
-        setShowDarw(true);
-      });
+          //判断是否为超级管理员。如果为则显示选择租户
+          if (props?.userInfo?.roleName?.indexOf('superadmin') > -1) {
+            from.unshift({
+              title: '租户',
+              fromType: 'select',
+              name: 'tenancyId',
+              selOption: props?.tenancyList,
+              placeholder: '请选择租户',
+              rules: [{ required: true, message: '租户不能为空' }],
+              options: {
+                allowClear: true//是否显示清除框
+              }
+            });
+          }
+          setDrawType(type);
+          setFromData(from);
+          setShowDarw(true);
+        });
+    }else if(type === 2){
+      props?.commonFunc?.getRoleList()
+        .then(res=>{
+          let from = assignFrom('分配角色权限','角色',res);
+          setDrawType(type);
+          setFromData(from);
+          setShowDarw(true);
+        });
+    }else if(type === 3){
+      props?.commonFunc?.getDepartmentList()
+        .then(res=>{
+          let from = assignFrom('分配部门','部门',res,'departmentId','cascader','');
+          setDrawType(type);
+          setFromData(from);
+          setShowDarw(true);
+        });
+    }else if(type === 4){
+      props?.commonFunc?.getPostList()
+        .then(res=>{
+          let from = assignFrom('分配岗位','岗位',res,'postId');
+          setDrawType(type);
+          setFromData(from);
+          setShowDarw(true);
+        });
+    }
   };
   //提交表单
   const onFinish = (data) => {
-    data.departmentId = data.departmentId.slice(-1)[0];
     if (drawType == 0) {
+      data.departmentId = data.departmentId.slice(-1)[0];
       props?.accountFunc?.createAccount(data)
         .then(() => {
           notification['success']({
@@ -75,13 +101,25 @@ const AccountList = (props) => {
           setShowDarw(false);
           props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
         });
-    } else {
+    } else if(drawType === 1) {
+      data.departmentId = data.departmentId.slice(-1)[0];
       data.id = initFromValue.id;
       props?.accountFunc?.modifyAccount(data)
         .then(() => {
           notification['success']({
             message: '修改成功',
             description: '修改账户成功'
+          });
+          setShowDarw(false);
+          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+        });
+    }else if(drawType == 2){
+      data.id = initFromValue.id;
+      props?.accountFunc?.assignAccountRole(data)
+        .then(()=>{
+          notification['success']({
+            message: '分配角色',
+            description: '分配角色成功'
           });
           setShowDarw(false);
           props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
@@ -97,7 +135,7 @@ const AccountList = (props) => {
     name: '账户详情',
     permission: 'account.details',
     click: () => {
-      notification.info({message: '账户详情'});
+      notification.info({ message: '账户详情' });
     }
   }, {
     name: '修改账户',
@@ -106,7 +144,7 @@ const AccountList = (props) => {
       setInitFromValue({
         'id': data?.id,
         'tenancyId': data?.tenancyId,
-        'postId': data?.posts.map(m=>m.id),
+        'postId': data?.posts.map(m => m.id),
         'departmentId': [data?.department?.pid, data?.department?.id],
         'username': data?.name,
         'password': data?.password,
@@ -121,19 +159,31 @@ const AccountList = (props) => {
     name: '分配账户角色',
     permission: 'account.assignrole',
     click: (data) => {
-      console.log(data);
+      setInitFromValue({
+        'id': data?.id,
+        'ids': data?.roles?.map(s=>s.id)
+      });
+      onOpenDarw(2);
     }
   }, {
     name: '分配账户部门',
     permission: 'account.assigndepartment',
     click: (data) => {
-      console.log(data);
+      setInitFromValue({
+        'id': data?.id,
+        'departmentId': [data?.department?.pid, data?.department?.id],
+      });
+      onOpenDarw(3);
     }
   }, {
     name: '分配账户岗位',
     permission: 'account.assignpost',
     click: (data) => {
-      console.log(data);
+      setInitFromValue({
+        'id': data?.id,
+        'postId': data?.posts?.map(s=>s.id),
+      });
+      onOpenDarw(4);
     }
   }, {
     name: '删除账户',
@@ -267,13 +317,21 @@ const AccountList = (props) => {
   }];
   const mapDrawTitle = {
     0: '添加账户',
-    1: '修改账户'
+    1: '修改账户',
+    2: '分配账户角色',
+    3: '分配账户部门',
+    4: '分配账户岗位',
+    5: '删除账户',
+    6: '修改账户密码',
+    7: '修改账户手机',
+    8: '修改账户邮箱',
+    9: '修改账户头像'
   };
   return (
     <div className="list">
       {head('账户列表')}
       {
-        props?.account?.list.length > 0 && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.userInfo?.actions} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw('创建账户'); } }]} />
+        props?.account?.list.length > 0 && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.userInfo?.actions} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
       }
       {
         props?.account.list.length == 0 && <Empty />

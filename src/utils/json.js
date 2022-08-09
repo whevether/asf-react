@@ -116,7 +116,20 @@ export const accountFrom = [{
     allowClear: true//是否显示清除框
   }
 }];
-
+// 分配选择
+export const assignFrom = (title,desc,opt,name='ids',fromType = 'select', model = 'multiple') => [{
+  title: title,
+  fromType: fromType,
+  mode: model,
+  name: name,
+  placeholder: `请选择${desc}`,
+  selOption: opt,
+  rules: [{ required: true, message: `${desc}不能为空` }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}];
+//权限搜索
 export const permissionSearchFrom = [{
   title: '权限名',
   fromType: 'input',

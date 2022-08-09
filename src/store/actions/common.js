@@ -17,6 +17,11 @@ export const getPostList = ()=> async (dispatch,getState,api)=>{
   const res = await api.get('/asf/post/getLists');
   return res?.result;
 };
+// 获取角色列表
+export const getRoleList = ()=> async (dispatch,getState,api)=>{
+  const res = await api.get('/asf/role/getLists');
+  return res?.result;
+};
 // 获取用户信息
 export const fetchUserInfo = ()=> async (dispatch,getState,api)=>{
   const res = await api.get('/asf/account/accountinfo');
