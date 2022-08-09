@@ -129,6 +129,42 @@ export const assignFrom = (title,desc,opt,name='ids',fromType = 'select', model 
     allowClear: true//是否显示清除框
   }
 }];
+// 手机号码
+export const telphoneFrom = ()=>[{
+  title: '手机号码',
+  fromType: 'input',
+  inputType: 'text',
+  placeholder: '请输入手机号码',
+  name: 'telphone',
+  rules: [{ type: 'string', pattern: /^1[0-9]{10}$/, message: '输入的手机号码不正确' }]
+}];
+// 邮箱地址
+export const emailFrom = ()=>[{
+  title: '邮箱地址',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'email',
+  placeholder: '请输入邮箱地址',
+  // eslint-disable-next-line  no-useless-escape
+  rules: [{ type: 'string', pattern: /^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/, message: '输入的邮箱地址不正确不正确' }],
+  options: { //扩展配置
+    allowClear: true//是否显示清除框
+    // disabled: false
+  }
+}];
+// 密码
+export const passwordFrom = ()=>[{
+  title: '密码',
+  fromType: 'input',
+  inputType: 'password',
+  name: 'password',
+  placeholder: '请输入账户密码',
+  rules: [{ required: true, message: '账户密码不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的账户密码或最多输入50个字符的账户密码' }],
+  options: { //扩展配置
+    allowClear: true//是否显示清除框
+    // disabled: false
+  }
+}];
 //权限搜索
 export const permissionSearchFrom = [{
   title: '权限名',

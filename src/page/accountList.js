@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { accountSearchFrom, accountFrom, assignFrom } from 'utils/json';
+import { accountSearchFrom, accountFrom, assignFrom, passwordFrom, emailFrom, telphoneFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer, notification, Switch, Empty } from 'antd';
-import { DownOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Dropdown, Drawer, notification, Switch, Modal } from 'antd';
+import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const AccountList = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
-  const [drawType, setDrawType] = useState(0); //0 添加账户 1修改账户, 2分配账户角色 3: 分配账户部门， 4分配账户岗位， 5 删除账户 6 修改账户密码， 7 修改账户手机， 8 修改账户邮箱, 9 修改账户头像
+  const [drawType, setDrawType] = useState(0); //0 添加账户 1修改账户, 2分配账户角色 3: 分配账户部门， 4分配账户岗位，  5 修改账户密码， 6 修改账户手机，7  修改账户邮箱,8 修改账户头像
   const [initFromValue, setInitFromValue] = useState(null);
   //获取账户列表
   useEffect(() => {
@@ -62,30 +62,42 @@ const AccountList = (props) => {
           setFromData(from);
           setShowDarw(true);
         });
-    }else if(type === 2){
+    } else if (type === 2) {
       props?.commonFunc?.getRoleList()
-        .then(res=>{
-          let from = assignFrom('分配角色权限','角色',res);
+        .then(res => {
+          let from = assignFrom('分配角色权限', '角色', res);
           setDrawType(type);
           setFromData(from);
           setShowDarw(true);
         });
-    }else if(type === 3){
+    } else if (type === 3) {
       props?.commonFunc?.getDepartmentList()
-        .then(res=>{
-          let from = assignFrom('分配部门','部门',res,'departmentId','cascader','');
+        .then(res => {
+          let from = assignFrom('分配部门', '部门', res, 'departmentId', 'cascader', '');
           setDrawType(type);
           setFromData(from);
           setShowDarw(true);
         });
-    }else if(type === 4){
+    } else if (type === 4) {
       props?.commonFunc?.getPostList()
-        .then(res=>{
-          let from = assignFrom('分配岗位','岗位',res,'postId');
+        .then(res => {
+          let from = assignFrom('分配岗位', '岗位', res);
           setDrawType(type);
           setFromData(from);
           setShowDarw(true);
         });
+    } else if (type === 5) {
+      setDrawType(type);
+      setFromData(passwordFrom());
+      setShowDarw(true);
+    } else if (type === 6) {
+      setDrawType(type);
+      setFromData(telphoneFrom());
+      setShowDarw(true);
+    } else if (type === 7) {
+      setDrawType(type);
+      setFromData(emailFrom());
+      setShowDarw(true);
     }
   };
   //提交表单
@@ -101,7 +113,7 @@ const AccountList = (props) => {
           setShowDarw(false);
           props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
         });
-    } else if(drawType === 1) {
+    } else if (drawType === 1) {
       data.departmentId = data.departmentId.slice(-1)[0];
       data.id = initFromValue.id;
       props?.accountFunc?.modifyAccount(data)
@@ -113,13 +125,69 @@ const AccountList = (props) => {
           setShowDarw(false);
           props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
         });
-    }else if(drawType == 2){
+    } else if (drawType == 2) {
       data.id = initFromValue.id;
       props?.accountFunc?.assignAccountRole(data)
-        .then(()=>{
+        .then(() => {
           notification['success']({
             message: '分配角色',
             description: '分配角色成功'
+          });
+          setShowDarw(false);
+          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+        });
+    } else if (drawType == 3) {
+      data.id = initFromValue.id;
+      data.departmentId = data.departmentId.slice(-1)[0];
+      props?.accountFunc?.assignAccountDepartment(data)
+        .then(() => {
+          notification['success']({
+            message: '分配部门',
+            description: '分配部门成功'
+          });
+          setShowDarw(false);
+          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+        });
+    } else if (drawType == 4) {
+      data.id = initFromValue.id;
+      props?.accountFunc?.assignAccountPost(data)
+        .then(() => {
+          notification['success']({
+            message: '分配岗位',
+            description: '分配岗位成功'
+          });
+          setShowDarw(false);
+          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+        });
+    } else if (drawType == 5) {
+      data.id = initFromValue.id;
+      props?.accountFunc?.resetAccountPassword(data)
+        .then(() => {
+          notification['success']({
+            message: '修改密码',
+            description: '修改密码成功'
+          });
+          setShowDarw(false);
+          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+        });
+    } else if (drawType == 6) {
+      data.id = initFromValue.id;
+      props?.accountFunc?.modifyAccountTelPhone(data)
+        .then(() => {
+          notification['success']({
+            message: '修改手机',
+            description: '修改手机成功'
+          });
+          setShowDarw(false);
+          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+        });
+    } else if (drawType == 7) {
+      data.id = initFromValue.id;
+      props?.accountFunc?.modifyAccountEmail(data)
+        .then(() => {
+          notification['success']({
+            message: '修改邮箱',
+            description: '修改邮箱成功'
           });
           setShowDarw(false);
           props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
@@ -128,7 +196,7 @@ const AccountList = (props) => {
   };
   // 提交表格查询
   const querySubmit = (e) => {
-    console.log(e);
+    props?.accountFunc?.fetchAccountList(e);
   };
   // 修改
   const list = [{
@@ -161,7 +229,7 @@ const AccountList = (props) => {
     click: (data) => {
       setInitFromValue({
         'id': data?.id,
-        'ids': data?.roles?.map(s=>s.id)
+        'ids': data?.roles?.map(s => s.id)
       });
       onOpenDarw(2);
     }
@@ -181,7 +249,7 @@ const AccountList = (props) => {
     click: (data) => {
       setInitFromValue({
         'id': data?.id,
-        'postId': data?.posts?.map(s=>s.id),
+        'ids': data?.posts?.map(s => s.id),
       });
       onOpenDarw(4);
     }
@@ -189,31 +257,58 @@ const AccountList = (props) => {
     name: '删除账户',
     permission: 'account.delete.[0-9]{1,12}',
     click: (data) => {
-      console.log(data);
+      Modal.confirm({
+        title: '确人是否删除用户!!!',
+        icon: <ExclamationCircleOutlined />,
+        content: '删除用户之后用用户的所有数据都会删除',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          props?.accountFunc.deleteAccount(data?.id)
+            .then(() => {
+              notification['success']({
+                message: '删除成功',
+                description: '删除用户成功'
+              });
+              props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+            });
+        }
+      });
     }
   }, {
     name: '修改账户密码',
     permission: 'account.resetpassword',
     click: (data) => {
-      console.log(data);
+      setInitFromValue({
+        'id': data?.id
+      });
+      onOpenDarw(5);
     }
   }, {
     name: '修改账户手机',
     permission: 'account.modifytelphone',
     click: (data) => {
-      console.log(data);
+      setInitFromValue({
+        'id': data?.id,
+        'telphone': data?.telPhone.replace('86+', '')
+      });
+      onOpenDarw(6);
     }
   }, {
     name: '修改账户邮箱',
     permission: 'account.modifyemail',
     click: (data) => {
-      console.log(data);
+      setInitFromValue({
+        'id': data?.id,
+        'email': data?.email
+      });
+      onOpenDarw(7);
     }
   }, {
     name: '修改账户头像',
     permission: 'account.modifyavatar',
-    click: (data) => {
-      console.log(data);
+    click: () => {
+      notification.info({ message: '用户头像' });
     }
   }];
   const menu = (record) => {
@@ -321,21 +416,15 @@ const AccountList = (props) => {
     2: '分配账户角色',
     3: '分配账户部门',
     4: '分配账户岗位',
-    5: '删除账户',
-    6: '修改账户密码',
-    7: '修改账户手机',
-    8: '修改账户邮箱',
-    9: '修改账户头像'
+    5: '修改账户密码',
+    6: '修改账户手机',
+    7: '修改账户邮箱',
+    8: '修改账户头像'
   };
   return (
     <div className="list">
       {head('账户列表')}
-      {
-        props?.account?.list.length > 0 && <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.userInfo?.actions} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
-      }
-      {
-        props?.account.list.length == 0 && <Empty />
-      }
+      <BaseTable formObj={accountSearchFrom} querySubmit={querySubmit} dataSource={props?.account?.list} columns={columns} pagination={pagination} action={props?.userInfo?.actions} list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
       <Drawer
         title={mapDrawTitle[drawType]}
         width={720}

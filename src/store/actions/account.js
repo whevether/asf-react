@@ -26,7 +26,7 @@ export const getAccountDetails = (params)=>async(dispatch,getState,api) => {
 };
 //软删除账户
 export const deleteAccount = (id) => async(dispatch,getState,api) => {
-  const res = await api.post(`/asf/account/delete${id}`,{});
+  const res = await api.post(`/asf/account/delete/${id}`,{});
   return res?.result;
 };
 //修改账户状态
