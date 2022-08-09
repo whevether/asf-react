@@ -179,6 +179,7 @@ const PermissionList = (props) => {
 };
 PermissionList.propTypes = {
   permissionFunc: PropTypes.object,
+  userInfo: PropTypes.object,
   permission: PropTypes.object,
   tenancyList: PropTypes.arrayOf(Object),
   roleName: PropTypes.string,

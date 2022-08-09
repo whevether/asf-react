@@ -7,7 +7,6 @@ import * as commonAction from 'store/actions/common';
 import { bindActionCreators } from 'redux';
 import { getCookie } from 'utils/storage';
 import { setToken } from 'utils/request';
-import { permissionMeta } from 'utils/permission';
 import { Tabbar, Navbar } from 'components/index';
 // 默认布局
 const DefaultLayout = (props) => {
@@ -40,7 +39,7 @@ const DefaultLayout = (props) => {
     return isPermission;
   };
   const renderProtectedRoute = () => {
-    if (permissionMeta[localtion.pathname] && !grantedPermission(props?.common?.data?.permissionMenu, localtion.pathname)) {
+    if (!grantedPermission(props?.common?.data?.permissionMenu, localtion.pathname)) {
       return (
         <Navigate to="/403" replace />
       );

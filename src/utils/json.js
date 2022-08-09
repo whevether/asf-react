@@ -162,33 +162,6 @@ export const editorSearchFrom = [{
   }
 },];
 
-// 中心端账户
-export const centerAccountSearchFrom = [{
-  title: '账户名',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'name',
-  placeholder: '请输入账户名',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的账户名或最多输入50个字符的账户名' }]
-}];
-
-export const centerShopSearchFrom = [{
-  title: '商户名',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'name',
-  placeholder: '请输入商户名',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的商户名或最多输入50个字符的商户名' }]
-}];
-export const centerProgramSearchFrom = [{
-  title: '应用名',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'name',
-  placeholder: '请输入应用名',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的应用名或最多输入50个字符的应用名' }]
-}];
-
 //添加轮播图
 export const imagesFrom = [{
   title: '页面名称',
@@ -232,65 +205,4 @@ export const imagesFrom = [{
   name: 'hezuo',
   placeholder: '以英文逗号分割开合作伙伴图片',
   rules: [{ type: 'string', min: 2, max: 1000, message: '最少输入2个字符的合作伙伴图片或最多输入1000个字符的合作伙伴图地址' }]
-}];
-//股票收益
-export const fundamentalsFrom = [{
-  title: '数据表',
-  fromType: 'select',
-  name: 'table',
-  placeholder: '请选择数据表',
-  selOption: [{
-    name: '资产负债',
-    id: 'balance'
-  }, {
-    name: '利润',
-    id: 'income'
-  }, {
-    name: '现金流',
-    id: 'cash_flow'
-  }, {
-    name: '市值数据',
-    id: 'valuation'
-  }, {
-    name: '上市公司股本变动',
-    id: 'finance.STK_XR_XD'
-  },{
-    name: '合并利润表',
-    id: 'finance.STK_INCOME_STATEMENT'
-  },{
-    name: '合并现金流表',
-    id: 'finance.STK_CASHFLOW_STATEMENT'
-  },{
-    name: '合并资产负债表',
-    id: 'finance.STK_BALANCE_SHEET'
-  },{
-    name: '上市公司基本信息',
-    id: 'finance.STK_COMPANY_INFO'
-  },{
-    name: '上市公司状态变动',
-    id: 'finance.STK_STATUS_CHANGE'
-  },{
-    name: '股票上市信息',
-    id: 'finance.STK_LIST'
-  },{
-    name: '获取所有股票信息',
-    id: 'all_securities'
-  },{
-    name: '获取融资融券信息',
-    id: 'getMtss'
-  },{
-    name: '沪深市场每日成交概况',
-    id: 'finance.STK_EXCHANGE_TRADE_INFO'
-  }],
-  rules: [{ required: true, message: '数据表不能为空' }],
-  options: {
-    allowClear: true//是否显示清除框
-  }
-}, {
-  title: '查询时间',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'date',
-  placeholder: '查询日期2019-03-04或者年度2018或者季度2018q1 2018q2 2018q3 2018q4',
-  rules: [{required: true, message: '查询日期不能为空' }]
 }];
