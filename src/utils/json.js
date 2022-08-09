@@ -30,6 +30,16 @@ export const accountFrom = [{
   options: {
     allowClear: true//是否显示清除框
   }
+},{
+  title: '岗位',
+  fromType: 'select',
+  mode: 'multiple',
+  name: 'postId',
+  placeholder: '请选择岗位',
+  rules: [{ required: true, message: '岗位不能为空' }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
 }, {
   title: '账户名',
   fromType: 'input',

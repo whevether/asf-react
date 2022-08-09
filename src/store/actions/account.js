@@ -16,7 +16,7 @@ export const createAccount = (params) => async(dispatch,getState,api) => {
 };
 // 编辑账户
 export const modifyAccount = (params) => async(dispatch,getState,api) => {
-  const res = await api.post('/asf/account/modify',params);
+  const res = await api.put('/asf/account/modify',params);
   return res?.result;
 };
 // 获取账户详情
