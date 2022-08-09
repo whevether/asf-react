@@ -102,7 +102,7 @@ const AccountList = (props) => {
   };
   //提交表单
   const onFinish = (data) => {
-    if (drawType == 0) {
+    if (drawType === 0) {
       data.departmentId = data.departmentId.slice(-1)[0];
       props?.accountFunc?.createAccount(data)
         .then(() => {

@@ -178,7 +178,7 @@ export const permissionSearchFrom = [{
 export const permissionFrom = (opt) => [{
   title: '父级权限',
   fromType: 'cascader',
-  name: 'parent_id',
+  name: 'parentId',
   placeholder: '父级权限',
   selOption: opt,
   rules: [{ required: true, message: '父级权限不能为空' }],
@@ -199,6 +199,13 @@ export const permissionFrom = (opt) => [{
   name: 'name',
   placeholder: '请输入权限名称',
   rules: [{ required: true, message: '权限类型不能为空' },{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名称' }]
+},{
+  title: '权限说明',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'description',
+  placeholder: '请输入权限说明',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限说明或最多输入50个字符的权限说明' }]
 }, {
   title: '权限类型',
   fromType: 'select',

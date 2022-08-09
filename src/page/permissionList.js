@@ -31,18 +31,30 @@ const PermissionList = (props) => {
   };
   // 打开抽屉
   const onOpenDarw = (type) => {
-    let list = props?.permission?.list;
-    if(!list.some(f=>f.value === 0)){
-      list.unshift({label:'顶级权限',value: 0,children: []});
+    if(type === 0 || type === 1){
+      let list = props?.permission?.list;
+      if(!list.some(f=>f.value === 0)){
+        list.unshift({label:'顶级权限',value: 0,children: []});
+      }
+      setDrawType(type);
+      setFromData(permissionFrom(list));
+      setShowDarw(true);
     }
-    setDrawType(type);
-    setFromData(permissionFrom(list));
-    setShowDarw(true);
   };
   //提交表单
   const onFinish = (data) => {
-    console.log(data);
-    setShowDarw(false);
+    if(drawType === 0){
+      data.parentId = data?.parentId.slice(-1)[0];
+      props?.permissionFunc?.createPermission(data)
+      .then(()=>{
+        notification['success']({
+          message: '添加成功',
+          description: '添加权限成功'
+        });
+        props?.permissionFunc?.fetchPermissionList({pageNo:0,pageSize: 20});
+        setShowDarw(false);
+      });
+    }
   };
   // 提交表格查询
   const querySubmit = (e) => {

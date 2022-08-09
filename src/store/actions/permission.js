@@ -9,3 +9,19 @@ export const fetchPermissionList = (params) => async (dispatch,getState,api)=> {
     payload: res
   });
 };
+// 创建权限
+export const createPermission = (data) => async (dispatch,getState,api)=> {
+  const res = await api.post('/asf/permission/create',data);
+  return res?.result;
+};
+// 修改权限
+export const modifyPermission = (data) => async (dispatch,getState,api)=> {
+  const res = await api.post('/asf/permission/modify',data);
+  return res?.result;
+};
+//删除权限
+export const deletePermission = (id) => async (dispatch,getState,api)=> {
+  const res = await api.post(`/asf/permission/delete/${id}`);
+  return res?.result;
+};
+
