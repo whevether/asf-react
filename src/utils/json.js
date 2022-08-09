@@ -174,6 +174,79 @@ export const permissionSearchFrom = [{
   placeholder: '请输入权限名',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名' }]
 }];
+//权限添加
+export const permissionFrom = (opt) => [{
+  title: '父级权限',
+  fromType: 'cascader',
+  name: 'parent_id',
+  placeholder: '父级权限',
+  selOption: opt,
+  rules: [{ required: true, message: '父级权限不能为空' }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: '权限代码(页面路径,不包含域名)',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'code',
+  placeholder: '请输入权限代码(页面路径)',
+  rules: [{ required: true, message: '权限类型不能为空' },{ type: 'string', min: 1, max: 50, message: '最少输入1个字符的权限代码(页面路径)或最多输入50个字符的权限代码(页面路径)' }]
+},{
+  title: '权限名称',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入权限名称',
+  rules: [{ required: true, message: '权限类型不能为空' },{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名称' }]
+}, {
+  title: '权限类型',
+  fromType: 'select',
+  name: 'type',
+  placeholder: '请选择权限类型',
+  selOption: [{
+    name: '菜单',
+    id: 0
+  }, {
+    name: '菜单条目',
+    id: 1
+  }, {
+    name: '功能',
+    id: 2
+  }],
+  rules: [{ required: true, message: '权限类型不能为空' }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}, {
+  title: '是否为系统权限',
+  fromType: 'select',
+  name: 'isSystem',
+  placeholder: '请选择是否为系统权限',
+  selOption: [{
+    name: '否',
+    id: 0
+  }, {
+    name: '是',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: '排序',
+  fromType: 'inputnumber',
+  name: 'sort',
+  placeholder: '请输入排序'
+},{
+  title: '是否禁用',
+  fromType: 'switch',
+  name: 'enable',
+  options: {
+    yes: '是',
+    no: '否'
+  }
+}];
 //日志管理
 export const audioSearchFrom = [{
   title: '账户名',
@@ -202,6 +275,7 @@ export const audioSearchFrom = [{
     allowClear: true//是否显示清除框
   }
 }];
+/* 富文本 */
 export const editorSearchFrom = [{
   title: '页面名',
   fromType: 'input',
