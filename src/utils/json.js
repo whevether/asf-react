@@ -229,6 +229,54 @@ export const permissionSearchFrom = [{
     allowClear: true//是否显示清除框
   }
 }];
+//权限搜索
+export const menuSearchFrom = [{
+  title: '菜单名',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'title',
+  placeholder: '请输入菜单名',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的菜单名或最多输入50个字符的菜单名' }]
+},{
+  title: '菜单所属权限id',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'permissionId',
+  placeholder: '菜单所属权限id',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单所属权限id或最多输入50个字符的菜单所属权限id' }]
+},{
+  title: '菜单地址',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'menuUrl',
+  placeholder: '请输入菜单地址',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
+}];
+export const menuFrom = (options)=>[{
+  title: '菜单名',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'title',
+  placeholder: '请输入菜单名',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的菜单名或最多输入50个字符的菜单名' }]
+},{
+  title: '菜单地址',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'menuUrl',
+  placeholder: '请输入菜单地址',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
+},{
+  title: '权限',
+  fromType: 'cascader',
+  selOption: options,
+  name: 'permissionId',
+  placeholder: '请选择权限',
+  rules: [{ required: true, message: '权限不能为空' }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}];
 //权限添加
 export const permissionFrom = (opt) => [{
   title: '父级权限',

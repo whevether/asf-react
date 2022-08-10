@@ -1,0 +1,248 @@
+import React, { useEffect, useState } from 'react';
+import { head } from 'utils/head';
+import { timeToDate } from 'utils/storage';
+import { menuSearchFrom, menuFrom } from 'utils/json';
+import PropTypes from 'prop-types';
+import * as menuAction from 'store/actions/menu';
+import * as permissionAction from 'store/actions/permission';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
+import { createFromIconfontCN, DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+const Index = (props) => {
+  const IconFont = createFromIconfontCN({
+    scriptUrl: [
+      'https://at.alicdn.com/t/font_2384333_rsw4qhrwjur.js'
+    ],
+  });
+  const [showDarw, setShowDarw] = useState(false);
+  const [fromData, setFromData] = useState(null);
+  const [drawType, setDrawType] = useState(0); // 0 添加 菜单 1: 修改菜单
+  const [initFromValue, setInitFromValue] = useState(null);
+  //获取账户列表
+  useEffect(() => {
+    props?.menuFunc?.fetchMenuList();
+  }, []);
+  // 分页对象
+  const pagination = {
+    total: props?.menu?.listTotal,
+    onChange: (page, pageSize) => {
+      props?.menuFunc?.fetchMenuList({ pageNo: page, pageSize: pageSize });
+    },
+    pageSize: 20,
+    pageSizeOptions: ['10', '20', '50', '100'],
+    showTotal: (total) => `总条目: ${total} 条`,
+    showSizeChanger: true
+  };
+  // 打开抽屉
+  const onOpenDarw = (type) => {
+    if (type === 0 || type === 1) {
+      props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })
+        .then(res=>{
+          setDrawType(type);
+          setFromData(menuFrom(res));
+          setShowDarw(true);
+        });
+    }
+  };
+  //提交表单
+  const onFinish = (data) => {
+    if (drawType === 0) {
+      props?.menuFunc?.createMenu(data)
+        .then(() => {
+          notification['success']({
+            message: '添加成功',
+            description: '添加菜单成功'
+          });
+          setShowDarw(false);
+          setTimeout(()=>{
+            props?.menuFunc?.fetchMenuList({ pageNo: 0, pageSize: 20 });
+          },500);
+        });
+    }
+  };
+  // 提交表格查询
+  const querySubmit = (e) => {
+    props?.menuFunc?.fetchMenuList(e);
+  };
+  // 修改
+  const list = [{
+    name: '修改菜单',
+    permission: 'menu.modify',
+    isAction: true,
+    click: (data) => {
+      setInitFromValue({
+        'id': data?.id,
+        'tenancyId': data?.tenancyId,
+        'code': data?.code,
+        'parentId':  data?.parentId == 0 ? [data?.parentId]:[data?.parentId, data?.id],
+        'name': data?.name,
+        'type': data?.type,
+        'isSystem': data?.isSystem,
+        'description': data?.description,
+        'enable': data?.enable,
+        'sort': data?.sort
+      });
+      onOpenDarw(1);
+    }
+  }, {
+    name: '菜单详情',
+    permission: 'menu.details',
+    click: (data) => {
+      console.log(data);
+    }
+  }, {
+    name: '删除菜单',
+    permission: 'menu.delete.[0-9]{1,100}',
+    click: (data) => {
+      Modal.confirm({
+        title: '确人删除菜单!!!',
+        icon: <ExclamationCircleOutlined />,
+        content: '删除菜单之后将无法恢复!!!',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          props?.menuFunc.deleteMenu(data?.id)
+            .then(() => {
+              notification['success']({
+                message: '删除成功',
+                description: '删除菜单成功'
+              });
+              setTimeout(()=>{
+                props?.menuFunc?.fetchMenuList({ pageNo: 0, pageSize: 20 });
+              },500);
+            });
+        }
+      });
+    }
+  }];
+  const menu = (record) => {
+    return (
+      <AuthControl action={props?.userInfo?.actions} list={list} record={record} type="menu" />
+    );
+  };
+  const columns = [{
+    title: '菜单ID',
+    dataIndex: 'id',
+    key: 'id',
+    fixed: 'left',
+    width: '100px'
+  }, {
+    title: '菜单标题',
+    dataIndex: 'title',
+    width: 150,
+    key: 'title'
+  },{
+    title: '菜单副标题',
+    dataIndex: 'subtitle',
+    width: 150,
+    key: 'subtitle'
+  },{
+    title: '菜单地址',
+    dataIndex: 'menuUrl',
+    width: 150,
+    key: 'menuUrl'
+  },{
+    title: '菜单外部链接',
+    dataIndex: 'externalLink',
+    width: 150,
+    key: 'externalLink'
+  },{
+    title: '菜单重定向地址',
+    dataIndex: 'menuRedirect',
+    key: 'menuRedirect'
+  },{
+    title: '菜单图标',
+    dataIndex: 'icon',
+    width: 150,
+    key: 'icon',
+    render: (text)=>{
+      return (<IconFont type={text} />);
+    }
+  }, {
+    title: '权限id',
+    dataIndex: 'permissionId',
+    width: 150,
+    key: 'permissionId'
+  }, {
+    title: '说明',
+    dataIndex: 'description',
+    width: 150,
+    key: 'description'
+  }, {
+    title: '是否隐藏菜单',
+    dataIndex: 'menuHidden',
+    key: 'menuHidden',
+    width: 150,
+    // eslint-disable-next-line
+    render: (text, record) => {
+      let statusMap = {
+        0: '否',
+        1: '是'
+      };
+      return statusMap[text];
+    }
+  }, {
+    title: '多语言',
+    dataIndex: 'translate',
+    width: 150,
+    key: 'translate'
+  }, {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    key: 'createTime',
+    width: 200,
+    render: (text) => {
+      return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
+    }
+  }, {
+    title: '操作',
+    key: 'action',
+    width: 150,
+    // eslint-disable-next-line
+    render: (text) => {
+      return (<Dropdown overlay={menu(text)} name="action">
+        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+          操作 <DownOutlined />
+        </a>
+      </Dropdown>);
+    }
+  }];
+  const mapTitle = {
+    0: '添加菜单'
+  };
+  return (
+    <div className="list">
+      {head('菜单列表')}
+      <BaseTable formObj={menuSearchFrom} querySubmit={querySubmit} dataSource={props?.menu?.list} columns={columns} pagination={pagination} action={props?.userInfo?.actions} list={[{ name: '添加菜单', permission: 'menu.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
+      <Drawer
+        title={mapTitle[drawType]}
+        width={720}
+        visible={showDarw}
+        onClose={() => setShowDarw(false)}
+      >
+        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+      </Drawer>
+    </div>
+  );
+};
+Index.propTypes = {
+  menuFunc: PropTypes.object,
+  permissionFunc: PropTypes.object,
+  userInfo: PropTypes.object,
+  menu: PropTypes.object,
+  tenancyList: PropTypes.arrayOf(Object),
+  roleName: PropTypes.string,
+  initialValues: PropTypes.object
+};
+export default connect(state => ({
+  userInfo: state?.common?.data,
+  menu: state?.menu,
+  tenancyList: state?.common?.tenancyList
+}), dispatch => {
+  return {
+    menuFunc: bindActionCreators(menuAction, dispatch),
+    permissionFunc: bindActionCreators(permissionAction, dispatch)
+  };
+})(Index);

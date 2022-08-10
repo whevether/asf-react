@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, notification, Switch, Modal } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
-const AccountList = (props) => {
+const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); //0 添加账户 1修改账户, 2分配账户角色 3: 分配账户部门， 4分配账户岗位，  5 修改账户密码， 6 修改账户手机，7  修改账户邮箱,8 修改账户头像
@@ -320,12 +320,13 @@ const AccountList = (props) => {
     title: '账户ID',
     dataIndex: 'id',
     key: 'id',
+    fixed: 'left',
     width: '100px'
   }, {
     title: '账户头像',
     dataIndex: 'avatar',
     key: 'avatar',
-    width: '100px',
+    width: 150,
     // eslint-disable-next-line
     render: (text) => {
       return <img name="avatar" src="../../assets/avatar.jpeg" style={{ width: '50px', height: '50px', borderRadius: '50%', lineHeight: '50px' }} crossOrigin={text} />;
@@ -333,22 +334,27 @@ const AccountList = (props) => {
   }, {
     title: '账户昵称',
     dataIndex: 'name',
+    width: 150,
     key: 'name'
   }, {
     title: '账户名',
     dataIndex: 'username',
+    width: 150,
     key: 'username'
   }, {
     title: '手机号码',
     dataIndex: 'telPhone',
+    width: 150,
     key: 'telPhone'
   }, {
     title: '邮箱',
     dataIndex: 'email',
+    width: 150,
     key: 'email'
   }, {
     title: '性别',
     dataIndex: 'sex',
+    width: 150,
     key: 'sex',
     render: (text) => {
       let sexMap = {
@@ -361,6 +367,7 @@ const AccountList = (props) => {
   }, {
     title: '状态',
     dataIndex: 'status',
+    width: 150,
     key: 'status',
     // eslint-disable-next-line
     render: (text, record) => {
@@ -377,15 +384,18 @@ const AccountList = (props) => {
     }
   }, {
     title: '登录ip',
+    width: 150,
     dataIndex: 'loginIp',
     key: 'loginIp'
   }, {
     title: '登录地址',
     dataIndex: 'loginLocation',
+    width: 150,
     key: 'loginLocation'
   }, {
     title: '所属部门',
     dataIndex: 'department',
+    width: 150,
     key: 'department',
     // eslint-disable-next-line
     render: (text) => {
@@ -394,12 +404,14 @@ const AccountList = (props) => {
   }, {
     title: '创建时间',
     dataIndex: 'createTime',
+    width: 200,
     key: 'createTime',
     render: (text) => {
       return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
     }
   }, {
     title: '操作',
+    width: 150,
     key: 'action',
     // eslint-disable-next-line
     render: (text) => {
@@ -436,7 +448,7 @@ const AccountList = (props) => {
     </div>
   );
 };
-AccountList.propTypes = {
+Index.propTypes = {
   accountFunc: PropTypes.object,
   commonFunc: PropTypes.object,
   fetchAccountList: PropTypes.func,
@@ -456,4 +468,4 @@ export default connect(state => ({
     accountFunc: bindActionCreators(accountAction, dispatch),
     commonFunc: bindActionCreators(commonAction, dispatch)
   };
-})(AccountList);
+})(Index);

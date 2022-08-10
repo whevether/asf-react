@@ -10,12 +10,13 @@ const DashPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../
 const LoginPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/login'));
 const  NotFound= LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/nodeFound'));
 const Error403 = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/403'));
-const AccountPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/accountList'));
+const AccountPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/account/index'));
 const LogsPage =  LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/logsList'));
 const EditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/editor/editorList'));
 const ModifyEditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/editor/modify'));
 const CreateEditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/editor/add'));
-const PermissionPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/permissionList'));
+const PermissionPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/permission/index'));
+const MenuPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/menu/index'));
 const routes = [{
   path: "/",
   element: <RootLayout />,
@@ -30,6 +31,9 @@ const routes = [{
     },{
       path: 'control/permission',
       element: <PermissionPage />
+    },{
+      path: 'control/menu',
+      element: <MenuPage />
     },{
       path: 'editor/getlist',
       element: <EditorPage />

@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
-const PermissionList = (props) => {
+const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 权限
@@ -58,7 +58,6 @@ const PermissionList = (props) => {
   };
   //提交表单
   const onFinish = (data) => {
-    console.log(data);
     if (drawType === 0) {
       data.parentId = data?.parentId.slice(-1)[0];
       props?.permissionFunc?.createPermission(data)
@@ -66,6 +65,19 @@ const PermissionList = (props) => {
           notification['success']({
             message: '添加成功',
             description: '添加权限成功'
+          });
+          setShowDarw(false);
+          setTimeout(()=>{
+            props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 });
+          },500);
+        });
+    }else {
+      data.parentId = data?.parentId.slice(-1)[0];
+      props?.permissionFunc?.modifyPermission(data)
+        .then(() => {
+          notification['success']({
+            message: '修改成功',
+            description: '修改权限成功'
           });
           setShowDarw(false);
           setTimeout(()=>{
@@ -139,25 +151,28 @@ const PermissionList = (props) => {
     title: '权限ID',
     dataIndex: 'id',
     key: 'id',
+    fixed: 'left',
     width: '100px'
   }, {
     title: '权限代码',
     dataIndex: 'code',
     key: 'code',
-    width: '100px'
+    width: 150,
   }, {
     title: '父级id',
     dataIndex: 'parentId',
     key: 'parentId',
-    width: '100px'
+    width: 150,
   }, {
     title: '权限名称',
     dataIndex: 'name',
+    width: 150,
     key: 'name'
   }, {
     title: '权限类型',
     dataIndex: 'type',
     key: 'type',
+    width: 150,
     render: (text) => {
       let typeMap = {
         1: '菜单',
@@ -170,6 +185,7 @@ const PermissionList = (props) => {
     title: '是否为系统权限',
     dataIndex: 'isSystem',
     key: 'isSystem',
+    width: 150,
     render: (text) => {
       let sysMap = {
         1: '是',
@@ -180,10 +196,12 @@ const PermissionList = (props) => {
   }, {
     title: '说明',
     dataIndex: 'description',
+    width: 150,
     key: 'description'
   }, {
     title: '是否启用',
     dataIndex: 'enable',
+    width: 150,
     key: 'enable',
     // eslint-disable-next-line
     render: (text, record) => {
@@ -201,16 +219,19 @@ const PermissionList = (props) => {
   }, {
     title: '排序',
     dataIndex: 'sort',
+    width: 150,
     key: 'sort'
   }, {
     title: '创建时间',
     dataIndex: 'createTime',
+    width: 200,
     key: 'createTime',
     render: (text) => {
       return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
     }
   }, {
     title: '操作',
+    width: 150,
     key: 'action',
     // eslint-disable-next-line
     render: (text) => {
@@ -222,7 +243,8 @@ const PermissionList = (props) => {
     }
   }];
   const mapTitle = {
-    0: '添加权限'
+    0: '添加权限',
+    1: '修改权限'
   };
   return (
     <div className="list">
@@ -239,7 +261,7 @@ const PermissionList = (props) => {
     </div>
   );
 };
-PermissionList.propTypes = {
+Index.propTypes = {
   permissionFunc: PropTypes.object,
   userInfo: PropTypes.object,
   permission: PropTypes.object,
@@ -255,4 +277,4 @@ export default connect(state => ({
   return {
     permissionFunc: bindActionCreators(permissionAction, dispatch)
   };
-})(PermissionList);
+})(Index);
