@@ -216,7 +216,7 @@ export const permissionSearchFrom = [{
 },{
   title: '系统权限',
   fromType: 'select',
-  name: 'isSys',
+  name: 'isSystem',
   placeholder: '请选择是否为系统权限',
   selOption: [{
     name: '否',

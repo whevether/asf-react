@@ -6,6 +6,7 @@ const AuthControl = (props) => {
     const renderAuthMenu = () => {
         if (Array.isArray(props?.list) && props?.list.length > 0) {
             if (props?.type == 'menu') {
+                console.log(props?.isAdmin)
                 return (<Menu>
                     {props?.list.map((item, i) => {
                         return props?.action.includes(item.permission) ? <Menu.Item key={i} onClick={() => item?.click(props?.record)} style={(props?.record?.isSystem === 1) ? {pointerEvents: 'none',color: '#ccc',cursor:'not-allowed'} : null}>{item?.name}</Menu.Item> : null;

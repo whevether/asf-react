@@ -144,7 +144,7 @@ const Index = (props) => {
   }];
   const menu = (record) => {
     return (
-      <AuthControl action={props?.userInfo?.actions} list={list} record={record} type="menu" />
+      <AuthControl action={props?.userInfo?.actions} list={list} record={record} type="menu"/>
     );
   };
   const columns = [{
