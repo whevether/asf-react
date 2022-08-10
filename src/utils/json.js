@@ -173,6 +173,61 @@ export const permissionSearchFrom = [{
   name: 'name',
   placeholder: '请输入权限名',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名' }]
+},{
+  title: '权限代码',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'code',
+  placeholder: '请输入权限代码',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的权限代码或最多输入50个字符的权限代码' }]
+},{
+  title: '权限类型',
+  fromType: 'select',
+  name: 'type',
+  placeholder: '请选择类型',
+  selOption: [{
+    name: '菜单',
+    id: 1
+  }, {
+    name: '菜单条目',
+    id: 2
+  }, {
+    name: '功能',
+    id: 3
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: '权限状态',
+  fromType: 'select',
+  name: 'enable',
+  placeholder: '请选择状态',
+  selOption: [{
+    name: '禁用',
+    id: 0
+  }, {
+    name: '启用',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: '系统权限',
+  fromType: 'select',
+  name: 'isSys',
+  placeholder: '请选择是否为系统权限',
+  selOption: [{
+    name: '否',
+    id: 0
+  }, {
+    name: '是',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
 }];
 //权限添加
 export const permissionFrom = (opt) => [{
@@ -246,12 +301,19 @@ export const permissionFrom = (opt) => [{
   name: 'sort',
   placeholder: '请输入排序'
 },{
-  title: '是否禁用',
-  fromType: 'switch',
+  title: '是否启用',
+  fromType: 'select',
   name: 'enable',
+  placeholder: '请选择是否启用',
+  selOption: [{
+    name: '否',
+    id: 0
+  }, {
+    name: '是',
+    id: 1
+  }],
   options: {
-    yes: '是',
-    no: '否'
+    allowClear: true//是否显示清除框
   }
 }];
 //日志管理

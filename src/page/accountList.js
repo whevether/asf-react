@@ -214,7 +214,7 @@ const AccountList = (props) => {
         'tenancyId': data?.tenancyId,
         'postId': data?.posts.map(m => m.id),
         'departmentId': [data?.department?.pid, data?.department?.id],
-        'username': data?.name,
+        'username': data?.username,
         'password': data?.password,
         'telphone': data?.telPhone.replace('86+', ''),
         'email': data?.email,

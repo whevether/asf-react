@@ -8,7 +8,7 @@ const AuthControl = (props) => {
             if (props?.type == 'menu') {
                 return (<Menu>
                     {props?.list.map((item, i) => {
-                        return props?.action.includes(item.permission) ? <Menu.Item key={i} onClick={() => item?.click(props?.record)} style={(props?.record?.isSystem === 1 && item?.isAction) ? {pointerEvents: 'none',color: '#ccc',cursor:'not-allowed'} : null}>{item?.name}</Menu.Item> : null;
+                        return props?.action.includes(item.permission) ? <Menu.Item key={i} onClick={() => item?.click(props?.record)} style={(props?.record?.isSystem === 1) ? {pointerEvents: 'none',color: '#ccc',cursor:'not-allowed'} : null}>{item?.name}</Menu.Item> : null;
                     })}
                 </Menu>);
             } else {

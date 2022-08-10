@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import * as permissionAction from 'store/actions/permission';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer, Switch, notification } from 'antd';
-import { DownOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
+import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const PermissionList = (props) => {
   const [showDarw, setShowDarw] = useState(false);
@@ -34,7 +34,7 @@ const PermissionList = (props) => {
     if (type === 0 || type === 1) {
       let list = props?.permission?.list;
       if (!list.some(f => f.value === 0)) {
-        list.unshift({ label: '顶级权限', value: 0, children: [] });
+        list.unshift({ label: '顶级权限', value: '0', children: [] });
       }
       let from = permissionFrom(list);
       //判断是否为超级管理员。如果为则显示选择租户
@@ -58,6 +58,7 @@ const PermissionList = (props) => {
   };
   //提交表单
   const onFinish = (data) => {
+    console.log(data);
     if (drawType === 0) {
       data.parentId = data?.parentId.slice(-1)[0];
       props?.permissionFunc?.createPermission(data)
@@ -66,14 +67,16 @@ const PermissionList = (props) => {
             message: '添加成功',
             description: '添加权限成功'
           });
-          props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 20 });
           setShowDarw(false);
+          setTimeout(()=>{
+            props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 });
+          },500);
         });
     }
   };
   // 提交表格查询
   const querySubmit = (e) => {
-    console.log(e);
+    props?.permissionFunc?.fetchPermissionList(e);
   };
   // 修改
   const list = [{
@@ -81,7 +84,19 @@ const PermissionList = (props) => {
     permission: 'permission.modify',
     isAction: true,
     click: (data) => {
-      console.log(data);
+      setInitFromValue({
+        'id': data?.id,
+        'tenancyId': data?.tenancyId,
+        'code': data?.code,
+        'parentId':  data?.parentId == 0 ? [data?.parentId]:[data?.parentId, data?.id],
+        'name': data?.name,
+        'type': data?.type,
+        'isSystem': data?.isSystem,
+        'description': data?.description,
+        'enable': data?.enable,
+        'sort': data?.sort
+      });
+      onOpenDarw(1);
     }
   }, {
     name: '权限详情',
@@ -92,9 +107,27 @@ const PermissionList = (props) => {
   }, {
     name: '删除权限',
     isAction: true,
-    permission: 'permission.delete.[0-9]{1,12}',
+    permission: 'permission.delete.[0-9]{1,100}',
     click: (data) => {
-      console.log(data);
+      Modal.confirm({
+        title: '确人删除权限!!!',
+        icon: <ExclamationCircleOutlined />,
+        content: '删除权限用户的所有数关联权限也会删除!!!',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          props?.permissionFunc.deletePermission(data?.id)
+            .then(() => {
+              notification['success']({
+                message: '删除成功',
+                description: '删除权限成功'
+              });
+              setTimeout(()=>{
+                props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 });
+              },500);
+            });
+        }
+      });
     }
   }];
   const menu = (record) => {
