@@ -6,15 +6,14 @@ const AuthControl = (props) => {
     const renderAuthMenu = () => {
         if (Array.isArray(props?.list) && props?.list.length > 0) {
             if (props?.type == 'menu') {
-                console.log(props?.isAdmin)
                 return (<Menu>
                     {props?.list.map((item, i) => {
-                        return props?.action.includes(item.permission) ? <Menu.Item key={i} onClick={() => item?.click(props?.record)} style={(props?.record?.isSystem === 1) ? {pointerEvents: 'none',color: '#ccc',cursor:'not-allowed'} : null}>{item?.name}</Menu.Item> : null;
+                        return props?.userInfo?.actions?.includes(item.permission) ? <Menu.Item key={i} onClick={() => item?.click(props?.record)} style={(props?.record?.isSystem === 1 && !(props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === props?.record?.tenancyId)) ? {pointerEvents: 'none',color: '#ccc',cursor:'not-allowed'} : null}>{item?.name}</Menu.Item> : null;
                     })}
                 </Menu>);
             } else {
                 return props?.list.map((item, i) => {
-                    return props?.action.includes(item.permission) ? <Button key={i} onClick={(e) => item?.click(e)} type={item?.type} icon={item?.icon} loading={item?.loading} size={item?.size} style={{marginLeft:'10px'}}>{item?.name}</Button> : null;
+                    return props?.userInfo?.actions?.includes(item.permission) ? <Button key={i} onClick={(e) => item?.click(e)} type={item?.type} icon={item?.icon} loading={item?.loading} size={item?.size} style={{marginLeft:'10px'}}>{item?.name}</Button> : null;
 
                 });
             }
@@ -28,7 +27,7 @@ const AuthControl = (props) => {
 };
 AuthControl.propTypes = {
     list: PropTypes.arrayOf(Object),
-    action: PropTypes.array,
+    userInfo: PropTypes.object,
     record: PropTypes.object,
     type: PropTypes.string
 };

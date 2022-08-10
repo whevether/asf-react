@@ -45,7 +45,7 @@ const Index = (props) => {
             return f;
           });
           //判断是否为超级管理员。如果为则显示选择租户
-          if (props?.userInfo?.roleName?.indexOf('superadmin') > -1) {
+          if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
             from.unshift({
               title: '租户',
               fromType: 'select',
@@ -313,7 +313,7 @@ const Index = (props) => {
   }];
   const menu = (record) => {
     return (
-      <AuthControl action={props?.userInfo.actions} list={list} record={record} type="menu" />
+      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
     );
   };
   const columns = [{

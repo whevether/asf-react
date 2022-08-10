@@ -41,7 +41,22 @@ const Index = (props) => {
       props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })
         .then(res=>{
           setDrawType(type);
-          setFromData(menuFrom(res));
+          let from = menuFrom(res);
+          //判断是否为超级管理员。如果为则显示选择租户
+          if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
+            from.unshift({
+              title: '租户',
+              fromType: 'select',
+              name: 'tenancyId',
+              selOption: props?.tenancyList,
+              placeholder: '请选择租户',
+              rules: [{ required: true, message: '租户不能为空' }],
+              options: {
+                allowClear: true//是否显示清除框
+              }
+            });
+          }
+          setFromData(from);
           setShowDarw(true);
         });
     }
@@ -119,7 +134,7 @@ const Index = (props) => {
   }];
   const menu = (record) => {
     return (
-      <AuthControl action={props?.userInfo?.actions} list={list} record={record} type="menu" />
+      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
     );
   };
   const columns = [{
