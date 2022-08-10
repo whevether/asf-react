@@ -255,7 +255,7 @@ const AccountList = (props) => {
     }
   }, {
     name: '删除账户',
-    permission: 'account.delete.[0-9]{1,12}',
+    permission: 'account.delete.[0-9]{1,100}',
     click: (data) => {
       Modal.confirm({
         title: '确人是否删除用户!!!',

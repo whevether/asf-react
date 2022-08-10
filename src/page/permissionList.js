@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { permissionSearchFrom,permissionFrom } from 'utils/json';
+import { permissionSearchFrom, permissionFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as permissionAction from 'store/actions/permission';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer, Switch } from 'antd';
+import { Dropdown, Drawer, Switch, notification } from 'antd';
 import { DownOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const PermissionList = (props) => {
@@ -31,29 +31,44 @@ const PermissionList = (props) => {
   };
   // 打开抽屉
   const onOpenDarw = (type) => {
-    if(type === 0 || type === 1){
+    if (type === 0 || type === 1) {
       let list = props?.permission?.list;
-      if(!list.some(f=>f.value === 0)){
-        list.unshift({label:'顶级权限',value: 0,children: []});
+      if (!list.some(f => f.value === 0)) {
+        list.unshift({ label: '顶级权限', value: 0, children: [] });
+      }
+      let from = permissionFrom(list);
+      //判断是否为超级管理员。如果为则显示选择租户
+      if (props?.userInfo?.roleName?.indexOf('superadmin') > -1) {
+        from.unshift({
+          title: '租户',
+          fromType: 'select',
+          name: 'tenancyId',
+          selOption: props?.tenancyList,
+          placeholder: '请选择租户',
+          rules: [{ required: true, message: '租户不能为空' }],
+          options: {
+            allowClear: true//是否显示清除框
+          }
+        });
       }
       setDrawType(type);
-      setFromData(permissionFrom(list));
+      setFromData(from);
       setShowDarw(true);
     }
   };
   //提交表单
   const onFinish = (data) => {
-    if(drawType === 0){
+    if (drawType === 0) {
       data.parentId = data?.parentId.slice(-1)[0];
       props?.permissionFunc?.createPermission(data)
-      .then(()=>{
-        notification['success']({
-          message: '添加成功',
-          description: '添加权限成功'
+        .then(() => {
+          notification['success']({
+            message: '添加成功',
+            description: '添加权限成功'
+          });
+          props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 20 });
+          setShowDarw(false);
         });
-        props?.permissionFunc?.fetchPermissionList({pageNo:0,pageSize: 20});
-        setShowDarw(false);
-      });
     }
   };
   // 提交表格查询

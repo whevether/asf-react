@@ -213,13 +213,13 @@ export const permissionFrom = (opt) => [{
   placeholder: '请选择权限类型',
   selOption: [{
     name: '菜单',
-    id: 0
-  }, {
-    name: '菜单条目',
     id: 1
   }, {
-    name: '功能',
+    name: '菜单条目',
     id: 2
+  }, {
+    name: '功能',
+    id: 3
   }],
   rules: [{ required: true, message: '权限类型不能为空' }],
   options: {
