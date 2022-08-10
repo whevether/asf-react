@@ -178,10 +178,15 @@ const Index = (props) => {
     // eslint-disable-next-line
     render: (text, record) => {
       let statusMap = {
-        0: '否',
-        1: '是'
+        0: '显示',
+        1: '隐藏'
       };
-      return statusMap[text];
+      return props?.userInfo.actions.includes('menu.modifyhidden') ? <Switch checked={Boolean(text)} checkedChildren="隐藏"
+        unCheckedChildren="显示" onChange={(e) => {
+          props?.menuFunc?.modifyHidden({ id: record?.id, status: Number(e) }).then(() => {
+            props?.menuFunc?.fetchMenuList();
+          });
+        }} /> : statusMap[text];
     }
   }, {
     title: '多语言',

@@ -8,3 +8,8 @@ export const fetchMenuList = (params) => async (dispatch,getState,api)=> {
     payload: res
   });
 };
+// 修改是否显示菜单
+export const modifyHidden = (params) => async(dispatch,getState,api) => {
+  const res = await api.put('/asf/menu/modifyHidden',params);
+  return res?.result;
+};

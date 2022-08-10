@@ -253,26 +253,69 @@ export const menuSearchFrom = [{
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
 }];
 export const menuFrom = (options)=>[{
-  title: '菜单名',
+  title: '菜单标题',
   fromType: 'input',
   inputType: 'text',
   name: 'title',
-  placeholder: '请输入菜单名',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的菜单名或最多输入50个字符的菜单名' }]
+  placeholder: '请输入菜单标题',
+  rules: [{required: true,message:'菜单标题不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的菜单名或最多输入50个字符的菜单标题' }]
 },{
   title: '菜单地址',
   fromType: 'input',
   inputType: 'text',
   name: 'menuUrl',
   placeholder: '请输入菜单地址',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
+  rules: [{required: true,message:'菜单地址不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
 },{
-  title: '权限',
+  title: '菜单副标题',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'subtitle',
+  placeholder: '请输入菜单副标题',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单副标题或最多输入50个字符的菜单副标题' }]
+},{
+  title: '菜单外部链接',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'externalLink',
+  placeholder: '请输入菜单外部链接',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单外部链接或最多输入50个字符的菜单外部链接' }]
+},{
+  title: '菜单重定向地址',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'menuRedirect',
+  placeholder: '请输入菜单重定向地址',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单重定向地址或最多输入50个字符的菜单重定向地址' }]
+},{
+  title: '菜单说明',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'menuRedirect',
+  placeholder: '请输入菜单说明',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单说明或最多输入50个字符的菜单说明' }]
+},{
+  title: '菜单所属权限',
   fromType: 'cascader',
   selOption: options,
   name: 'permissionId',
-  placeholder: '请选择权限',
-  rules: [{ required: true, message: '权限不能为空' }],
+  placeholder: '请选择菜单所属权限',
+  rules: [{ required: true, message: '菜单所属权限不能为空' }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: '是否隐藏菜单',
+  fromType: 'select',
+  name: 'menHidden',
+  placeholder: '请选择是否隐藏菜单',
+  selOption: [{
+    name: '否',
+    id: 0
+  }, {
+    name: '是',
+    id: 1
+  }],
   options: {
     allowClear: true//是否显示清除框
   }
