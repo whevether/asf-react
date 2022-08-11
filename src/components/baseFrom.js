@@ -25,7 +25,7 @@ const BaseFrom = (props) => {
           }
         </Select></Form.Item>);
     } else if (item?.fromType === 'cascader') {
-      return <Form.Item label={item?.title} key={i}><Form.Item name={item?.name} rules={item?.rules} noStyle><Cascader placeholder={item?.placeholder} allowClear={item?.options?.allowClear} options={item?.selOption} /></Form.Item> </Form.Item>;
+      return <Form.Item label={item?.title} key={i}><Form.Item name={item?.name} rules={item?.rules} noStyle><Cascader placeholder={item?.placeholder} allowClear={item?.options?.allowClear} options={item?.selOption} changeOnSelect/></Form.Item> </Form.Item>;
     } else if (item?.fromType === 'switch') {
       return <Form.Item name={item?.name} label={item?.title} key={i} rules={item?.rules} valuePropName="checked"> <Switch checkedChildren={item?.options?.yes} unCheckedChildren={item?.options?.no} /> </Form.Item>;
     } else if (item?.fromType === 'inputnumber') {

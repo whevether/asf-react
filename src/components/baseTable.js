@@ -68,7 +68,7 @@ const BaseTable = (props) => {
               重置
             </Button>
             {/* 权限按钮 */}
-            <AuthControl action={props?.action} list={props?.list} type="button" />
+            <AuthControl userInfo={props?.userInfo} list={props?.list} type="button" />
           </Form.Item>
         </Form>
       </div>}
@@ -85,7 +85,7 @@ BaseTable.propTypes = {
   querySubmit: PropTypes.func,
   pagination: PropTypes.object,
   formObj: PropTypes.arrayOf(Object),
-  action: PropTypes.arrayOf(String),
+  userInfo: PropTypes.object,
   list: PropTypes.arrayOf(Object)
 };
 export default BaseTable;

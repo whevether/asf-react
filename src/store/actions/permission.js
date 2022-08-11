@@ -26,3 +26,11 @@ export const deletePermission = (id) => async (dispatch,getState,api)=> {
   return res?.result;
 };
 
+//获取权限详情
+export const detailsPermission = (params) => async (dispatch,getState,api)=> {
+  const res = await api.get('/asf/permission/details',{
+    params: params
+  });
+  return res?.result;
+};
+

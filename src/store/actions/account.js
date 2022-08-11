@@ -21,7 +21,9 @@ export const modifyAccount = (params) => async(dispatch,getState,api) => {
 };
 // 获取账户详情
 export const getAccountDetails = (params)=>async(dispatch,getState,api) => {
-  const res = await api.get('/asf/account/details',params);
+  const res = await api.get('/asf/account/details',{
+    params:params
+  });
   return res?.result;
 };
 //软删除账户

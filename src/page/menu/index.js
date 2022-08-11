@@ -90,14 +90,14 @@ const Index = (props) => {
       setInitFromValue({
         'id': data?.id,
         'tenancyId': data?.tenancyId,
-        'code': data?.code,
-        'parentId':  data?.parentId == 0 ? [data?.parentId]:[data?.parentId, data?.id],
-        'name': data?.name,
-        'type': data?.type,
+        'title': data?.title,
+        'subtitle': data?.subtitle,
+        'menuUrl': data?.menuUrl,
+        'externalLink': data?.externalLink,
         'isSystem': data?.isSystem,
         'description': data?.description,
-        'enable': data?.enable,
-        'sort': data?.sort
+        'menuRedirect': data?.menuRedirect,
+        'menHidden': data?.menHidden
       });
       onOpenDarw(1);
     }
@@ -230,12 +230,13 @@ const Index = (props) => {
     }
   }];
   const mapTitle = {
-    0: '添加菜单'
+    0: '添加菜单',
+    1: '修改菜单'
   };
   return (
     <div className="list">
       {head('菜单列表')}
-      <BaseTable formObj={menuSearchFrom} querySubmit={querySubmit} dataSource={props?.menu?.list} columns={columns} pagination={pagination} action={props?.userInfo?.actions} list={[{ name: '添加菜单', permission: 'menu.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
+      <BaseTable formObj={menuSearchFrom} querySubmit={querySubmit} dataSource={props?.menu?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加菜单', permission: 'menu.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
       <Drawer
         title={mapTitle[drawType]}
         width={720}
