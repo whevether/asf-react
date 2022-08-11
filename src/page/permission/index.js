@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { permissionSearchFrom, permissionFrom } from 'utils/json';
+import { permissionSearchFrom, permissionFrom,assignFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as permissionAction from 'store/actions/permission';
+import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
-import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { CloudSyncOutlined, DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+/* eslint-disable no-extra-semi */
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
-  const [drawType, setDrawType] = useState(0); // 0 添加 权限
+  const [drawType, setDrawType] = useState(0); // 0 添加 权限 1修改权限, 2 分配权限
   const [initFromValue, setInitFromValue] = useState(null);
+  const [permissionIds,setPermissionIds] = useState([]);
   //获取账户列表
   useEffect(() => {
     props?.permissionFunc?.fetchPermissionList({ pageSize: 200, pageNo: 1 });
@@ -54,6 +57,14 @@ const Index = (props) => {
       setDrawType(type);
       setFromData(from);
       setShowDarw(true);
+    }else if(type === 2){
+      props?.commonFunc?.getRoleList()
+        .then(res => {
+          let from = assignFrom('分配角色', '角色', res,'id','select','');
+          setDrawType(type);
+          setFromData(from);
+          setShowDarw(true);
+        });
     }
   };
   //提交表单
@@ -71,13 +82,25 @@ const Index = (props) => {
             props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 });
           },500);
         });
-    }else {
+    }else if(drawType === 1){
       data.parentId = data?.parentId.slice(-1)[0];
       props?.permissionFunc?.modifyPermission(data)
         .then(() => {
           notification['success']({
             message: '修改成功',
             description: '修改权限成功'
+          });
+          setShowDarw(false);
+          setTimeout(()=>{
+            props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 });
+          },500);
+        });
+    }else if(drawType === 2){
+      props?.permissionFunc.assignPermission({...data,ids:permissionIds})
+        .then(()=>{
+          notification['success']({
+            message: '分配成功',
+            description: '分配权限成功'
           });
           setShowDarw(false);
           setTimeout(()=>{
@@ -115,6 +138,13 @@ const Index = (props) => {
     permission: 'permission.details',
     click: (data) => {
       console.log(data);
+    }
+  },{
+    name: '分配权限到角色',
+    permission: 'permission.assignpermission',
+    click: (data) => {
+      setPermissionIds([data.id]);
+      onOpenDarw(2);
     }
   }, {
     name: '删除权限',
@@ -250,10 +280,24 @@ const Index = (props) => {
     0: '添加权限',
     1: '修改权限'
   };
+  // rowSelection objects indicates the need for row selection
+const rowSelection = {
+  // onChange: (selectedRowKeys, selectedRows) => {
+  //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+  // },
+  onSelect: (record, selected, selectedRows) => {
+    let ids = selectedRows.map(m=>m.key);
+    setPermissionIds(ids);
+  },
+  onSelectAll: (selected, selectedRows, changeRows) => {
+    let ids = changeRows.map(m=>m.key);
+    setPermissionIds(ids);
+  },
+};
   return (
     <div className="list">
       {head('权限列表')}
-      <BaseTable formObj={permissionSearchFrom} querySubmit={querySubmit} dataSource={props?.permission?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加权限', permission: 'permission.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
+      <BaseTable formObj={permissionSearchFrom} querySubmit={querySubmit} dataSource={props?.permission?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加权限', permission: 'permission.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } },{ name: '分配权限到角色', permission: 'permission.assignpermission', type: 'primary', icon: <CloudSyncOutlined />, click: () => {if(permissionIds?.length === 0) {notification.error({message: '权限不能为空,请先选择权限'}); return;} ;setInitFromValue(null); onOpenDarw(2); } }]} rowSelection={{...rowSelection,checkStrictly:false}}/>
       <Drawer
         title={mapTitle[drawType]}
         width={720}
@@ -268,6 +312,7 @@ const Index = (props) => {
 Index.propTypes = {
   permissionFunc: PropTypes.object,
   userInfo: PropTypes.object,
+  commonFunc: PropTypes.object,
   permission: PropTypes.object,
   tenancyList: PropTypes.arrayOf(Object),
   roleName: PropTypes.string,
@@ -279,6 +324,7 @@ export default connect(state => ({
   tenancyList: state?.common?.tenancyList
 }), dispatch => {
   return {
-    permissionFunc: bindActionCreators(permissionAction, dispatch)
+    permissionFunc: bindActionCreators(permissionAction, dispatch),
+    commonFunc: bindActionCreators(commonAction,dispatch)
   };
 })(Index);

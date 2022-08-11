@@ -398,6 +398,7 @@ export const apiSearchFrom = [{
   title: 'api请求方法',
   fromType: 'select',
   name: 'httpMethod',
+  mode: 'multiple',
   placeholder: '请选择api请求方法',
   selOption: [{
     name: 'get',
@@ -505,8 +506,9 @@ export const apiFrom = (options) => [{
   title: 'api请求方法',
   fromType: 'select',
   name: 'httpMethod',
+  mode: 'multiple',
   placeholder: '请选择api请求方法',
-  rules: [{required: true,message: 'api请求方法不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的api方法或最多输入50个字符的api方法' }],
+  rules: [{required: true,message: 'api请求方法不能为空'},{ type: 'string', min: 1, max: 50, message: '最少输入2个字符的api方法或最多输入50个字符的api方法' }],
   selOption: [{
     name: 'get',
     id: 'get'

@@ -39,3 +39,8 @@ export const detailsPermission = (params) => async (dispatch,getState,api)=> {
   return res?.result;
 };
 
+// 分配权限到角色
+export const assignPermission = (data) => async (dispatch,getState,api)=> {
+  const res = await api.put('/asf/permission/assignPermission',data);
+  return res?.result;
+};

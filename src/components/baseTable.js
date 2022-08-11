@@ -73,7 +73,7 @@ const BaseTable = (props) => {
         </Form>
       </div>}
       {
-        props?.columns && <Table dataSource={props?.dataSource} columns={props?.columns} scroll={{ x: props?.x ?? 968 }} pagination={props?.pagination} />
+        props?.columns && <Table dataSource={props?.dataSource} columns={props?.columns} scroll={{ x: props?.x ?? 968 }} pagination={props?.pagination} rowSelection={props?.rowSelection}/>
       }
     </div>
   );
@@ -82,6 +82,7 @@ BaseTable.propTypes = {
   x: PropTypes.number,
   dataSource: PropTypes.arrayOf(Object).isRequired,
   columns: PropTypes.arrayOf(Object).isRequired,
+  rowSelection: PropTypes.object,
   querySubmit: PropTypes.func,
   pagination: PropTypes.object,
   formObj: PropTypes.arrayOf(Object),

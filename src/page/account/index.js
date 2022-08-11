@@ -65,7 +65,7 @@ const Index = (props) => {
     } else if (type === 2) {
       props?.commonFunc?.getRoleList()
         .then(res => {
-          let from = assignFrom('分配角色权限', '角色', res);
+          let from = assignFrom('分配角色', '角色', res);
           setDrawType(type);
           setFromData(from);
           setShowDarw(true);
