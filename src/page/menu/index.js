@@ -199,6 +199,10 @@ const Index = (props) => {
       return props?.userInfo.actions.includes('menu.modifyhidden') ? <Switch checked={Boolean(text)} checkedChildren="隐藏"
         unCheckedChildren="显示" onChange={(e) => {
           props?.menuFunc?.modifyHidden({ id: record?.id, status: Number(e) }).then(() => {
+            notification['success']({
+              message: '修改成功',
+              description: '修改菜单显示状态成功'
+            });
             props?.menuFunc?.fetchMenuList();
           });
         }} /> : statusMap[text];

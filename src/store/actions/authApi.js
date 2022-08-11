@@ -18,6 +18,11 @@ export const modifyApi = (params) => async(dispatch,getState,api) => {
   const res = await api.put('/asf/api/modify',params);
   return res?.result;
 };
+//修改api
+export const modifyStatus = (params) => async(dispatch,getState,api) => {
+  const res = await api.put('/asf/api/modifyStatus',params);
+  return res?.result;
+};
 // api详情
 export const detailsMenu = (params) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/api/details',{

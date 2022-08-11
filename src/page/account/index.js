@@ -378,6 +378,10 @@ const Index = (props) => {
       return props?.userInfo.actions.includes('account.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
         unCheckedChildren="禁用" onChange={(e) => {
           props?.accountFunc?.modifyAccountStatus({ id: record?.id, status: Number(e) }).then(() => {
+            notification['success']({
+              message: '修改成功',
+              description: '修改账户状态成功'
+            });
             props?.accountFunc?.fetchAccountList();
           });
         }} /> : statusMap[text];

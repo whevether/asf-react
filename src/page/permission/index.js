@@ -211,7 +211,11 @@ const Index = (props) => {
       };
       return props?.userInfo?.actions.includes('permission.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
         unCheckedChildren="禁用" onChange={(e) => {
-          props?.permissionFunc?.modifyAccountStatus({ id: record?.id, status: Number(e) }).then(() => {
+          props?.permissionFunc?.modifyStatus({ id: record?.id, status: Number(e) }).then(() => {
+            notification['success']({
+              message: '修改成功',
+              description: '修改权限状态状态成功'
+            });
             props?.permissionFunc?.fetchPermissionList();
           });
         }} /> : statusMap[text];

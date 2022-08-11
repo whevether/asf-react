@@ -152,12 +152,21 @@ const Index = (props) => {
     dataIndex: 'status',
     width: 150,
     key: 'status',
-    render: (text)=>{
+    render: (text,record)=>{
       const mapStatus = {
         0: '禁用',
         1: '启用'
       };
-      return mapStatus[text];
+      return props?.userInfo.actions.includes('api.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
+      unCheckedChildren="禁用" onChange={(e) => {
+        props?.apiAuthFunc?.modifyStatus({ id: record?.id, status: Number(e) }).then(() => {
+          notification['success']({
+            message: '修改成功',
+            description: '修改api状态成功'
+          });
+          props?.apiAuthFunc?.fetchApiList();
+        });
+      }} />  : mapStatus[text];
     }
   },{
     title: 'api类型',
