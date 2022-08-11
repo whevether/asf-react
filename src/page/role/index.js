@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { apiSearchFrom, apiFrom } from 'utils/json';
+import { roleSearchFrom, apiFrom } from 'utils/json';
 import PropTypes from 'prop-types';
-import * as apiAuthAction from 'store/actions/authApi';
+import * as roleAuthAction from 'store/actions/role';
 import * as permissionAction from 'store/actions/permission';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -13,17 +13,17 @@ import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
-  const [drawType, setDrawType] = useState(0); // 0 添加 api 1: 修改api
+  const [drawType, setDrawType] = useState(0); // 0 添加 角色 1: 修改角色
   const [initFromValue, setInitFromValue] = useState(null);
   //获取账户列表
   useEffect(() => {
-    props?.apiAuthFunc?.fetchApiList();
+    props?.roleFunc?.fetchRoleList();
   }, []);
   // 分页对象
   const pagination = {
-    total: props?.authApi?.listTotal,
+    total: props?.role?.listTotal,
     onChange: (page, pageSize) => {
-      props?.apiAuthFunc?.fetchApiList({ pageNo: page, pageSize: pageSize });
+      props?.roleFunc?.fetchRoleList({ pageNo: page, pageSize: pageSize });
     },
     pageSize: 20,
     pageSizeOptions: ['10', '20', '50', '100'],
@@ -61,42 +61,42 @@ const Index = (props) => {
     if (drawType === 0) {
       data.permissionId = data?.permissionId.slice(-1)[0];
       data.httpMethods = data?.httpMethods.join(',');
-      props?.apiAuthFunc?.createApi(data)
+      props?.roleFunc?.createRole(data)
         .then(() => {
           notification['success']({
             message: '添加成功',
-            description: '添加api成功'
+            description: '添加角色成功'
           });
           setShowDarw(false);
           setTimeout(()=>{
-            props?.apiAuthFunc?.fetchApiList({ pageNo: 0, pageSize: 20 });
+            props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
           },500);
         });
     }else if(drawType === 1){
       data.permissionId = data?.permissionId.slice(-1)[0];
       data.httpMethods = data?.httpMethods.join(',');
       data.id = initFromValue.id;
-      props?.apiAuthFunc?.modifyApi(data)
+      props?.roleFunc?.modifyRole(data)
         .then(() => {
           notification['success']({
             message: '修改成功',
-            description: '修改api成功'
+            description: '修改角色成功'
           });
           setShowDarw(false);
           setTimeout(()=>{
-            props?.apiAuthFunc?.fetchApiList({ pageNo: 0, pageSize: 20 });
+            props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
           },500);
         });
     }
   };
   // 提交表格查询
   const querySubmit = (e) => {
-    props?.apiAuthFunc?.fetchApiList(e);
+    props?.roleFunc?.fetchRoleList(e);
   };
   // 修改
   const list = [{
-    name: '修改api',
-    permission: 'api.modify',
+    name: '修改角色',
+    permission: 'role.modify',
     isAction: true,
     click: (data) => {
       setInitFromValue({
@@ -114,30 +114,30 @@ const Index = (props) => {
       onOpenDarw(1);
     }
   }, {
-    name: 'api详情',
-    permission: 'api.details',
+    name: '角色详情',
+    permission: 'role.details',
     click: (data) => {
       console.log(data);
     }
   }, {
-    name: '删除api',
-    permission: 'api.delete.[0-9]{1,100}',
+    name: '删除角色',
+    permission: 'role.delete.[0-9]{1,100}',
     click: (data) => {
       Modal.confirm({
-        title: '确人删除api!!!',
+        title: '确人删除角色!!!',
         icon: <ExclamationCircleOutlined />,
-        content: '删除api之后将无法恢复!!!',
+        content: '删除角色之后将无法恢复,会影响其他用户，请谨慎操作!!!',
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
-          props?.apiAuthFunc.deleteapi(data?.id)
+          props?.roleFunc.deleteRole(data?.id)
             .then(() => {
               notification['success']({
                 message: '删除成功',
-                description: '删除api成功'
+                description: '删除角色成功'
               });
               setTimeout(()=>{
-                props?.apiAuthFunc?.fetchApiList({ pageNo: 0, pageSize: 20 });
+                props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
               },500);
             });
         }
@@ -156,82 +156,31 @@ const Index = (props) => {
     fixed: 'left',
     width: '100px'
   }, {
-    title: 'api名称',
+    title: '角色名称',
     dataIndex: 'name',
     width: 150,
     key: 'name'
   },{
-    title: '请求方法',
-    dataIndex: 'httpMethods',
-    width: 150,
-    key: 'httpMethods'
-  },{
-    title: 'api状态',
+    title: '角色状态',
     dataIndex: 'status',
     width: 150,
     key: 'status',
     render: (text,record)=>{
       const mapStatus = {
-        0: '禁用',
-        1: '启用'
+        0: '启用',
+        1: '禁用'
       };
-      return props?.userInfo.actions.includes('api.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="启用"
-      unCheckedChildren="禁用" onChange={(e) => {
-        props?.apiAuthFunc?.modifyStatus({ id: record?.id, status: Number(e) }).then(() => {
+      return props?.userInfo.actions.includes('role.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="禁用"
+      unCheckedChildren="启用" onChange={(e) => {
+        props?.roleFunc?.modifyStatus({ id: record?.id, status: Number(e) }).then(() => {
           notification['success']({
             message: '修改成功',
-            description: '修改api状态成功'
+            description: '修改角色状态成功'
           });
-          props?.apiAuthFunc?.fetchApiList();
+          props?.roleFunc?.fetchRoleList();
         });
       }} />  : mapStatus[text];
     }
-  },{
-    title: 'api类型',
-    dataIndex: 'type',
-    width: 150,
-    key: 'type',
-    render: (text)=>{
-      const mapStatus = {
-        1: '公共api',
-        2: '授权api'
-      };
-      return mapStatus[text];
-    }
-  },{
-    title: '是否为系统api',
-    dataIndex: 'isSystem',
-    width: 150,
-    key: 'isSystem',
-    render: (text)=>{
-      const mapStatus = {
-        0: '否',
-        1: '是'
-      };
-      return mapStatus[text];
-    }
-  },{
-    title: '是否记录日志',
-    dataIndex: 'isLogger',
-    width: 150,
-    key: 'isLogger',
-    render: (text)=>{
-      const mapStatus = {
-        0: '否',
-        1: '是'
-      };
-      return mapStatus[text];
-    }
-  },{
-    title: 'api地址',
-    dataIndex: 'path',
-    width: 150,
-    key: 'path'
-  }, {
-    title: '权限id',
-    dataIndex: 'permissionId',
-    width: 150,
-    key: 'permissionId'
   }, {
     title: '说明',
     dataIndex: 'description',
@@ -259,13 +208,13 @@ const Index = (props) => {
     }
   }];
   const mapTitle = {
-    0: '添加api',
-    1: '修改api'
+    0: '添加角色',
+    1: '修改角色'
   };
   return (
     <div className="list">
       {head('角色列表')}
-      <BaseTable formObj={apiSearchFrom} querySubmit={querySubmit} dataSource={props?.authApi?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加api', permission: 'api.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
+      <BaseTable formObj={roleSearchFrom} querySubmit={querySubmit} dataSource={props?.role?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加角色', permission: 'role.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
       <Drawer
         title={mapTitle[drawType]}
         width={720}
@@ -278,21 +227,21 @@ const Index = (props) => {
   );
 };
 Index.propTypes = {
-  apiAuthFunc: PropTypes.object,
+  roleFunc: PropTypes.object,
   permissionFunc: PropTypes.object,
   userInfo: PropTypes.object,
-  authApi: PropTypes.object,
+  role: PropTypes.object,
   tenancyList: PropTypes.arrayOf(Object),
   roleName: PropTypes.string,
   initialValues: PropTypes.object
 };
 export default connect(state => ({
   userInfo: state?.common?.data,
-  authApi: state?.authApi,
+  role: state?.role,
   tenancyList: state?.common?.tenancyList
 }), dispatch => {
   return {
-    apiAuthFunc: bindActionCreators(apiAuthAction, dispatch),
+    roleFunc: bindActionCreators(roleAuthAction, dispatch),
     permissionFunc: bindActionCreators(permissionAction, dispatch)
   };
 })(Index);

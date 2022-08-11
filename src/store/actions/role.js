@@ -1,6 +1,6 @@
 import * as types from 'constants/types';
 export const fetchRoleList = (params) => async (dispatch,getState,api)=> {
-  const res = await api.get('/asf/api/getlist',{
+  const res = await api.get('/asf/role/getlist',{
     params: params
   });
   dispatch({

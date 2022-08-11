@@ -526,6 +526,30 @@ export const apiFrom = (options) => [{
     allowClear: true//是否显示清除框
   }
 }];
+
+export const roleSearchFrom = [{
+  title: '角色名称',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入角色名称',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的角色名称或最多输入50个字符的角色名称' }]
+},{
+  title: '是否启用角色',
+  fromType: 'select',
+  name: 'enable',
+  placeholder: '请选择是否启用状态',
+  selOption: [{
+    name: '禁用',
+    id: 0
+  }, {
+    name: '启用',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}];
 //权限添加
 export const permissionFrom = (opt) => [{
   title: '父级权限',
