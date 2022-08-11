@@ -76,6 +76,20 @@ const Index = (props) => {
             props?.menuFunc?.fetchMenuList({ pageNo: 0, pageSize: 20 });
           },500);
         });
+    }else if (drawType === 1) {
+      data.permissionId = data?.permissionId.slice(-1)[0];
+      data.id = initFromValue?.id;
+      props?.menuFunc?.modifyMenu(data)
+        .then(() => {
+          notification['success']({
+            message: '修改成功',
+            description: '修改菜单成功'
+          });
+          setShowDarw(false);
+          setTimeout(()=>{
+            props?.menuFunc?.fetchMenuList({ pageNo: 0, pageSize: 20 });
+          },500);
+        });
     }
   };
   // 提交表格查询

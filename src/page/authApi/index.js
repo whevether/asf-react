@@ -72,6 +72,21 @@ const Index = (props) => {
             props?.apiAuthFunc?.fetchApiList({ pageNo: 0, pageSize: 20 });
           },500);
         });
+    }else if(drawType === 1){
+      data.permissionId = data?.permissionId.slice(-1)[0];
+      data.httpMethods = data?.httpMethods.join(',');
+      data.id = initFromValue.id;
+      props?.apiAuthFunc?.modifyApi(data)
+        .then(() => {
+          notification['success']({
+            message: '修改成功',
+            description: '修改api成功'
+          });
+          setShowDarw(false);
+          setTimeout(()=>{
+            props?.apiAuthFunc?.fetchApiList({ pageNo: 0, pageSize: 20 });
+          },500);
+        });
     }
   };
   // 提交表格查询
@@ -88,7 +103,8 @@ const Index = (props) => {
         'id': data?.id,
         'tenancyId': data?.tenancyId,
         'name': data?.name,
-        'httpMethods': data?.httpMethods,
+        'path': data?.path,
+        'httpMethods': data?.httpMethods.split(','),
         'status': data?.status,
         'type': data?.type,
         'isSystem': data?.isSystem,

@@ -84,6 +84,7 @@ const Index = (props) => {
         });
     }else if(drawType === 1){
       data.parentId = data?.parentId.slice(-1)[0];
+      data.id = initFromValue.id;
       props?.permissionFunc?.modifyPermission(data)
         .then(() => {
           notification['success']({
