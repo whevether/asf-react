@@ -15,7 +15,7 @@ export const modifyHidden = (params) => async(dispatch,getState,api) => {
 };
 // 添加菜单
 export const createMenu = (params) => async(dispatch,getState,api) => {
-  const res = await api.put('/asf/menu/create',params);
+  const res = await api.post('/asf/menu/create',params);
   return res?.result;
 };
 // 修改菜单

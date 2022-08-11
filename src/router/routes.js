@@ -17,6 +17,7 @@ const ModifyEditorPage = LoadableComponent(() => import(/* webpackPrefetch: true
 const CreateEditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/editor/add'));
 const PermissionPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/permission/index'));
 const MenuPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/menu/index'));
+const AuthApiPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/authApi/index'));
 const routes = [{
   path: "/",
   element: <RootLayout />,
@@ -34,6 +35,9 @@ const routes = [{
     },{
       path: 'control/menu',
       element: <MenuPage />
+    },{
+      path: 'control/authapi',
+      element: <AuthApiPage />
     },{
       path: 'editor/getlist',
       element: <EditorPage />

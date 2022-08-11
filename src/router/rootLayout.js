@@ -13,11 +13,11 @@ const RootLayout = (props) => {
       props?.fetchTenancyList();
     }
   },[]);
-  const style = {position:'fixed',display: 'flex',width: '100%',height:'100%',alignItems:'center',justifyContent:'center',zIndex: 1 ,backgroundColor:'rgba(0,0,0,.3)'};
+  const style = {position:'fixed',display: 'flex',width: '100%',height:'100%',alignItems:'center',justifyContent:'center',backgroundColor:'rgba(0,0,0,.5)',zIndex: 9999};
   return (
     <div className="main" >
       {
-         props?.state?.common?.loading && <Spin tip="请求中。。。。。"  spinning={props?.state?.common?.loading} style={style}/>
+         props?.state?.common?.loading && <Spin tip="请求中。。。。。"  spinning={props?.state?.common?.loading} delay={500} style={style}/>
       }
       {
         props?.state?.common?.tenancyList &&  <Outlet />

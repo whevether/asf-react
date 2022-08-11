@@ -18,3 +18,5 @@ export const GET_EDITOR_LIST = 'GET_EDITOR_LIST';
 export const GET_EDITOR_LISTTITLE = 'GET_EDITOR_LISTTITLE';
 // 获取菜单列表
 export const GET_MENU_LIST = 'GET_MENU_LIST';
+// 获取api 列表
+export const GET_API_LIST = 'GET_API_LIST';

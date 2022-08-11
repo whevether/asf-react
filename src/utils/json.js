@@ -229,7 +229,7 @@ export const permissionSearchFrom = [{
     allowClear: true//是否显示清除框
   }
 }];
-//权限搜索
+//菜单搜索
 export const menuSearchFrom = [{
   title: '菜单名',
   fromType: 'input',
@@ -330,6 +330,156 @@ export const menuFrom = (options)=>[{
   }, {
     name: '是',
     id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}];
+//api搜索
+export const apiSearchFrom = [{
+  title: 'api名称',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入api名称',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的api名称或最多输入50个字符的api名称' }]
+},{
+  title: 'api所属权限id',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'permissionId',
+  placeholder: 'api所属权限id',
+  rules: [{ type: 'string', min: 1, max: 50, message: '最少输入1个字符的api所属权限id或最多输入50个字符的api所属权限id' }]
+},{
+  title: 'api地址',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'path',
+  placeholder: '请输入api地址',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的api地址或最多输入50个字符的api地址' }]
+},{
+  title: 'api状态',
+  fromType: 'select',
+  name: 'status',
+  placeholder: '请选择api状态',
+  selOption: [{
+    name: '禁用',
+    id: 0
+  }, {
+    name: '启用',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: 'api类型',
+  fromType: 'select',
+  name: 'type',
+  placeholder: '请选择api类型',
+  selOption: [{
+    name: '开放api',
+    id: 1
+  }, {
+    name: '授权api',
+    id: 2
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: 'api请求方法',
+  fromType: 'select',
+  name: 'httpMethod',
+  placeholder: '请选择api请求方法',
+  selOption: [{
+    name: 'get',
+    id: 'get'
+  }, {
+    name: 'post',
+    id: 'post'
+  }, {
+    name: 'put',
+    id: 'put'
+  }, {
+    name: 'delete',
+    id: 'delete'
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}];
+export const apiFrom = (options) => [{
+  title: '菜单所属权限',
+  fromType: 'cascader',
+  selOption: options,
+  name: 'permissionId',
+  placeholder: '请选择菜单所属权限',
+  rules: [{ required: true, message: '菜单所属权限不能为空' }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: 'api名称',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入api名称',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的api名称或最多输入50个字符的api名称' }]
+},{
+  title: 'api地址',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'path',
+  placeholder: '请输入api地址',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的api地址或最多输入50个字符的api地址' }]
+},{
+  title: 'api状态',
+  fromType: 'select',
+  name: 'status',
+  placeholder: '请选择api状态',
+  selOption: [{
+    name: '禁用',
+    id: 0
+  }, {
+    name: '启用',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: 'api类型',
+  fromType: 'select',
+  name: 'type',
+  placeholder: '请选择api类型',
+  selOption: [{
+    name: '开放api',
+    id: 1
+  }, {
+    name: '授权api',
+    id: 2
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: 'api请求方法',
+  fromType: 'select',
+  name: 'httpMethod',
+  placeholder: '请选择api请求方法',
+  selOption: [{
+    name: 'get',
+    id: 'get'
+  }, {
+    name: 'post',
+    id: 'post'
+  }, {
+    name: 'put',
+    id: 'put'
+  }, {
+    name: 'delete',
+    id: 'delete'
   }],
   options: {
     allowClear: true//是否显示清除框
