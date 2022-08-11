@@ -30,7 +30,7 @@ export const accountFrom = [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: '岗位',
   fromType: 'select',
   mode: 'multiple',
@@ -117,7 +117,7 @@ export const accountFrom = [{
   }
 }];
 // 分配选择
-export const assignFrom = (title,desc,opt,name='ids',fromType = 'select', model = 'multiple') => [{
+export const assignFrom = (title, desc, opt, name = 'ids', fromType = 'select', model = 'multiple') => [{
   title: title,
   fromType: fromType,
   mode: model,
@@ -130,7 +130,7 @@ export const assignFrom = (title,desc,opt,name='ids',fromType = 'select', model 
   }
 }];
 // 手机号码
-export const telphoneFrom = ()=>[{
+export const telphoneFrom = () => [{
   title: '手机号码',
   fromType: 'input',
   inputType: 'text',
@@ -139,7 +139,7 @@ export const telphoneFrom = ()=>[{
   rules: [{ type: 'string', pattern: /^1[0-9]{10}$/, message: '输入的手机号码不正确' }]
 }];
 // 邮箱地址
-export const emailFrom = ()=>[{
+export const emailFrom = () => [{
   title: '邮箱地址',
   fromType: 'input',
   inputType: 'text',
@@ -153,7 +153,7 @@ export const emailFrom = ()=>[{
   }
 }];
 // 密码
-export const passwordFrom = ()=>[{
+export const passwordFrom = () => [{
   title: '密码',
   fromType: 'input',
   inputType: 'password',
@@ -173,14 +173,14 @@ export const permissionSearchFrom = [{
   name: 'name',
   placeholder: '请输入权限名',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名' }]
-},{
+}, {
   title: '权限代码',
   fromType: 'input',
   inputType: 'text',
   name: 'code',
   placeholder: '请输入权限代码',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的权限代码或最多输入50个字符的权限代码' }]
-},{
+}, {
   title: '权限类型',
   fromType: 'select',
   name: 'type',
@@ -198,7 +198,7 @@ export const permissionSearchFrom = [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: '权限状态',
   fromType: 'select',
   name: 'enable',
@@ -213,7 +213,7 @@ export const permissionSearchFrom = [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: '系统权限',
   fromType: 'select',
   name: 'isSystem',
@@ -237,14 +237,14 @@ export const menuSearchFrom = [{
   name: 'title',
   placeholder: '请输入菜单名',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的菜单名或最多输入50个字符的菜单名' }]
-},{
+}, {
   title: '菜单所属权限id',
   fromType: 'input',
   inputType: 'text',
   name: 'permissionId',
   placeholder: '菜单所属权限id',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单所属权限id或最多输入50个字符的菜单所属权限id' }]
-},{
+}, {
   title: '菜单地址',
   fromType: 'input',
   inputType: 'text',
@@ -252,7 +252,7 @@ export const menuSearchFrom = [{
   placeholder: '请输入菜单地址',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
 }];
-export const menuFrom = (options)=>[{
+export const menuFrom = (options) => [{
   title: '菜单所属权限',
   fromType: 'cascader',
   selOption: options,
@@ -262,56 +262,56 @@ export const menuFrom = (options)=>[{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: '菜单标题',
   fromType: 'input',
   inputType: 'text',
   name: 'title',
   placeholder: '请输入菜单标题',
-  rules: [{required: true,message:'菜单标题不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的菜单名或最多输入50个字符的菜单标题' }]
-},{
+  rules: [{ required: true, message: '菜单标题不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的菜单名或最多输入50个字符的菜单标题' }]
+}, {
   title: '菜单地址',
   fromType: 'input',
   inputType: 'text',
   name: 'menuUrl',
   placeholder: '请输入菜单地址',
-  rules: [{required: true,message:'菜单地址不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
-},{
+  rules: [{ required: true, message: '菜单地址不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
+}, {
   title: '菜单图标',
   fromType: 'input',
   inputType: 'text',
   name: 'icon',
   placeholder: '请输入菜单图标',
-  rules: [{required: true,message:'菜单图标不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单图标或最多输入50个字符的菜单图标' }]
-},{
+  rules: [{ required: true, message: '菜单图标不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单图标或最多输入50个字符的菜单图标' }]
+}, {
   title: '菜单副标题',
   fromType: 'input',
   inputType: 'text',
   name: 'subtitle',
   placeholder: '请输入菜单副标题',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单副标题或最多输入50个字符的菜单副标题' }]
-},{
+}, {
   title: '菜单外部链接',
   fromType: 'input',
   inputType: 'text',
   name: 'externalLink',
   placeholder: '请输入菜单外部链接',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单外部链接或最多输入50个字符的菜单外部链接' }]
-},{
+}, {
   title: '菜单重定向地址',
   fromType: 'input',
   inputType: 'text',
   name: 'menuRedirect',
   placeholder: '请输入菜单重定向地址',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单重定向地址或最多输入50个字符的菜单重定向地址' }]
-},{
+}, {
   title: '菜单说明',
   fromType: 'input',
   inputType: 'text',
   name: 'description',
   placeholder: '请输入菜单说明',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单说明或最多输入50个字符的菜单说明' }]
-},{
+}, {
   title: '是否隐藏菜单',
   fromType: 'select',
   name: 'menHidden',
@@ -326,7 +326,7 @@ export const menuFrom = (options)=>[{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: '是否为系统菜单',
   fromType: 'select',
   name: 'isSystem',
@@ -350,21 +350,21 @@ export const apiSearchFrom = [{
   name: 'name',
   placeholder: '请输入api名称',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的api名称或最多输入50个字符的api名称' }]
-},{
+}, {
   title: 'api所属权限id',
   fromType: 'input',
   inputType: 'text',
   name: 'permissionId',
   placeholder: 'api所属权限id',
   rules: [{ type: 'string', min: 1, max: 50, message: '最少输入1个字符的api所属权限id或最多输入50个字符的api所属权限id' }]
-},{
+}, {
   title: 'api地址',
   fromType: 'input',
   inputType: 'text',
   name: 'path',
   placeholder: '请输入api地址',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的api地址或最多输入50个字符的api地址' }]
-},{
+}, {
   title: 'api状态',
   fromType: 'select',
   name: 'status',
@@ -379,7 +379,7 @@ export const apiSearchFrom = [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: 'api类型',
   fromType: 'select',
   name: 'type',
@@ -394,7 +394,7 @@ export const apiSearchFrom = [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: 'api请求方法',
   fromType: 'select',
   name: 'httpMethods',
@@ -427,21 +427,21 @@ export const apiFrom = (options) => [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: 'api名称',
   fromType: 'input',
   inputType: 'text',
   name: 'name',
   placeholder: '请输入api名称',
-  rules: [{required: true,message: 'api名称不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的api名称或最多输入50个字符的api名称' }]
-},{
+  rules: [{ required: true, message: 'api名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的api名称或最多输入50个字符的api名称' }]
+}, {
   title: 'api地址',
   fromType: 'input',
   inputType: 'text',
   name: 'path',
   placeholder: '请输入api地址',
-  rules: [{required: true,message: 'api地址不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的api地址或最多输入50个字符的api地址' }]
-},{
+  rules: [{ required: true, message: 'api地址不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入1个字符的api地址或最多输入50个字符的api地址' }]
+}, {
   title: 'api状态',
   fromType: 'select',
   name: 'status',
@@ -456,7 +456,7 @@ export const apiFrom = (options) => [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: '是否记录日志',
   fromType: 'select',
   name: 'isLogger',
@@ -471,7 +471,7 @@ export const apiFrom = (options) => [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: '是否为系统权限',
   fromType: 'select',
   name: 'isSystem',
@@ -486,12 +486,12 @@ export const apiFrom = (options) => [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: 'api类型',
   fromType: 'select',
   name: 'type',
   placeholder: '请选择api类型',
-  rules: [{required: true,message: 'api类型不能为空'}],
+  rules: [{ required: true, message: 'api类型不能为空' }],
   selOption: [{
     name: '开放api',
     id: 1
@@ -502,13 +502,13 @@ export const apiFrom = (options) => [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: 'api请求方法',
   fromType: 'select',
   name: 'httpMethods',
   mode: 'multiple',
   placeholder: '请选择api请求方法',
-  rules: [{required: true,message: 'api请求方法不能为空'}],
+  rules: [{ required: true, message: 'api请求方法不能为空' }],
   selOption: [{
     name: 'get',
     id: 'get'
@@ -534,7 +534,7 @@ export const roleSearchFrom = [{
   name: 'name',
   placeholder: '请输入角色名称',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的角色名称或最多输入50个字符的角色名称' }]
-},{
+}, {
   title: '是否启用角色',
   fromType: 'select',
   name: 'enable',
@@ -550,6 +550,52 @@ export const roleSearchFrom = [{
     allowClear: true//是否显示清除框
   }
 }];
+export const roleFrom = (options) => {
+  let arr = [{
+    title: '角色名称',
+    fromType: 'input',
+    inputType: 'text',
+    name: 'name',
+    placeholder: '请输入角色名称',
+    rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的角色名称或最多输入50个字符的角色名称' }]
+  }, {
+    title: '是否启用角色',
+    fromType: 'select',
+    name: 'enable',
+    placeholder: '请选择是否启用状态',
+    selOption: [{
+      name: '禁用',
+      id: 0
+    }, {
+      name: '启用',
+      id: 1
+    }],
+    options: {
+      allowClear: true//是否显示清除框
+    }
+  }, {
+    title: '权限说明',
+    fromType: 'input',
+    inputType: 'text',
+    name: 'description',
+    placeholder: '请输入权限说明',
+    rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限说明或最多输入50个字符的权限说明' }]
+  }]
+  if (options) {
+    arr.unshift({
+      title: '角色所属权限',
+      fromType: 'select',
+      selOption: options,
+      name: 'permissionId',
+      placeholder: '请选择角色所属权限',
+      rules: [{ required: true, message: '角色所属权限不能为空' }],
+      options: {
+        allowClear: true//是否显示清除框
+      }
+    });
+  }
+  return arr;
+};
 //权限添加
 export const permissionFrom = (opt) => [{
   title: '父级权限',
@@ -561,21 +607,21 @@ export const permissionFrom = (opt) => [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: '权限代码(页面路径,不包含域名)',
   fromType: 'input',
   inputType: 'text',
   name: 'code',
   placeholder: '请输入权限代码(页面路径)',
-  rules: [{ required: true, message: '权限类型不能为空' },{ type: 'string', min: 1, max: 50, message: '最少输入1个字符的权限代码(页面路径)或最多输入50个字符的权限代码(页面路径)' }]
-},{
+  rules: [{ required: true, message: '权限类型不能为空' }, { type: 'string', min: 1, max: 50, message: '最少输入1个字符的权限代码(页面路径)或最多输入50个字符的权限代码(页面路径)' }]
+}, {
   title: '权限名称',
   fromType: 'input',
   inputType: 'text',
   name: 'name',
   placeholder: '请输入权限名称',
-  rules: [{ required: true, message: '权限类型不能为空' },{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名称' }]
-},{
+  rules: [{ required: true, message: '权限类型不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名称' }]
+}, {
   title: '权限说明',
   fromType: 'input',
   inputType: 'text',
@@ -616,12 +662,12 @@ export const permissionFrom = (opt) => [{
   options: {
     allowClear: true//是否显示清除框
   }
-},{
+}, {
   title: '排序',
   fromType: 'inputnumber',
   name: 'sort',
   placeholder: '请输入排序'
-},{
+}, {
   title: '是否启用',
   fromType: 'select',
   name: 'enable',
@@ -673,13 +719,13 @@ export const editorSearchFrom = [{
   name: 'name',
   placeholder: '请输入页面名',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的页面名或最多输入50个字符的页面名' }]
-},{
+}, {
   title: '页面类型',
   fromType: 'select',
   name: 'type',
   placeholder: '请选择页面类型',
   optionLabel: 'label',
-  selOption: [{id:0,name:'手机页面'},{id:1,name:'网站页面'}],
+  selOption: [{ id: 0, name: '手机页面' }, { id: 1, name: '网站页面' }],
   options: {
     allowClear: true//是否显示清除框
   }
@@ -692,15 +738,15 @@ export const imagesFrom = [{
   inputType: 'text',
   name: 'name',
   placeholder: '请输入页面名称',
-  rules: [{ required: true, message: '页面名称不能为空' },{ type: 'string', min: 2, max: 1000, message: '最少输入2个字符的页面名称' }]
-},{
+  rules: [{ required: true, message: '页面名称不能为空' }, { type: 'string', min: 2, max: 1000, message: '最少输入2个字符的页面名称' }]
+}, {
   title: '页面路径',
   fromType: 'input',
   inputType: 'text',
   name: 'path',
   placeholder: '请输入页面路径,例如:/var/www/html/441/a/gongsixinwen/index.html',
-  rules: [{ required: true, message: '页面路径不能为空' },{ type: 'string', min: 2, max: 1000, message: '最少输入2个字符的页面路径' }]
-},{
+  rules: [{ required: true, message: '页面路径不能为空' }, { type: 'string', min: 2, max: 1000, message: '最少输入2个字符的页面路径' }]
+}, {
   title: 'seo元数据',
   fromType: 'input',
   inputType: 'text',

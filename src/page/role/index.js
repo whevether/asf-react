@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { roleSearchFrom, apiFrom } from 'utils/json';
+import { roleSearchFrom, roleFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as roleAuthAction from 'store/actions/role';
 import * as permissionAction from 'store/actions/permission';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
-import {DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
@@ -32,11 +32,30 @@ const Index = (props) => {
   };
   // 打开抽屉
   const onOpenDarw = (type) => {
-    if (type === 0 || type === 1) {
+    if (type === 0) {
+      setDrawType(type);
+      let from = roleFrom();
+      //判断是否为超级管理员。如果为则显示选择租户
+      if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
+        from.unshift({
+          title: '租户',
+          fromType: 'select',
+          name: 'tenancyId',
+          selOption: props?.tenancyList,
+          placeholder: '请选择租户',
+          rules: [{ required: true, message: '租户不能为空' }],
+          options: {
+            allowClear: true//是否显示清除框
+          }
+        });
+      }
+      setFromData(from);
+      setShowDarw(true);
+    } else if (type === 1) {
       props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })
-        .then(res=>{
+        .then(res => {
           setDrawType(type);
-          let from = apiFrom(res);
+          let from = roleFrom(res);
           //判断是否为超级管理员。如果为则显示选择租户
           if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
             from.unshift({
@@ -59,8 +78,6 @@ const Index = (props) => {
   //提交表单
   const onFinish = (data) => {
     if (drawType === 0) {
-      data.permissionId = data?.permissionId.slice(-1)[0];
-      data.httpMethods = data?.httpMethods.join(',');
       props?.roleFunc?.createRole(data)
         .then(() => {
           notification['success']({
@@ -68,25 +85,23 @@ const Index = (props) => {
             description: '添加角色成功'
           });
           setShowDarw(false);
-          setTimeout(()=>{
+          setTimeout(() => {
             props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
-          },500);
+          }, 500);
         });
-    }else if(drawType === 1){
-      data.permissionId = data?.permissionId.slice(-1)[0];
-      data.httpMethods = data?.httpMethods.join(',');
-      data.id = initFromValue.id;
-      props?.roleFunc?.modifyRole(data)
-        .then(() => {
-          notification['success']({
-            message: '修改成功',
-            description: '修改角色成功'
-          });
-          setShowDarw(false);
-          setTimeout(()=>{
-            props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
-          },500);
-        });
+    } else if (drawType === 1) {
+      // data.id = initFromValue.id;
+      // props?.roleFunc?.modifyRole(data)
+      //   .then(() => {
+      //     notification['success']({
+      //       message: '修改成功',
+      //       description: '修改角色成功'
+      //     });
+      //     setShowDarw(false);
+      //     setTimeout(() => {
+      //       props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
+      //     }, 500);
+      //   });
     }
   };
   // 提交表格查询
@@ -103,13 +118,8 @@ const Index = (props) => {
         'id': data?.id,
         'tenancyId': data?.tenancyId,
         'name': data?.name,
-        'path': data?.path,
-        'httpMethods': data?.httpMethods.split(','),
-        'status': data?.status,
-        'type': data?.type,
-        'isSystem': data?.isSystem,
-        'description': data?.description,
-        'isLogger': data?.isLogger
+        'enable': data?.enable,
+        'description': data?.description
       });
       onOpenDarw(1);
     }
@@ -136,9 +146,9 @@ const Index = (props) => {
                 message: '删除成功',
                 description: '删除角色成功'
               });
-              setTimeout(()=>{
+              setTimeout(() => {
                 props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
-              },500);
+              }, 500);
             });
         }
       });
@@ -160,26 +170,26 @@ const Index = (props) => {
     dataIndex: 'name',
     width: 150,
     key: 'name'
-  },{
+  }, {
     title: '角色状态',
     dataIndex: 'status',
     width: 150,
     key: 'status',
-    render: (text,record)=>{
+    render: (text, record) => {
       const mapStatus = {
         0: '启用',
         1: '禁用'
       };
       return props?.userInfo.actions.includes('role.modifystatus') ? <Switch checked={Boolean(text)} checkedChildren="禁用"
-      unCheckedChildren="启用" onChange={(e) => {
-        props?.roleFunc?.modifyStatus({ id: record?.id, status: Number(e) }).then(() => {
-          notification['success']({
-            message: '修改成功',
-            description: '修改角色状态成功'
+        unCheckedChildren="启用" onChange={(e) => {
+          props?.roleFunc?.modifyStatus({ id: record?.id, status: Number(e) }).then(() => {
+            notification['success']({
+              message: '修改成功',
+              description: '修改角色状态成功'
+            });
+            props?.roleFunc?.fetchRoleList();
           });
-          props?.roleFunc?.fetchRoleList();
-        });
-      }} />  : mapStatus[text];
+        }} /> : mapStatus[text];
     }
   }, {
     title: '说明',
