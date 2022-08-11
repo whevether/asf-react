@@ -59,6 +59,8 @@ const Index = (props) => {
   //提交表单
   const onFinish = (data) => {
     if (drawType === 0) {
+      data.permissionId = data?.permissionId.slice(-1)[0];
+      data.httpMethods = data?.httpMethods.join(',');
       props?.apiAuthFunc?.createApi(data)
         .then(() => {
           notification['success']({
