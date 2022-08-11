@@ -425,14 +425,14 @@ export const apiFrom = (options) => [{
   inputType: 'text',
   name: 'name',
   placeholder: '请输入api名称',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的api名称或最多输入50个字符的api名称' }]
+  rules: [{required: true,message: 'api名称不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的api名称或最多输入50个字符的api名称' }]
 },{
   title: 'api地址',
   fromType: 'input',
   inputType: 'text',
   name: 'path',
   placeholder: '请输入api地址',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的api地址或最多输入50个字符的api地址' }]
+  rules: [{required: true,message: 'api地址不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的api地址或最多输入50个字符的api地址' }]
 },{
   title: 'api状态',
   fromType: 'select',
@@ -449,10 +449,41 @@ export const apiFrom = (options) => [{
     allowClear: true//是否显示清除框
   }
 },{
+  title: '是否记录日志',
+  fromType: 'select',
+  name: 'isLogger',
+  placeholder: '请选择是否记录日志',
+  selOption: [{
+    name: '否',
+    id: 0
+  }, {
+    name: '是',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: '是否为系统权限',
+  fromType: 'select',
+  name: 'isSystem',
+  placeholder: '请选择是否为系统权限',
+  selOption: [{
+    name: '否',
+    id: 0
+  }, {
+    name: '是',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
   title: 'api类型',
   fromType: 'select',
   name: 'type',
   placeholder: '请选择api类型',
+  rules: [{required: true,message: 'api类型不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的api类型或最多输入50个字符的api类型' }],
   selOption: [{
     name: '开放api',
     id: 1
@@ -468,6 +499,7 @@ export const apiFrom = (options) => [{
   fromType: 'select',
   name: 'httpMethod',
   placeholder: '请选择api请求方法',
+  rules: [{required: true,message: 'api请求方法不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的api方法或最多输入50个字符的api方法' }],
   selOption: [{
     name: 'get',
     id: 'get'
