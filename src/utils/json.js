@@ -277,6 +277,13 @@ export const menuFrom = (options)=>[{
   placeholder: '请输入菜单地址',
   rules: [{required: true,message:'菜单地址不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
 },{
+  title: '菜单图标',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'icon',
+  placeholder: '请输入菜单图标',
+  rules: [{required: true,message:'菜单图标不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单图标或最多输入50个字符的菜单图标' }]
+},{
   title: '菜单副标题',
   fromType: 'input',
   inputType: 'text',
@@ -483,7 +490,7 @@ export const apiFrom = (options) => [{
   fromType: 'select',
   name: 'type',
   placeholder: '请选择api类型',
-  rules: [{required: true,message: 'api类型不能为空'},{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的api类型或最多输入50个字符的api类型' }],
+  rules: [{required: true,message: 'api类型不能为空'},{ type: 'string', min: 1, max: 50, message: '最少输入2个字符的api类型或最多输入50个字符的api类型' }],
   selOption: [{
     name: '开放api',
     id: 1

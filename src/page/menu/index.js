@@ -64,6 +64,7 @@ const Index = (props) => {
   //提交表单
   const onFinish = (data) => {
     if (drawType === 0) {
+      data.permissionId = data?.permissionId.slice(-1)[0];
       props?.menuFunc?.createMenu(data)
         .then(() => {
           notification['success']({
