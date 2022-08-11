@@ -24,14 +24,14 @@ export const modifyStatus = (params) => async(dispatch,getState,api) => {
   return res?.result;
 };
 // api详情
-export const detailsMenu = (params) => async(dispatch,getState,api) => {
+export const detailsApi = (params) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/api/details',{
     params: params
   });
   return res?.result;
 };
 // 删除api
-export const deleteMenu = (id) => async(dispatch,getState,api) => {
+export const deleteApi = (id) => async(dispatch,getState,api) => {
   const res = await api.post(`/asf/api/delete/${id}`);
   return res?.result;
 };

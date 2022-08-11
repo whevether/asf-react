@@ -20,3 +20,5 @@ export const GET_EDITOR_LISTTITLE = 'GET_EDITOR_LISTTITLE';
 export const GET_MENU_LIST = 'GET_MENU_LIST';
 // 获取api 列表
 export const GET_API_LIST = 'GET_API_LIST';
+// 获取角色列表
+export const GET_ROLE_LIST = 'GET_ROLE_LIST';

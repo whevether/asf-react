@@ -130,7 +130,7 @@ const Index = (props) => {
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
-          props?.apiAuthFunc.deleteApi(data?.id)
+          props?.apiAuthFunc.deleteapi(data?.id)
             .then(() => {
               notification['success']({
                 message: '删除成功',
@@ -264,7 +264,7 @@ const Index = (props) => {
   };
   return (
     <div className="list">
-      {head('api列表')}
+      {head('角色列表')}
       <BaseTable formObj={apiSearchFrom} querySubmit={querySubmit} dataSource={props?.authApi?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加api', permission: 'api.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
       <Drawer
         title={mapTitle[drawType]}
