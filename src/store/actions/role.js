@@ -35,3 +35,8 @@ export const deleteRole = (id) => async(dispatch,getState,api) => {
   const res = await api.post(`/asf/role/delete/${id}`);
   return res?.result;
 };
+//分配角色权限
+export const assignPermission = (params) => async(dispatch,getState,api) => {
+  const res = await api.put('/asf/role/assignPermission',params);
+  return res?.result;
+};

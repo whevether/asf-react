@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { roleSearchFrom, roleFrom } from 'utils/json';
+import { roleSearchFrom, roleFrom, assignFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as roleAuthAction from 'store/actions/role';
-import * as permissionAction from 'store/actions/permission';
+import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
@@ -52,7 +52,7 @@ const Index = (props) => {
       setFromData(from);
       setShowDarw(true);
     } else if (type === 1) {
-      props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })
+      props?.commonFunc?.getPermissionList()
         .then(res => {
           setDrawType(type);
           let from = roleFrom(res);
@@ -73,6 +73,13 @@ const Index = (props) => {
           setFromData(from);
           setShowDarw(true);
         });
+    } else if (type === 2) {
+      props?.commonFunc?.getPermissionList()
+        .then(res => {
+          setDrawType(type);
+          setFromData(assignFrom('分配权限', '权限', res));
+          setShowDarw(true);
+        });
     }
   };
   //提交表单
@@ -89,19 +96,32 @@ const Index = (props) => {
             props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
           }, 500);
         });
-    } else if (drawType === 1) {
-      // data.id = initFromValue.id;
-      // props?.roleFunc?.modifyRole(data)
-      //   .then(() => {
-      //     notification['success']({
-      //       message: '修改成功',
-      //       description: '修改角色成功'
-      //     });
-      //     setShowDarw(false);
-      //     setTimeout(() => {
-      //       props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
-      //     }, 500);
-      //   });
+    }else if (drawType === 1) {
+      data.id = initFromValue.id;
+      props?.roleFunc?.modifyRole(data)
+        .then(() => {
+          notification['success']({
+            message: '修改成功',
+            description: '修改角色成功'
+          });
+          setShowDarw(false);
+          setTimeout(() => {
+            props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
+          }, 500);
+        });
+    } else if (drawType === 2) {
+      data.id = initFromValue.id;
+      props?.roleFunc?.assignPermission(data)
+        .then(() => {
+          notification['success']({
+            message: '分配成功',
+            description: '分配角色权限成功'
+          });
+          setShowDarw(false);
+          setTimeout(() => {
+            props?.roleFunc?.fetchRoleList({ pageNo: 0, pageSize: 20 });
+          }, 500);
+        });
     }
   };
   // 提交表格查询
@@ -114,20 +134,37 @@ const Index = (props) => {
     permission: 'role.modify',
     isAction: true,
     click: (data) => {
-      setInitFromValue({
-        'id': data?.id,
-        'tenancyId': data?.tenancyId,
-        'name': data?.name,
-        'enable': data?.enable,
-        'description': data?.description
+      props?.roleFunc?.detailsRole({ id: data?.id })
+      .then(res => {
+        setInitFromValue({
+          'id': data?.id,
+          'tenancyId': data?.tenancyId,
+          'name': data?.name,
+          'enable': data?.enable,
+          'description': data?.description,
+          'permissionId': res?.permission?.map(m=>m.id)
+        });
+        onOpenDarw(1);
       });
-      onOpenDarw(1);
     }
   }, {
     name: '角色详情',
     permission: 'role.details',
+    click: () => {
+      notification.info({ message: '角色详情' });
+    }
+  }, {
+    name: '分配角色权限',
+    permission: 'role.assignpermission',
     click: (data) => {
-      console.log(data);
+      props?.roleFunc?.detailsRole({ id: data?.id })
+        .then(res => {
+          setInitFromValue({
+            'id': data?.id,
+            'ids': res?.permission?.map(m => m?.id)
+          });
+          onOpenDarw(2);
+        });
     }
   }, {
     name: '删除角色',
@@ -238,7 +275,7 @@ const Index = (props) => {
 };
 Index.propTypes = {
   roleFunc: PropTypes.object,
-  permissionFunc: PropTypes.object,
+  commonFunc: PropTypes.object,
   userInfo: PropTypes.object,
   role: PropTypes.object,
   tenancyList: PropTypes.arrayOf(Object),
@@ -252,6 +289,6 @@ export default connect(state => ({
 }), dispatch => {
   return {
     roleFunc: bindActionCreators(roleAuthAction, dispatch),
-    permissionFunc: bindActionCreators(permissionAction, dispatch)
+    commonFunc: bindActionCreators(commonAction, dispatch)
   };
 })(Index);

@@ -586,6 +586,7 @@ export const roleFrom = (options) => {
       title: '角色所属权限',
       fromType: 'select',
       selOption: options,
+      mode: 'multiple',
       name: 'permissionId',
       placeholder: '请选择角色所属权限',
       rules: [{ required: true, message: '角色所属权限不能为空' }],
