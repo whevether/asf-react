@@ -8,11 +8,13 @@ import role from './role';
 import authApi from './authApi';
 import editor from './editor';
 import tenancy from './tenancy';
+import department from './department';
 const rootReducer = (history) => combineReducers({
     common: common,
     account: account,
     audio: audio,
     tenancy: tenancy,
+    department: department,
     role: role,
     authApi: authApi,
     editor: editor,

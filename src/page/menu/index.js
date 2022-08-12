@@ -106,13 +106,14 @@ const Index = (props) => {
         'id': data?.id,
         'tenancyId': data?.tenancyId,
         'title': data?.title,
+        'icon': data?.icon,
         'subtitle': data?.subtitle,
         'menuUrl': data?.menuUrl,
         'externalLink': data?.externalLink,
         'isSystem': data?.isSystem,
         'description': data?.description,
         'menuRedirect': data?.menuRedirect,
-        'menHidden': data?.menHidden
+        'menuHidden': data?.menuHidden
       });
       onOpenDarw(1);
     }

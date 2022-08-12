@@ -212,6 +212,7 @@ const Index = (props) => {
       setInitFromValue({
         'id': data?.id,
         'tenancyId': data?.tenancyId,
+        'status': data?.status,
         'postId': data?.posts.map(m => m.id),
         'departmentId': [data?.department?.pid, data?.department?.id],
         'username': data?.username,

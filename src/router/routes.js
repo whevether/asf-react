@@ -20,6 +20,7 @@ const MenuPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../
 const AuthApiPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/authApi/index'));
 const RolePage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/role/index'));
 const TenancyPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/tenancy/index'));
+const DepartmentPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/department/index'));
 const routes = [{
   path: "/",
   element: <RootLayout />,
@@ -46,6 +47,9 @@ const routes = [{
     },{
       path: 'control/tenancy',
       element: <TenancyPage />
+    },{
+      path: 'control/department',
+      element: <DepartmentPage />
     },{
       path: 'editor/getlist',
       element: <EditorPage />

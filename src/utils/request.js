@@ -81,12 +81,12 @@ export const request = (history, store) => {
         description: '没有这个接口'
       });
     }
-    if (err.stack.indexOf('timeout') > -1) {
-      notification['error']({
-        message: '请求超时',
-        description: '请求超时了。请检查网络或接口'
-      });
-    }
+    // if (err.stack.indexOf('timeout') > -1) {
+    //   notification['error']({
+    //     message: '请求超时',
+    //     description: '请求超时了。请检查网络或接口'
+    //   });
+    // }
     setTimeout(() => {
       store.dispatch({
         type: types.LOAD,

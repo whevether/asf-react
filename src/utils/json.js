@@ -97,6 +97,22 @@ export const accountFrom = [{
     // disabled: false
   }
 }, {
+  title: '账户状态',
+  fromType: 'select',
+  name: 'status',
+  placeholder: '请选择账户状态',
+  selOption: [{
+    name: '禁用',
+    id: 0
+  }, {
+    name: '启用',
+    id: 1
+  }],
+  rules: [{ required: true, message: '性别不能为空' }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}, {
   title: '性别',
   fromType: 'select',
   name: 'sex',
@@ -327,7 +343,7 @@ export const menuFrom = (options) => [{
 }, {
   title: '是否隐藏菜单',
   fromType: 'select',
-  name: 'menHidden',
+  name: 'menuHidden',
   placeholder: '请选择是否隐藏菜单',
   selOption: [{
     name: '否',
@@ -719,6 +735,45 @@ export const tenancyFrom = () => [{
   fromType: 'select',
   name: 'status',
   placeholder: '请选择租户状态',
+  selOption: [{
+    name: '禁用',
+    id: 0
+  }, {
+    name: '启用',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}];
+//部门表单
+export const departmentFrom = (options) => [{
+  title: '父级部门',
+  fromType: 'cascader',
+  name: 'departmentId',
+  placeholder: '请选择部门',
+  selOption: options,
+  rules: [{ required: true, message: '部门不能为空' }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: '部门名称',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入部门名称',
+  rules: [{ required: true, message: '部门名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的部门名称或最多输入50个字符的部门名称' }]
+},{
+  title: '排序',
+  fromType: 'inputnumber',
+  name: 'sort',
+  placeholder: '请输入租户排序'
+},{
+  title: '部门状态',
+  fromType: 'select',
+  name: 'enable',
+  placeholder: '请选择部门状态',
   selOption: [{
     name: '禁用',
     id: 0
