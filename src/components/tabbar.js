@@ -4,14 +4,20 @@ import {Dropdown, Menu} from 'antd';
 import { removeCookie } from 'utils/storage';
 import { useNavigate } from 'react-router';
 import {MenuUnfoldOutlined,MenuFoldOutlined, LogoutOutlined} from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
 const Tabbar = (props) => {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
   //跳转路由
   const handleGoNav = (e, params = {}) => {
     navigate(e, params);
   };
   const onLogout = () => {
     removeCookie(['token','refreshToken']);
+    dispatch({
+      type: 'FETCH_USER_DATA',
+      payload: null
+    });
     handleGoNav('/login');
   };
   const menu = (

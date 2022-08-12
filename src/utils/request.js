@@ -55,7 +55,10 @@ export const request = (history, store) => {
       });
       removeCookie(['token', 'refreshToken']);
       setToken('');
-      // window.location.href = '/login';
+      store.dispatch({
+        type: 'FETCH_USER_DATA',
+        payload: null
+      });
       history.push('/login');
     }
     if ([400].indexOf(response?.status) > -1) {
