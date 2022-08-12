@@ -37,7 +37,7 @@ const LogsList = (props) => {
   const list = [{
     name: '删除日志',
     isAction: true,
-    permission: 'audio.deletelog.[0-9]{1,12}',
+    permission: 'audio.deletelog.[0-9]{1,100}',
     click: (data) => {
       props?.audioFunc?.deleteAudio(data.id)
         .then(()=>{
@@ -51,7 +51,7 @@ const LogsList = (props) => {
   }];
   const menu = (record) => {
     return (
-      <AuthControl action={props?.userInfo.actions} list={list} record={record} type="menu" />
+      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
     );
   };
   const columns = [{
@@ -116,7 +116,7 @@ const LogsList = (props) => {
   return (
     <div className="list">
       {head('审计日志')}
-      <BaseTable formObj={audioSearchFrom} querySubmit={querySubmit} dataSource={props?.audio?.list} columns={columns} pagination={pagination} action={props?.userInfo?.actions} />
+      <BaseTable formObj={audioSearchFrom} querySubmit={querySubmit} dataSource={props?.audio?.list} columns={columns} pagination={pagination} />
     </div>
   );
 };

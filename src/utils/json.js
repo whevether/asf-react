@@ -129,6 +129,19 @@ export const assignFrom = (title, desc, opt, name = 'ids', fromType = 'select', 
     allowClear: true//是否显示清除框
   }
 }];
+export const inputFrom = (title,name,fromType='input',type = 'text')=> [{
+  title: title,
+  fromType: fromType,
+  inputType: type,
+  name: name,
+  placeholder: `请输入${title}`,
+  // eslint-disable-next-line  no-useless-escape
+  rules: [{ type: 'string', min: 1, max: 50, message: `最少输入1个字符的${title}或最多输入50个字符的${title}` }],
+  options: { //扩展配置
+    allowClear: true//是否显示清除框
+    // disabled: false
+  }
+}];
 // 手机号码
 export const telphoneFrom = () => [{
   title: '手机号码',
@@ -580,7 +593,7 @@ export const roleFrom = (options) => {
     name: 'description',
     placeholder: '请输入权限说明',
     rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限说明或最多输入50个字符的权限说明' }]
-  }]
+  }];
   if (options) {
     arr.unshift({
       title: '角色所属权限',
@@ -678,6 +691,39 @@ export const permissionFrom = (opt) => [{
     id: 0
   }, {
     name: '是',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}];
+export const tenancyFrom = () => [{
+  title: '租户名称',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入租户名称',
+  rules: [{ required: true, message: '租户名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的租户名称或最多输入50个字符的租户名称' }]
+},{
+  title: '排序',
+  fromType: 'inputnumber',
+  name: 'sort',
+  placeholder: '请输入租户排序'
+},{
+  title: '等级',
+  fromType: 'inputnumber',
+  name: 'level',
+  placeholder: '请输入租户等级'
+},{
+  title: '租户状态',
+  fromType: 'select',
+  name: 'status',
+  placeholder: '请选择租户状态',
+  selOption: [{
+    name: '禁用',
+    id: 0
+  }, {
+    name: '启用',
     id: 1
   }],
   options: {
