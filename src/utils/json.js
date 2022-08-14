@@ -747,44 +747,50 @@ export const tenancyFrom = () => [{
   }
 }];
 //部门表单
-export const departmentFrom = (options) => [{
-  title: '父级部门',
-  fromType: 'cascader',
-  name: 'departmentId',
-  placeholder: '请选择部门',
-  selOption: options,
-  rules: [{ required: true, message: '部门不能为空' }],
-  options: {
-    allowClear: true//是否显示清除框
+export const departmentFrom = (options,roleOption) => {
+  let arr = [{
+    title: '父级部门',
+    fromType: 'cascader',
+    name: 'departmentId',
+    placeholder: '请选择部门',
+    selOption: options,
+    rules: [{ required: true, message: '部门不能为空' }],
+    options: {
+      allowClear: true//是否显示清除框
+    }
+  },{
+    title: '部门名称',
+    fromType: 'input',
+    inputType: 'text',
+    name: 'name',
+    placeholder: '请输入部门名称',
+    rules: [{ required: true, message: '部门名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的部门名称或最多输入50个字符的部门名称' }]
+  },{
+    title: '排序',
+    fromType: 'inputnumber',
+    name: 'sort',
+    placeholder: '请输入租户排序'
+  },{
+    title: '部门状态',
+    fromType: 'select',
+    name: 'enable',
+    placeholder: '请选择部门状态',
+    selOption: [{
+      name: '禁用',
+      id: 0
+    }, {
+      name: '启用',
+      id: 1
+    }],
+    options: {
+      allowClear: true//是否显示清除框
+    }
+  }];
+  if(roleOption){
+    arr.unshift(...assignFrom('分配角色', '角色', roleOption,'roleIds'));
   }
-},{
-  title: '部门名称',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'name',
-  placeholder: '请输入部门名称',
-  rules: [{ required: true, message: '部门名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的部门名称或最多输入50个字符的部门名称' }]
-},{
-  title: '排序',
-  fromType: 'inputnumber',
-  name: 'sort',
-  placeholder: '请输入租户排序'
-},{
-  title: '部门状态',
-  fromType: 'select',
-  name: 'enable',
-  placeholder: '请选择部门状态',
-  selOption: [{
-    name: '禁用',
-    id: 0
-  }, {
-    name: '启用',
-    id: 1
-  }],
-  options: {
-    allowClear: true//是否显示清除框
-  }
-}];
+  return arr;
+};
 //日志管理
 export const audioSearchFrom = [{
   title: '账户名',

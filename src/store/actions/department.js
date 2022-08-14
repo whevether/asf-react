@@ -31,7 +31,7 @@ export const deleteDepartment = (id) => async(dispatch,getState,api) => {
   return res?.result;
 };
 //分配角色到部门
-export const assignDepartment = (params) => async(dispatch,getState,api) => {
+export const assignRole = (params) => async(dispatch,getState,api) => {
   const res = await api.put('/asf/department/assign',params);
   return res?.result;
 };

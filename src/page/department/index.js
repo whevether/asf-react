@@ -36,6 +36,9 @@ const Index = (props) => {
       props?.commonFunc?.getDepartmentList()
         .then(res => {
           setDrawType(type);
+          if (!res.some(f => f.value === 0)) {
+            res.unshift({ label: '顶级部门', value: '0', children: [] });
+          }
           let from = departmentFrom(res);
           //判断是否为超级管理员。如果为则显示选择租户
           if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
@@ -55,10 +58,13 @@ const Index = (props) => {
           setShowDarw(true);
         });
     } else if (type === 1) {
-      props?.commonFunc?.getPermissionList()
+      Promise.all([props?.commonFunc?.getRoleList(),props?.commonFunc?.getDepartmentList()])
         .then(res => {
           setDrawType(type);
-          let from = departmentFrom(res);
+          if (!res[1].some(f => f.value === 0)) {
+            res[1].unshift({ label: '顶级部门', value: '0', children: [] });
+          }
+          let from = departmentFrom(res[1],res[0]);
           //判断是否为超级管理员。如果为则显示选择租户
           if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
             from.unshift({
@@ -77,10 +83,10 @@ const Index = (props) => {
           setShowDarw(true);
         });
     } else if (type === 2) {
-      props?.commonFunc?.getPermissionList()
+      props?.commonFunc?.getRoleList()
         .then(res => {
           setDrawType(type);
-          setFromData(assignFrom('分配权限', '权限', res));
+          setFromData(assignFrom('分配角色', '角色', res));
           setShowDarw(true);
         });
     }
@@ -88,7 +94,7 @@ const Index = (props) => {
   //提交表单
   const onFinish = (data) => {
     if (drawType === 0) {
-      props?.departmentFunc?.createdepartment(data)
+      props?.departmentFunc?.createDepartment(data)
         .then(() => {
           notification['success']({
             message: '添加成功',
@@ -101,7 +107,7 @@ const Index = (props) => {
         });
     } else if (drawType === 1) {
       data.id = initFromValue.id;
-      props?.departmentFunc?.modifydepartment(data)
+      props?.departmentFunc?.modifyDepartment(data)
         .then(() => {
           notification['success']({
             message: '修改成功',
@@ -114,11 +120,11 @@ const Index = (props) => {
         });
     } else if (drawType === 2) {
       data.id = initFromValue.id;
-      props?.departmentFunc?.assignPermission(data)
+      props?.departmentFunc?.assignRole(data)
         .then(() => {
           notification['success']({
             message: '分配成功',
-            description: '分配部门权限成功'
+            description: '分配部门角色成功'
           });
           setShowDarw(false);
           setTimeout(() => {
@@ -144,7 +150,9 @@ const Index = (props) => {
             'tenancyId': res?.tenancyId,
             'name': res?.name,
             'enable': res?.enable,
-            'roleId': res?.role?.map(m => m.id)
+            'sort': res?.sort,
+            'departmentId': res?.id,
+            'roleIds': res?.roles?.map(m => m.id)
           });
           onOpenDarw(1);
         });
@@ -159,11 +167,14 @@ const Index = (props) => {
     name: '分配部门角色',
     permission: 'department.assign',
     click: (data) => {
-      setInitFromValue({
-        'id': data?.id,
-        'ids': res?.permission?.map(m => m?.id)
+      props?.departmentFunc?.detailsDepartment({ id: data?.id })
+      .then(res => {
+        setInitFromValue({
+          'id': res?.id,
+          'ids': res?.roles?.map(m => m.id)
+        });
+        onOpenDarw(2);
       });
-      onOpenDarw(2);
     }
   }, {
     name: '删除部门',
