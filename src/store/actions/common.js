@@ -28,8 +28,10 @@ export const getPermissionList = ()=> async (dispatch,getState,api)=>{
   return res?.result;
 };
 // 获取多语言列表
-export const geTranslatetList = () => async(dispatch,getState,api) => {
-  const res = await api.get('/asf/translate/getLists');
+export const geTranslatetList = (isDistinct = false) => async(dispatch,getState,api) => {
+  const res = await api.get('/asf/translate/getLists',{
+    params: {isDistinct:isDistinct}
+  });
   return res?.result;
 };
 // 获取用户信息

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,6 +12,7 @@ import { Tabbar, Navbar } from 'components/index';
 const DefaultLayout = (props) => {
   let localtion = useLocation();
   let navigate = useNavigate(); 
+  const [translatetList,setTranslatetList] = useState([]);
   useEffect(() => {
     if (getCookie('token')) {
       document.getElementsByTagName('body')[0].className = 'login-svg-none';
@@ -19,6 +20,10 @@ const DefaultLayout = (props) => {
       // 当数据存在于 store中就不请求加载
       if (!props?.common?.data) {
         props?.fetchUserInfo();
+        props?.geTranslatetList()
+          .then(res=>{
+            setTranslatetList(res);
+          });
       }
     } else {
       navigate('/login');
@@ -48,7 +53,7 @@ const DefaultLayout = (props) => {
         <div className="DefaultLayout-wrapper" >
           <Navbar userinfo={props?.common?.data} collapsed={props?.common?.collapsed} path={localtion.pathname + localtion.search} />
           <div className="page-content">
-            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={props?.toggleMenu} />
+            {translatetList.length > 0 && <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={props?.toggleMenu} languages={translatetList}/>}
             {/* <PageHeader name={props?.routes.name}/> */}
             {/* 路由占位符  */}
             <Outlet />

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
-import { timeToDate } from 'utils/storage';
 import { inputFrom, translateFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as translateAction from 'store/actions/translate';
@@ -100,6 +99,7 @@ const Index = (props) => {
         id: data?.id,
         name: data?.name,
         key: data?.key,
+        languages: data?.languages,
         tenancyId: data?.tenancyId,
         value: data?.value
       });
@@ -165,13 +165,6 @@ const Index = (props) => {
     dataIndex: 'value',
     key: 'value',
     width: '100px'
-  }, {
-    title: '创建时间',
-    dataIndex: 'createTime',
-    key: 'createTime',
-    render: (text) => {
-      return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
-    }
   }, {
     title: '操作',
     key: 'action',
