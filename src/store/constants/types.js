@@ -28,3 +28,5 @@ export const GET_TENANCY_LIST = 'GET_TENANCY_LIST';
 export const GET_DEPARTMENT_LIST = 'GET_DEPARTMENT_LIST';
 //获取岗位列表
 export const GET_POST_LIST = 'GET_POST_LIST';
+// 获取 多语言列表
+export const GET_TRANSLATE_LIST = 'GET_TRANSLATE_LIST';

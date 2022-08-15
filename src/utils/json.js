@@ -782,6 +782,29 @@ export const postFrom = () => [{
   placeholder: '请输入岗位说明',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的岗位说明或最多输入50个字符的岗位说明' }]
 }];
+//多语言表单
+export const translateFrom = () => [{
+  title: '多语言名称',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入多语言名称',
+  rules: [{ required: true, message: '多语言名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的多语言名称或最多输入50个字符的多语言名称' }]
+},{
+  title: '多语言键',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'key',
+  placeholder: '请输入多语言键',
+  rules: [{ required: true, message: '多语言键不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的多语言键或最多输入50个字符的多语言键' }]
+},{
+  title: '多语言值',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'value',
+  placeholder: '请输入多语言值',
+  rules: [{ required: true, message: '多语言值不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的多语言值或最多输入50个字符的多语言值' }]
+}];
 //部门表单
 export const departmentFrom = (options,roleOption) => {
   let arr = [{

@@ -22,6 +22,7 @@ const RolePage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../
 const TenancyPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/tenancy/index'));
 const DepartmentPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/department/index'));
 const PostPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/post/index'));
+const TranslatePage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/translate/index'));
 const routes = [{
   path: "/",
   element: <RootLayout />,
@@ -54,6 +55,9 @@ const routes = [{
     },{
       path: 'control/post',
       element: <PostPage />
+    },{
+      path: 'control/translate',
+      element: <TranslatePage />
     },{
       path: 'editor/getlist',
       element: <EditorPage />

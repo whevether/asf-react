@@ -4,7 +4,7 @@ export const fetchTranslateList = (params) => async (dispatch,getState,api)=> {
     params: params
   });
   dispatch({
-    type: types.GET_POST_LIST,
+    type: types.GET_TRANSLATE_LIST,
     payload: res
   });
 };
