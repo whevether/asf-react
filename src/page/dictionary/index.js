@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { inputFrom, translateFrom } from 'utils/json';
+import { inputFrom, dictionaryFrom } from 'utils/json';
 import PropTypes from 'prop-types';
-import * as translateAction from 'store/actions/translate';
+import * as dictionaryAction from 'store/actions/dictionary';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Drawer, Dropdown, Modal, notification } from 'antd';
@@ -12,17 +12,17 @@ import { BaseTable, AuthControl, BaseFrom } from 'components/index';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
-  const [drawType, setDrawType] = useState(0); // 0 添加 多语言 1: 修改多语言
+  const [drawType, setDrawType] = useState(0); // 0 添加 字典 1: 修改字典
   const [initFromValue, setInitFromValue] = useState(null);
   //获取账户列表
   useEffect(() => {
-    props?.translateFunc?.fetchTranslateList();
+    props?.dictionaryFunc?.fetchDictionaryList();
   }, []);
   // 分页对象
   const pagination = {
-    total: props?.translate?.listTotal,
+    total: props?.dictionary?.listTotal,
     onChange: (page, pageSize) => {
-      props?.translateFunc?.fetchTranslateList({ pageNo: page, pageSize: pageSize });
+      props?.dictionaryFunc?.fetchDictionaryList({ pageNo: page, pageSize: pageSize });
     },
     pageSize: 20,
     pageSizeOptions: ['10', '20', '50', '100'],
@@ -33,7 +33,7 @@ const Index = (props) => {
   const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
       setDrawType(type);
-      let from = translateFrom();
+      let from = dictionaryFrom();
       //判断是否为超级管理员。如果为则显示选择租户
       if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
         from.unshift({
@@ -55,46 +55,46 @@ const Index = (props) => {
   //提交表单
   const onFinish = (data) => {
     if (drawType === 0) {
-      props?.translateFunc?.createTranslate(data)
+      props?.dictionaryFunc?.createDictionary(data)
         .then(() => {
           notification['success']({
             message: '添加成功',
-            description: '添加多语言成功'
+            description: '添加字典成功'
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.translateFunc?.fetchTranslateList({ pageNo: 0, pageSize: 20 });
+            props?.dictionaryFunc?.fetchDictionaryList({ pageNo: 0, pageSize: 20 });
           }, 500);
         });
     } else if (drawType === 1) {
       data.id = initFromValue.id;
-      props?.translateFunc?.modifyTranslate(data)
+      props?.dictionaryFunc?.modifyDictionary(data)
         .then(() => {
           notification['success']({
             message: '修改成功',
-            description: '修改多语言成功'
+            description: '修改字典成功'
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.translateFunc?.fetchTranslateList({ pageNo: 0, pageSize: 20 });
+            props?.dictionaryFunc?.fetchDictionaryList({ pageNo: 0, pageSize: 20 });
           }, 500);
         });
     }
   };
   // 提交表格查询
   const querySubmit = (e) => {
-    props?.translateFunc?.fetchTranslateList(e);
+    props?.dictionaryFunc?.fetchDictionaryList(e);
   };
   // 修改
   const list = [{
-    name: '多语言详情',
-    permission: 'translate.details',
+    name: '字典详情',
+    permission: 'dictionary.details',
     click: (data) => {
       console.log(data);
     }
   }, {
-    name: '修改多语言',
-    permission: 'translate.modify',
+    name: '修改字典',
+    permission: 'dictionary.modify',
     click: (data) => {
       setInitFromValue({
         id: data?.id,
@@ -106,25 +106,25 @@ const Index = (props) => {
       onOpenDarw(1);
     }
   }, {
-    name: '删除多语言',
+    name: '删除字典',
     isAction: true,
-    permission: 'translate.delete.[0-9]{1,100}',
+    permission: 'dictionary.delete.[0-9]{1,100}',
     click: (data) => {
       Modal.confirm({
-        title: '确人删除多语言!!!',
+        title: '确人删除字典!!!',
         icon: <ExclamationCircleOutlined />,
-        content: '删除多语言之后将无法恢复!!!',
+        content: '删除字典之后将无法恢复!!!',
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
-          props?.translateFunc?.deleteTranslate(data.id)
+          props?.dictionaryFunc?.deleteDictionary(data.id)
             .then(() => {
               notification['success']({
                 message: '删除成功',
-                description: '删除多语言成功'
+                description: '删除字典成功'
               });
               setTimeout(() => {
-                props?.translateFunc?.fetchTranslateList();
+                props?.dictionaryFunc?.fetchDictionaryList();
               }, 500);
             });
         }
@@ -151,7 +151,7 @@ const Index = (props) => {
       return <span>{data?.name}</span>;
     }
   }, {
-    title: '多语言名',
+    title: '字典名',
     dataIndex: 'name',
     key: 'name',
     width: '100px'
@@ -185,13 +185,13 @@ const Index = (props) => {
     }
   }];
   const mapTitle = {
-    0: '添加多语言',
-    1: '修改多语言'
+    0: '添加字典',
+    1: '修改字典'
   };
   return (
     <div className="list">
-      {head('多语言列表')}
-      <BaseTable formObj={inputFrom('多语言名称', 'name')} querySubmit={querySubmit} dataSource={props?.translate?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加多语言', permission: 'translate.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
+      {head('字典列表')}
+      <BaseTable formObj={inputFrom('字典名称', 'name')} querySubmit={querySubmit} dataSource={props?.dictionary?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加字典', permission: 'dictionary.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
       <Drawer
         title={mapTitle[drawType]}
         width={720}
@@ -204,20 +204,20 @@ const Index = (props) => {
   );
 };
 Index.propTypes = {
-  translateFunc: PropTypes.object,
+  dictionaryFunc: PropTypes.object,
   userInfo: PropTypes.object,
-  translate: PropTypes.object,
-  translateList: PropTypes.arrayOf(Object),
+  dictionary: PropTypes.object,
+  dictionaryList: PropTypes.arrayOf(Object),
   roleName: PropTypes.string,
   tenancyList: PropTypes.arrayOf(Object),
   initialValues: PropTypes.object
 };
 export default connect(state => ({
   userInfo: state?.common?.data,
-  translate: state?.translate,
+  dictionary: state?.dictionary,
   tenancyList: state?.common?.tenancyList
 }), dispatch => {
   return {
-    translateFunc: bindActionCreators(translateAction, dispatch)
+    dictionaryFunc: bindActionCreators(dictionaryAction, dispatch)
   };
 })(Index);

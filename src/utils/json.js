@@ -281,7 +281,7 @@ export const menuSearchFrom = [{
   placeholder: '请输入菜单地址',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
 }];
-export const menuFrom = (options) => [{
+export const menuFrom = (options,selOption) => [{
   title: '菜单所属权限',
   fromType: 'cascader',
   selOption: options,
@@ -312,6 +312,15 @@ export const menuFrom = (options) => [{
   name: 'icon',
   placeholder: '请输入菜单图标',
   rules: [{ required: true, message: '菜单图标不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单图标或最多输入50个字符的菜单图标' }]
+}, {
+  title: '菜单多语言',
+  fromType: 'select',
+  name: 'translate',
+  placeholder: '请选择多语言',
+  selOption: selOption,
+  options: {
+    allowClear: true//是否显示清除框
+  }
 }, {
   title: '菜单副标题',
   fromType: 'input',
@@ -791,6 +800,13 @@ export const translateFrom = () => [{
   placeholder: '请输入多语言名称',
   rules: [{ required: true, message: '多语言名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的多语言名称或最多输入50个字符的多语言名称' }]
 },{
+  title: '多语言语种',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'languages',
+  placeholder: '请输入多语言语种',
+  rules: [{ required: true, message: '多语言语种不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的多语言语种或最多输入50个字符的多语言语种' }]
+},{
   title: '多语言键',
   fromType: 'input',
   inputType: 'text',
@@ -804,6 +820,36 @@ export const translateFrom = () => [{
   name: 'value',
   placeholder: '请输入多语言值',
   rules: [{ required: true, message: '多语言值不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的多语言值或最多输入50个字符的多语言值' }]
+}];
+//字典表单
+export const dictionaryFrom = () => [{
+  title: '字典名称',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入字典名称',
+  rules: [{ required: true, message: '字典名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的字典名称或最多输入50个字符的字典名称' }]
+},{
+  title: '字典键',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'key',
+  placeholder: '请输入字典键',
+  rules: [{ required: true, message: '字典键不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的字典键或最多输入50个字符的字典键' }]
+},{
+  title: '字典值',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'value',
+  placeholder: '请输入字典值',
+  rules: [{ required: true, message: '字典值不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的字典值或最多输入50个字符的字典值' }]
+},{
+  title: '字典额外配置',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'languages',
+  placeholder: '请输入字典额外配置',
+  rules: [{ required: true, message: '字典额外配置不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的字典额外配置或最多输入50个字符的字典额外配置' }]
 }];
 //部门表单
 export const departmentFrom = (options,roleOption) => {

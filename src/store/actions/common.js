@@ -27,6 +27,11 @@ export const getPermissionList = ()=> async (dispatch,getState,api)=>{
   const res = await api.get('/asf/permission/getLists');
   return res?.result;
 };
+// 获取多语言列表
+export const geTranslatetList = () => async(dispatch,getState,api) => {
+  const res = await api.get('/asf/translate/getLists');
+  return res?.result;
+};
 // 获取用户信息
 export const fetchUserInfo = ()=> async (dispatch,getState,api)=>{
   const res = await api.get('/asf/account/accountinfo');

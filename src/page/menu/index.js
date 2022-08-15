@@ -5,6 +5,7 @@ import { menuSearchFrom, menuFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as menuAction from 'store/actions/menu';
 import * as permissionAction from 'store/actions/permission';
+import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
@@ -38,10 +39,10 @@ const Index = (props) => {
   // 打开抽屉
   const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
-      props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })
+      Promise.all([props?.commonFunc?.geTranslatetList(), props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })])
         .then(res=>{
           setDrawType(type);
-          let from = menuFrom(res);
+          let from = menuFrom(res[1],res[0]);
           //判断是否为超级管理员。如果为则显示选择租户
           if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
             from.unshift({
@@ -293,6 +294,7 @@ export default connect(state => ({
 }), dispatch => {
   return {
     menuFunc: bindActionCreators(menuAction, dispatch),
+    commonFunc: bindActionCreators(commonAction, dispatch),
     permissionFunc: bindActionCreators(permissionAction, dispatch)
   };
 })(Index);
