@@ -221,6 +221,7 @@ Index.propTypes = {
   post: PropTypes.object,
   postList: PropTypes.arrayOf(Object),
   roleName: PropTypes.string,
+  tenancyList: PropTypes.arrayOf(Object),
   initialValues: PropTypes.object
 };
 export default connect(state => ({
