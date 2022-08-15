@@ -151,6 +151,11 @@ const Index = (props) => {
       return <span>{data?.name}</span>;
     }
   }, {
+    title: '语种',
+    dataIndex: 'languages',
+    key: 'languages',
+    width: '100px'
+  },{
     title: '多语言名',
     dataIndex: 'name',
     key: 'name',

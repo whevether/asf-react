@@ -32,3 +32,5 @@ export const GET_POST_LIST = 'GET_POST_LIST';
 export const GET_TRANSLATE_LIST = 'GET_TRANSLATE_LIST';
 // 获取 多语言列表
 export const GET_DICTIONARY_LIST = 'GET_DICTIONARY_LIST';
+// 获取 多语言
+export const GET_TRANSLATE = 'GET_TRANSLATE';

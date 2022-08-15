@@ -28,9 +28,13 @@ export const getPermissionList = ()=> async (dispatch,getState,api)=>{
   return res?.result;
 };
 // 获取多语言列表
-export const geTranslatetList = (isDistinct = false) => async(dispatch,getState,api) => {
+export const getTranslatetList = (isDistinct = false) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/translate/getLists',{
     params: {isDistinct:isDistinct}
+  });
+  dispatch({
+    type: types.GET_TRANSLATE,
+    payload: res?.result
   });
   return res?.result;
 };

@@ -2,7 +2,7 @@
   "env": {
     "development": {
       "presets": [
-        "@babel/preset-react",
+        ["@babel/preset-react", { "development": true, "runtime": "automatic" }],
         ["@babel/preset-env",{
           "useBuiltIns": "entry",
           "corejs": "3",
@@ -20,7 +20,8 @@
         "@babel/plugin-syntax-async-generators",
         "@babel/plugin-transform-async-to-generator",
         "@babel/plugin-proposal-optional-chaining",
-        "@babel/plugin-transform-runtime"
+        "@babel/plugin-transform-runtime",
+        "react-refresh/babel"
       ]
     },
     "production": {

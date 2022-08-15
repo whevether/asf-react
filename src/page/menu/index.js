@@ -39,7 +39,7 @@ const Index = (props) => {
   // 打开抽屉
   const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
-      Promise.all([props?.commonFunc?.geTranslatetList(true), props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })])
+      Promise.all([props?.commonFunc?.getTranslatetList(true), props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })])
         .then(res=>{
           setDrawType(type);
           let from = menuFrom(res[1],res[0]);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Menu } from 'antd';
+import {getCookie } from 'utils/storage';
 import {
   createFromIconfontCN
 } from '@ant-design/icons';
@@ -15,6 +16,13 @@ const NavBar = (props) => {
   let o = props?.path.split('/');
   const [openKeys, setOpenKeys] = useState(['/'+o[1],'/'+o[o.length-2]]);
   const [selectKeys,setSelectKeys] = useState([props?.path]);
+  const renderLanguages = (item)=>{
+    if(props?.languages.length > 0 && item?.translate){
+      return props?.languages?.find(f=>f?.key === item?.translate && f.languages === getCookie('languages'))?.value;
+    }else{
+      return item.title;
+    }
+  };
   // 获取菜单数据生成菜单
   const getNavMenuItems = (menusData) => {
     if (!menusData) {
@@ -37,7 +45,7 @@ const NavBar = (props) => {
               item.icon ? (
                 <span>
                   <IconFont type={item.icon} />
-                  <span>{item.title}</span>
+                  <span>{renderLanguages(item)}</span>
                 </span>
               ) : item.title
             }
@@ -53,14 +61,14 @@ const NavBar = (props) => {
           {
             /^https?:\/\//.test(itemPath) ? (
               <a href={itemPath} target="_blank">
-                {icon}<span>{item.title}</span>
+                {icon}<span>{renderLanguages(item)}</span>
               </a>
             ) : (
               <Link
                 to={itemPath}
                 replace
               >
-                {icon}<span>{item.title}</span>
+                {icon}<span>{renderLanguages(item)}</span>
               </Link>
             )
           }

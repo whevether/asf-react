@@ -34,6 +34,7 @@ const config = {
     filename: 'js/[name].js'
   },
   devServer: {
+    client: { overlay: false },
     static: {
       directory: path.join(__dirname, "public/"),
       staticOptions: {},

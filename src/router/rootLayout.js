@@ -5,30 +5,39 @@ import { Outlet} from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import * as commonAction from 'store/actions/common';
 import { Spin } from 'antd';
+import { getCookie,setCookie } from 'utils/storage';
 //总布局
 const RootLayout = (props) => {
   useEffect(()=>{
-    //当没有租户列表就获取租户列表
-    if(!props?.state?.common?.tenancyList){
-      props?.fetchTenancyList();
+    if(props?.common?.languageList.length === 0){
+      props?.getTranslatetList();
     }
+    //当没有租户列表就获取租户列表
+    if(!props?.common?.tenancyList){
+      props?.fetchTenancyList();
+      if(!getCookie('languages')){
+        setCookie('languages','中文');
+      }
+    }
+  
   },[]);
   const style = {position:'fixed',display: 'flex',width: '100%',height:'100%',alignItems:'center',justifyContent:'center',backgroundColor:'rgba(0,0,0,.7)',zIndex: 9999};
   return (
     <div className="main" >
       {
-         props?.state?.common?.loading && <Spin tip="请求中。。。。。"  spinning={props?.state?.common?.loading} delay={500} style={style}/>
+         props?.common?.loading && <Spin tip="请求中。。。。。"  spinning={props?.common?.loading} delay={500} style={style}/>
       }
       {
-        props?.state?.common?.tenancyList &&  <Outlet />
+        props?.common?.tenancyList &&  <Outlet />
       }
     </div>
   );
 };
 RootLayout.propTypes = {
   fetchTenancyList: PropTypes.func,
-  state: PropTypes.object
+  common: PropTypes.object,
+  getTranslatetList: PropTypes.func
 };
 export default connect(state => ({
-  state: state
+  common: state?.common
 }),dispatch => bindActionCreators(commonAction,dispatch))(RootLayout);
