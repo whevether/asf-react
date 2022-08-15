@@ -17,7 +17,7 @@ const Index = (props) => {
   const [initFromValue, setInitFromValue] = useState(null);
   //获取部门列表
   useEffect(() => {
-    props?.departmentFunc?.fetchDepartmentList();
+    props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
   }, []);
   // 分页对象
   const pagination = {
@@ -25,7 +25,7 @@ const Index = (props) => {
     onChange: (page, pageSize) => {
       props?.departmentFunc?.fetchDepartmentList({ pageNo: page, pageSize: pageSize });
     },
-    pageSize: 20,
+    pageSize: 200,
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
@@ -58,13 +58,13 @@ const Index = (props) => {
           setShowDarw(true);
         });
     } else if (type === 1) {
-      Promise.all([props?.commonFunc?.getRoleList(),props?.commonFunc?.getDepartmentList()])
+      Promise.all([props?.commonFunc?.getRoleList(), props?.commonFunc?.getDepartmentList()])
         .then(res => {
           setDrawType(type);
           if (!res[1].some(f => f.value === 0)) {
             res[1].unshift({ label: '顶级部门', value: '0', children: [] });
           }
-          let from = departmentFrom(res[1],res[0]);
+          let from = departmentFrom(res[1], res[0]);
           //判断是否为超级管理员。如果为则显示选择租户
           if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
             from.unshift({
@@ -102,7 +102,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 20 });
+            props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
           }, 500);
         });
     } else if (drawType === 1) {
@@ -115,7 +115,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 20 });
+            props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
           }, 500);
         });
     } else if (drawType === 2) {
@@ -128,7 +128,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 20 });
+            props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
           }, 500);
         });
     }
@@ -168,13 +168,13 @@ const Index = (props) => {
     permission: 'department.assign',
     click: (data) => {
       props?.departmentFunc?.detailsDepartment({ id: data?.id })
-      .then(res => {
-        setInitFromValue({
-          'id': res?.id,
-          'ids': res?.roles?.map(m => m.id)
+        .then(res => {
+          setInitFromValue({
+            'id': res?.id,
+            'ids': res?.roles?.map(m => m.id)
+          });
+          onOpenDarw(2);
         });
-        onOpenDarw(2);
-      });
     }
   }, {
     name: '删除部门',
@@ -187,14 +187,14 @@ const Index = (props) => {
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
-          props?.departmentFunc.deletedepartment(data?.id)
+          props?.departmentFunc.deleteDepartment(data?.id)
             .then(() => {
               notification['success']({
                 message: '删除成功',
                 description: '删除部门成功'
               });
               setTimeout(() => {
-                props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 20 });
+                props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
               }, 500);
             });
         }
@@ -217,6 +217,15 @@ const Index = (props) => {
     dataIndex: 'name',
     width: 150,
     key: 'name'
+  },{
+    title: '所属租户',
+    dataIndex: 'tenancyId',
+    width: 150,
+    key: 'tenancyId',
+    render: (text)=>{
+      let data = props?.tenancyList.find(f=>f.id == text);
+      return <span>{data?.name}</span>;
+    }
   }, {
     title: '部门状态',
     dataIndex: 'enable',
@@ -234,7 +243,7 @@ const Index = (props) => {
               message: '修改成功',
               description: '修改部门状态成功'
             });
-            props?.departmentFunc?.fetchDepartmentList();
+            props?.departmentFunc?.fetchDepartmentList({pageNo: 0,pageSize: 200});
           });
         }} /> : mapStatus[text];
     }

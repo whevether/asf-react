@@ -156,6 +156,15 @@ const Index = (props) => {
     fixed: 'left',
     width: '100px'
   }, {
+    title: '所属租户',
+    dataIndex: 'tenancyId',
+    width: 150,
+    key: 'tenancyId',
+    render: (text)=>{
+      let data = props?.tenancyList.find(f=>f.id == text);
+      return <span>{data?.name}</span>;
+    }
+  },{
     title: 'api名称',
     dataIndex: 'name',
     width: 150,

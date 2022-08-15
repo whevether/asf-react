@@ -26,3 +26,5 @@ export const GET_ROLE_LIST = 'GET_ROLE_LIST';
 export const GET_TENANCY_LIST = 'GET_TENANCY_LIST';
 //获取部门列表
 export const GET_DEPARTMENT_LIST = 'GET_DEPARTMENT_LIST';
+//获取岗位列表
+export const GET_POST_LIST = 'GET_POST_LIST';

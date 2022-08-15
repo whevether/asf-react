@@ -447,12 +447,12 @@ export const apiSearchFrom = [{
   }
 }];
 export const apiFrom = (options) => [{
-  title: '菜单所属权限',
+  title: 'api所属权限',
   fromType: 'cascader',
   selOption: options,
   name: 'permissionId',
-  placeholder: '请选择菜单所属权限',
-  rules: [{ required: true, message: '菜单所属权限不能为空' }],
+  placeholder: '请选择api所属权限',
+  rules: [{ required: true, message: 'api所属权限不能为空' }],
   options: {
     allowClear: true//是否显示清除框
   }
@@ -745,6 +745,42 @@ export const tenancyFrom = () => [{
   options: {
     allowClear: true//是否显示清除框
   }
+}];
+//岗位表单
+export const postFrom = () => [{
+  title: '岗位名称',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入岗位名称',
+  rules: [{ required: true, message: '岗位名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的岗位名称或最多输入50个字符的岗位名称' }]
+},{
+  title: '排序',
+  fromType: 'inputnumber',
+  name: 'sort',
+  placeholder: '请输入租户排序'
+},{
+  title: '岗位状态',
+  fromType: 'select',
+  name: 'enable',
+  placeholder: '请选择岗位状态',
+  selOption: [{
+    name: '禁用',
+    id: 0
+  }, {
+    name: '启用',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}, {
+  title: '岗位说明',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'description',
+  placeholder: '请输入岗位说明',
+  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的岗位说明或最多输入50个字符的岗位说明' }]
 }];
 //部门表单
 export const departmentFrom = (options,roleOption) => {

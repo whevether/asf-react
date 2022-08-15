@@ -18,6 +18,11 @@ export const modifyDepartment = (params) => async(dispatch,getState,api) => {
   const res = await api.put('/asf/department/modify',params);
   return res?.result;
 };
+//修改部门状态
+export const modifyStatus = (params) => async(dispatch,getState,api) => {
+  const res = await api.put('/asf/department/modifyStatus',params);
+  return res?.result;
+};
 // 部门详情
 export const detailsDepartment = (params) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/department/details',{

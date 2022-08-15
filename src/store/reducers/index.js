@@ -9,12 +9,14 @@ import authApi from './authApi';
 import editor from './editor';
 import tenancy from './tenancy';
 import department from './department';
+import post from './post';
 const rootReducer = (history) => combineReducers({
     common: common,
     account: account,
     audio: audio,
     tenancy: tenancy,
     department: department,
+    post: post,
     role: role,
     authApi: authApi,
     editor: editor,
