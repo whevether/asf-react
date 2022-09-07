@@ -10,11 +10,13 @@ import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 角色 1: 修改角色
   const [initFromValue, setInitFromValue] = useState(null);
+  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.roleFunc?.fetchRoleList();
@@ -151,11 +153,11 @@ const Index = (props) => {
     name: '角色详情',
     permission: 'role.details',
     click: (data) => {
-      notification.info({ message: '角色详情' });
-      props?.roleFunc.detailsRole({id:data?.id})
-        .then(res=>{
-          console.log(res);
-        });
+      navigate(`/control/role/details?id=${data?.id}`);
+      // props?.roleFunc.detailsRole({id:data?.id})
+      //   .then(res=>{
+      //     console.log(res);
+      //   });
     }
   }, {
     name: '分配角色权限',

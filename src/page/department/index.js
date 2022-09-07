@@ -10,11 +10,13 @@ import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 部门: 修改部门
   const [initFromValue, setInitFromValue] = useState(null);
+  let navigate = useNavigate();
   //获取部门列表
   useEffect(() => {
     props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
@@ -160,8 +162,8 @@ const Index = (props) => {
   }, {
     name: '部门详情',
     permission: 'department.details',
-    click: () => {
-      notification.info({ message: '部门详情' });
+    click: (data) => {
+      navigate(`/control/department/details?id=${data?.id}`);
     }
   }, {
     name: '分配部门角色',

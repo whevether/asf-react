@@ -10,11 +10,13 @@ import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
 import {DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 api 1: 修改api
   const [initFromValue, setInitFromValue] = useState(null);
+  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.apiAuthFunc?.fetchApiList();
@@ -117,7 +119,7 @@ const Index = (props) => {
     name: 'api详情',
     permission: 'api.details',
     click: (data) => {
-      console.log(data);
+      navigate(`/control/authApi/details?id=${data?.id}`);
     }
   }, {
     name: '删除api',

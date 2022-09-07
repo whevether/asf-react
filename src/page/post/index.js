@@ -9,11 +9,13 @@ import { bindActionCreators } from 'redux';
 import { Drawer, Dropdown, Modal, notification } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl, BaseFrom } from 'components/index';
+import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 api 1: 修改api
   const [initFromValue, setInitFromValue] = useState(null);
+  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.postFunc?.fetchPostList();
@@ -90,7 +92,7 @@ const Index = (props) => {
     name: '岗位详情',
     permission: 'post.details',
     click: (data) => {
-      console.log(data);
+      navigate(`/control/post/details?id=${data?.id}`);
     }
   }, {
     name: '修改岗位',

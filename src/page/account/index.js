@@ -10,11 +10,13 @@ import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, notification, Switch, Modal } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); //0 添加账户 1修改账户, 2分配账户角色 3: 分配账户部门， 4分配账户岗位，  5 修改账户密码， 6 修改账户手机，7  修改账户邮箱,8 修改账户头像
   const [initFromValue, setInitFromValue] = useState(null);
+  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.accountFunc?.fetchAccountList();
@@ -202,8 +204,8 @@ const Index = (props) => {
   const list = [{
     name: '账户详情',
     permission: 'account.details',
-    click: () => {
-      notification.info({ message: '账户详情' });
+    click: (data) => {
+      navigate(`/control/account/details?id=${data?.id}`);
     }
   }, {
     name: '修改账户',

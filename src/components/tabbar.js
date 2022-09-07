@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, Menu } from 'antd';
 import { removeCookie,getCookie,setCookie } from 'utils/storage';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined, GlobalOutlined, FontColorsOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 const Tabbar = (props) => {

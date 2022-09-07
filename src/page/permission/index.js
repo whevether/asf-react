@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
 import { CloudSyncOutlined, DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+import { useNavigate } from 'react-router-dom';
 /* eslint-disable no-extra-semi */
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
@@ -17,6 +18,7 @@ const Index = (props) => {
   const [drawType, setDrawType] = useState(0); // 0 添加 权限 1修改权限, 2 分配权限
   const [initFromValue, setInitFromValue] = useState(null);
   const [permissionIds,setPermissionIds] = useState([]);
+  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.permissionFunc?.fetchPermissionList({ pageSize: 200, pageNo: 1 });
@@ -138,7 +140,7 @@ const Index = (props) => {
     name: '权限详情',
     permission: 'permission.details',
     click: (data) => {
-      console.log(data);
+      navigate(`/control/permission/details?id=${data?.id}`);
     }
   },{
     name: '分配权限到角色',

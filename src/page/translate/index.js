@@ -8,11 +8,13 @@ import { bindActionCreators } from 'redux';
 import { Drawer, Dropdown, Modal, notification } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl, BaseFrom } from 'components/index';
+import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 多语言 1: 修改多语言
   const [initFromValue, setInitFromValue] = useState(null);
+  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.translateFunc?.fetchTranslateList();
@@ -89,7 +91,7 @@ const Index = (props) => {
     name: '多语言详情',
     permission: 'translate.details',
     click: (data) => {
-      console.log(data);
+      navigate(`/control/translate/details?id=${data?.id}`);
     }
   }, {
     name: '修改多语言',

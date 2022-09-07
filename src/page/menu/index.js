@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux';
 import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
 import { createFromIconfontCN, DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const IconFont = createFromIconfontCN({
     scriptUrl: [
@@ -21,6 +22,7 @@ const Index = (props) => {
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 菜单 1: 修改菜单
   const [initFromValue, setInitFromValue] = useState(null);
+  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.menuFunc?.fetchMenuList();
@@ -123,7 +125,7 @@ const Index = (props) => {
     name: '菜单详情',
     permission: 'menu.details',
     click: (data) => {
-      console.log(data);
+      navigate(`/control/menu/details?id=${data?.id}`);
     }
   }, {
     name: '删除菜单',
