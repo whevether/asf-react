@@ -68,6 +68,7 @@ const Tabbar = (props) => {
 };
 Tabbar.propTypes = {
   userinfo: PropTypes.object,
+  languages: PropTypes.arrayOf(Object),
   toggleMenu: PropTypes.func.isRequired,
   collapsed: PropTypes.bool.isRequired
 };

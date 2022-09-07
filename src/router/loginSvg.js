@@ -1,18 +1,8 @@
 import 'assets/snap.svg-cjs';
-/* eslint-disable no-useless-escape */
-/* eslint-disable no-var */
-/* eslint-disable semi */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-redeclare */
-/* eslint-disable no-undef */
-/* eslint-disable no-fallthrough */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-empty */
-/* eslint-disable no-cond-assign */
 const Snap = window.Snap;
-var animate = {
+let animate = {
     'stroke-dasharray': function(options) {
-        var that = this;
+        let that = this;
         this.attr({'stroke-dasharray': options.init.join(' ')});
         setTimeout(function() {
             Snap.animate(options.init, options.final, function(v) {
@@ -20,31 +10,31 @@ var animate = {
                 that.attr({
                     'stroke-dasharray': v.join(' ')
                 });
-            }, options.dur, options.easing || mina.linear);
+            }, options.dur, options.easing );
         }, options.delay);
     },
 
     'stroke-dashoffset': function(options) {
-        var that = this;
+        let that = this;
         this.attr({'stroke-dashoffset': options.init});
         setTimeout(function() {
             Snap.animate(options.init, options.final, function(v) {
                 that.attr({
                     'stroke-dashoffset': v
                 });
-            }, options.dur, options.easing || mina.linear);
+            }, options.dur, options.easing);
         }, options.delay);
     },
 
     'opacity': function(options) {
-        var that = this;
+        let that = this;
         this.attr({'opacity': options.init});
         setTimeout(function() {
             Snap.animate(options.init, options.final, function(v) {
                 that.attr({
                     'opacity': v
                 });
-            }, options.dur, options.easing || mina.linear);
+            }, options.dur, options.easing);
         }, options.delay);
     },
 
@@ -53,9 +43,9 @@ var animate = {
 
 
 
-var s = Snap('100%', '100%');
+let s = Snap('100%', '100%');
 
-var  sElems = {
+let  sElems = {
 
 };
 
@@ -322,18 +312,18 @@ sElems.circle8.data = {
 
 
 
-var group = s.group();
+let group = s.group();
 group.attr({'opacity': 0});
 
-var elems = [];
-for(var key in sElems) {
-    elems.push(sElems[key])
+let elems = [];
+for(let key in sElems) {
+    elems.push(sElems[key]);
 
-    var index = key.match(/\d$/)[0];
+    let index = key.match(/\d$/)[0];
     sElems[key].data.index = Number(index);
 }
 elems.reverse();
-for (var i = 0; i < elems.length; i++) {
+for (let i = 0; i < elems.length; i++) {
     group.append(elems[i]);
 }
 
@@ -342,27 +332,26 @@ function drawCircle() {
         'transform': 'translate(300 300)'
     });
 
-    for (var i = 0; i < elems.length; i++) {
-        for (var key in elems[i].data.animate) {
+    for (let i = 0; i < elems.length; i++) {
+        for (let key in elems[i].data.animate) {
             animate[key].call(elems[i], elems[i].data.animate[key]);
         }
     }
 }
 
 function rotate() {
-    var rSpeed = [4,3,2,1,5,0,6,9,0];
-    var signs = [1,1,-1,1,-1,1,-1,1,-1];
-    var sign;
-    var speed;
-    var index;
-    var sign;
-    var angle;
+    let rSpeed = [4,3,2,1,5,0,6,9,0];
+    let signs = [1,1,-1,1,-1,1,-1,1,-1];
+    let sign;
+    let speed;
+    // let index;
+    let angle;
 
     Snap.animate(0, 10000000000000, function(v) {
-        for(var i = 0; i < elems.length; i++) {
-            index = elems[i].data.index;
+        for(let i = 0; i < elems.length; i++) {
+            // index = elems[i].data.index;
             speed = rSpeed[elems[i].data.index];
-            sign = signs[elems[i].data.index]
+            sign = signs[elems[i].data.index];
             angle = sign * speed * v;
             elems[i].r = angle;
             elems[i].attr({
@@ -375,19 +364,19 @@ function rotate() {
 
 
 function groupMove() {
-    var skew = -30;
-    var scaleSub = 0.2;
-    var ratio = 0.6;
-    var zs = [-100, 0, 0, 40, 55, 130, 135, 135, 140];
-    var tx;
-    var ty;
+    let skew = -30;
+    let scaleSub = 0.2;
+    let ratio = 0.6;
+    let zs = [-100, 0, 0, 40, 55, 130, 135, 135, 140];
+    let tx;
+    let ty;
 
     Snap.animate(0, 1, function(v) {
         group.attr({
             'transform': 'translate(300 300) skewX('+skew * v+') scale('+(1-scaleSub*v)+', '+(1-scaleSub*v)+')'
         });
 
-        for(var i = 0; i < elems.length; i++) {
+        for(let i = 0; i < elems.length; i++) {
             tx = zs[elems[i].data.index] * v;
             ty = tx * ratio;
             elems[i].attr({
@@ -398,7 +387,7 @@ function groupMove() {
         }
 
 
-    }, 5000, mina.easeinout);
+    }, 5000);
 
 
 }
@@ -408,4 +397,4 @@ export const start = () => {
     group.attr({'opacity': 1});
     setTimeout(rotate, 2000);
     setTimeout(groupMove, 1000);
-}
+};

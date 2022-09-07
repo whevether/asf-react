@@ -8,6 +8,9 @@ const LoginLayout = () => {
     setTimeout(() => {
       start();
     }, 1500);
+    return () => {
+      start();
+    };
   }, []);
   return (
     <div className="login-wrapper" >

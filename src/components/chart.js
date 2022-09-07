@@ -25,9 +25,9 @@ const Chart = (props) => {
     renderChart();
     resize();
     window.addEventListener('resize', resize);
-    // return [
-    //   window.removeEventListener('resize', resize)
-    // ];
+    return ()=>{
+      window.removeEventListener('resize', resize);
+    };
   }, [props?.options]);
   return (
     <div className="chart" ref={node} />

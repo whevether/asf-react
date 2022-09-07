@@ -7,20 +7,6 @@ const BaseTable = (props) => {
   // console.log(props);
   const onFinish = (e) => {
     props?.querySubmit(e);
-    // let data = null;
-    // // 过滤空值
-    // Object.keys(e).forEach(f => {
-    //   if(e[f]){
-    //     data = Object.assign({...data,[f]: e[f]});
-    //   }
-    // });
-    // if(data === null){
-    //   notification['error']({
-    //     message: '至少输入一个查询值'
-    //   });
-    // }else{
-    //   props?.querySubmit(data);
-    // }
   };
   const onCancel = () => {
     form?.current?.resetFields();

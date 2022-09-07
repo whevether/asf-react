@@ -106,6 +106,7 @@ const NavBar = (props) => {
 };
 NavBar.propTypes = {
   collapsed: PropTypes.bool.isRequired,
+  languages: PropTypes.arrayOf(Object),
   userinfo: PropTypes.object,
   path: PropTypes.string
 };

@@ -282,6 +282,7 @@ const Index = (props) => {
 Index.propTypes = {
   menuFunc: PropTypes.object,
   permissionFunc: PropTypes.object,
+  commonFunc: PropTypes.object,
   userInfo: PropTypes.object,
   menu: PropTypes.object,
   tenancyList: PropTypes.arrayOf(Object),
