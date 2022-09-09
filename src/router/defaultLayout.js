@@ -8,10 +8,11 @@ import { bindActionCreators } from 'redux';
 import { getCookie } from 'utils/storage';
 import { setToken } from 'utils/request';
 import { Tabbar, Navbar } from 'components/index';
+import { Tag } from 'antd';
 // 默认布局
 const DefaultLayout = (props) => {
   let localtion = useLocation();
-  let navigate = useNavigate(); 
+  let navigate = useNavigate();
   useEffect(() => {
     if (getCookie('token')) {
       document.getElementsByTagName('body')[0].className = 'login-svg-none';
@@ -30,9 +31,9 @@ const DefaultLayout = (props) => {
       if (Array.isArray(item?.children) && item?.children.length > 0) {
         // console.log(item?.children);
         return grantedPermission(item?.children, path);
-      }else if (item.code === path) {
+      } else if (item.code === path) {
         return true;
-      }  else {
+      } else {
         return false;
       }
     });
@@ -46,10 +47,29 @@ const DefaultLayout = (props) => {
     } else {
       return (
         <div className="DefaultLayout-wrapper" >
-          <Navbar userinfo={props?.common?.data} collapsed={props?.common?.collapsed} path={localtion.pathname + localtion.search} languages={props?.common.languageList}/>
+          <Navbar userinfo={props?.common?.data} collapsed={props?.common?.collapsed} path={localtion.pathname + localtion.search} languages={props?.common.languageList} onAddTagMenu={(v) => {
+            if (!props?.common?.tagMenu.some(s => s?.menuUrl === v?.menuUrl) || props?.common?.tagMenu.length === 0) {
+              props?.common?.tagMenu?.push(v);
+              props?.addTagMenu(props?.common?.tagMenu);
+            } else {
+              v.menuHidden = 0;
+              props?.addTagMenu(props?.common?.tagMenu);
+            }
+          }} />
           <div className="page-content">
-            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={props?.toggleMenu} languages={props?.common.languageList}/>
-            {/* <PageHeader name={props?.routes.name}/> */}
+            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={props?.toggleMenu} languages={props?.common.languageList} />
+            {
+              props?.common?.tagMenu?.length > 0 && <div className="tab-menu">{
+                props?.common?.tagMenu.map((item, index) => (<Tag key={index} closable visible={item.menuHidden === 0} color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? 'blue' : 'default'} onClose={() => {
+                  item.menuHidden = 1;
+                  navigate(props?.common?.tagMenu.filter(f => f.menuHidden != 1).length != 0 ? props?.common?.tagMenu[props?.common?.tagMenu.filter(f => f.menuHidden != 1).length - 1]?.menuUrl : '/');
+                  props?.addTagMenu(props?.common?.tagMenu);
+                }}   >
+                  <span style={{ padding: '10px 15px', cursor: 'pointer', lineHeight: '50px', fontSize: '16px' }} onClick={() => navigate(item?.menuUrl)}>{item?.title}</span>
+                </Tag>))
+              }
+              </div>
+            }
             {/* 路由占位符  */}
             <Outlet />
           </div>

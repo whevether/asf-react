@@ -34,3 +34,5 @@ export const GET_TRANSLATE_LIST = 'GET_TRANSLATE_LIST';
 export const GET_DICTIONARY_LIST = 'GET_DICTIONARY_LIST';
 // 获取 多语言
 export const GET_TRANSLATE = 'GET_TRANSLATE';
+//添加动态菜单
+export const GET_TAG_MENU = 'GET_TAG_MENU';
