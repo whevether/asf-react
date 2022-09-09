@@ -66,6 +66,7 @@ const NavBar = (props) => {
             ) : (
               <Link
                 to={itemPath}
+                onClick={()=>props?.onAddTagMenu(item)}
                 replace
               >
                 {icon}<span>{renderLanguages(item)}</span>
@@ -98,14 +99,12 @@ const NavBar = (props) => {
       >
         {getNavMenuItems(props?.userinfo?.permissionMenu)}
       </Menu>
-      {/* <Button type="primary" onClick={toggleCollapsed} className="collapsed">
-        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
-      </Button> */}
     </div>
   );
 };
 NavBar.propTypes = {
   collapsed: PropTypes.bool.isRequired,
+  onAddTagMenu: PropTypes.func,
   languages: PropTypes.arrayOf(Object),
   userinfo: PropTypes.object,
   path: PropTypes.string

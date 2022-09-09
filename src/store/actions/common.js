@@ -52,3 +52,10 @@ export const toggleMenu = () => (dispatch)=>{
     type: types.TOGGLE_MENU
   });
 };
+//添加菜单
+export const addTagMenu = (data)=>(dispatch)=>{
+  dispatch({
+    type: types.GET_TAG_MENU,
+    payload: data
+  });
+};

@@ -35,11 +35,15 @@ body{
     left: 0px;
   }
 }
-.tabbar-menu{
+.tab-menu{
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  flex-wrap: nowrap;
   align-items: center;
+  padding: 15px;
+  max-width: 100%;
+  overflow-x: scroll;
+  box-shadow: 0 3px 4px rgb(0 0 0 / 16%);
 }
 .ant-form-item-label > label{
   min-width: 78px;
