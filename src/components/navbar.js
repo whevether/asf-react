@@ -44,11 +44,21 @@ const NavBar = (props) => {
             disabled={Boolean(!item.enable)}
             title={
               item.icon ? (
-                <span className="memu-item">
-                  <IconFont type={item.icon} className="menu-icon"/>
+                <><span className="memu-item">
+                  <IconFont type={item.icon} className="menu-icon" />
                   {renderLanguages(item)}
+
                 </span>
-              ) : renderLanguages(item)
+                  {/* {
+                    item?.subtitle && <em style={{ fontSize: '8px' }}>{item?.subtitle}</em>
+                  } */}
+                </>
+              ) : <>
+                <span className="memu-item">{renderLanguages(item)}</span>
+                {/* {
+                item?.subtitle && <em style={{ fontSize: '8px' }}>{item?.subtitle}</em>
+                } */}
+              </>
             }
             key={item.menuUrl || item.id}
           >
@@ -60,13 +70,17 @@ const NavBar = (props) => {
       return (
         <Menu.Item disabled={Boolean(!item.enable)} key={item.menuUrl || item.id}>
           {
-            /^https?:\/\//.test(itemPath) ? (<span>
+            /^https?:\/\//.test(itemPath) ? (<><span>
               {icon}
               <a href={itemPath} target="_blank">
                 {renderLanguages(item)}
               </a>
             </span>
-            ) : (
+              {/* {
+                item?.subtitle && <em style={{ fontSize: '8px' }}>{item?.subtitle}</em>
+              } */}
+              </>
+            ) : (<>
               <span className="memu-item">
                 {icon}
                 <Link
@@ -76,7 +90,12 @@ const NavBar = (props) => {
                 >
                   {renderLanguages(item)}
                 </Link>
+
               </span>
+              {/* {
+                item?.subtitle && <em style={{ fontSize: '8px' }}>{item?.subtitle}</em>
+              } */}
+              </>
             )
           }
         </Menu.Item>

@@ -65,7 +65,7 @@ const DefaultLayout = (props) => {
                   navigate(props?.common?.tagMenu.filter(f => f.menuHidden != 1).length != 0 ? props?.common?.tagMenu[props?.common?.tagMenu.filter(f => f.menuHidden != 1).length - 1]?.menuUrl : '/');
                   props?.addTagMenu(props?.common?.tagMenu);
                 }}   >
-                  <span style={{ padding: '10px 15px', cursor: 'pointer', lineHeight: '50px', fontSize: '16px' }} onClick={() => navigate(item?.menuUrl)}>{item?.title}</span>
+                  <span style={{ padding: '5px 15px', cursor: 'pointer', lineHeight: '30px', fontSize: '16px' }} onClick={() => navigate(item?.menuUrl)}>{item?.title}</span>
                 </Tag>))
               }
               </div>
