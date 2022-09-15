@@ -13,7 +13,7 @@ const BaseFrom = (props) => {
     } else {
       fromRef?.current?.resetFields();
     }
-  }, [props?.initialValues]);
+  }, [props?.list]);
   const renderFromItem = (item, i) => {
     if (item?.fromType === 'select') {
       return (<Form.Item name={item?.name} label={item?.title} key={i} rules={item?.rules}>

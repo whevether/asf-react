@@ -15,7 +15,7 @@ const NavBar = (props) => {
   });
   let o = props?.path.split('/');
   const [openKeys, setOpenKeys] = useState(['/'+o[1],'/'+o[o.length-2]]);
-  const [selectKeys,setSelectKeys] = useState([props?.path]);
+  const [selectKeys,setSelectKeys] = useState([decodeURIComponent(props?.path)]);
   const renderLanguages = (item)=>{
     if(props?.languages.length > 0 && item?.translate){
       return props?.languages?.find(f=>f?.key === item?.translate && f.languages === getCookie('languages'))?.value;

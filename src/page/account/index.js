@@ -456,7 +456,7 @@ const Index = (props) => {
       <Drawer
         title={mapDrawTitle[drawType]}
         width={720}
-        visible={showDarw}
+        open={showDarw}
         onClose={() => setShowDarw(false)}
       >
         <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />

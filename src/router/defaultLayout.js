@@ -26,12 +26,12 @@ const DefaultLayout = (props) => {
     }
   }, []);
   //权限拦截
-  const grantedPermission = (menu, path) => {
+  const grantedPermission = (menu) => {
     let isPermission = menu.some((item) => {
       if (Array.isArray(item?.children) && item?.children.length > 0) {
         // console.log(item?.children);
-        return grantedPermission(item?.children, path);
-      } else if (item.code === path) {
+        return grantedPermission(item?.children);
+      } else if (window.location.href.match(item?.code)[0].length === item?.code.length) {
         return true;
       } else {
         return false;
@@ -40,7 +40,7 @@ const DefaultLayout = (props) => {
     return isPermission;
   };
   const renderProtectedRoute = () => {
-    if (!grantedPermission(props?.common?.data?.permissionMenu, localtion.pathname)) {
+    if (!grantedPermission(props?.common?.data?.permissionMenu)) {
       return (
         <Navigate to="/403" replace />
       );
@@ -60,7 +60,7 @@ const DefaultLayout = (props) => {
             <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={props?.toggleMenu} languages={props?.common.languageList} />
             {
               props?.common?.tagMenu?.length > 0 && <div className="tab-menu">{
-                props?.common?.tagMenu.map((item, index) => (<Tag key={index} closable visible={item.menuHidden === 0} color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? 'blue' : 'default'} onClose={() => {
+                props?.common?.tagMenu.map((item, index) => (item.menuHidden === 0 && <Tag key={index} closable color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? 'blue' : 'default'} onClose={() => {
                   item.menuHidden = 1;
                   navigate(props?.common?.tagMenu.filter(f => f.menuHidden != 1).length != 0 ? props?.common?.tagMenu[props?.common?.tagMenu.filter(f => f.menuHidden != 1).length - 1]?.menuUrl : '/');
                   props?.addTagMenu(props?.common?.tagMenu);
