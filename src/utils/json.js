@@ -20,6 +20,39 @@ export const accountSearchFrom = [{
   name: 'email',
   // eslint-disable-next-line  no-useless-escape
   rules: [{ type: 'string', pattern: /^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/, message: '输入的邮箱地址不正确不正确' }]
+},{
+  title: '用户性别',
+  fromType: 'select',
+  name: 'sex',
+  placeholder: '请选择用户性别',
+  selOption: [{
+    name: '未知',
+    id: 0
+  }, {
+    name: '男性',
+    id: 1
+  }, {
+    name: '女性',
+    id: 2
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+},{
+  title: '用户状态',
+  fromType: 'select',
+  name: 'status',
+  placeholder: '请选择账户状态',
+  selOption: [{
+    name: '禁用',
+    id: 0
+  }, {
+    name: '启用',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
 }];
 export const accountFrom = [{
   title: '部门',
