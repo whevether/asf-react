@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { start } from './loginSvg';
+import { start,clear } from './loginSvg';
 // start();
 // 登入页布局
 const LoginLayout = () => {
@@ -9,7 +9,7 @@ const LoginLayout = () => {
       start();
     }, 1500);
     return () => {
-      start();
+      clear();
     };
   }, []);
   return (
