@@ -13,7 +13,13 @@ import { Tag } from 'antd';
 const DefaultLayout = (props) => {
   let localtion = useLocation();
   let navigate = useNavigate();
+  const resize = ()=>{
+    if(window.innerWidth <= 768){
+      console.log('sss')
+    }
+  };
   useEffect(() => {
+    window.addEventListener('resize', resize);
     if (getCookie('token')) {
       document.getElementsByTagName('body')[0].className = 'login-svg-none';
       setToken(getCookie('token'));
@@ -24,6 +30,9 @@ const DefaultLayout = (props) => {
     } else {
       navigate('/login');
     }
+    return ()=>{
+      window.removeEventListener('resize', resize);
+    };
   }, []);
   //权限拦截
   const grantedPermission = (menu) => {
