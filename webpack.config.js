@@ -52,7 +52,14 @@ const config = {
     port: 3005,
     historyApiFallback: true,
     proxy: {
-      '/api': 'http://localhost:5900'
+      '/api': 'http://localhost:5900',
+      "/api2": {
+        target: "http://47.107.225.95:4002", // 前端需要跨域的后端接口
+        changeOrigin: true,  // 是否跨域
+        pathRewrite: {
+          '^/api': '/api'
+        }
+      },
     },
     // hotOnly: true,
     hot: true,
@@ -186,7 +193,7 @@ const config = {
             options: {
               postcssOptions: {
                 plugins: [
-                  ['autoprefixer',{/*options*/}],
+                  ['autoprefixer', {/*options*/ }],
                   require('postcss-pxtorem')({
                     rootValue: 16,
                     unitPrecision: 5,

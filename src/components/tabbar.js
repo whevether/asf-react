@@ -58,7 +58,7 @@ const Tabbar = (props) => {
         }
         <Dropdown overlay={menu}>
           <span className="tabbar-dropdown">
-            <img src="../../assets/avatar.jpeg" />
+            <img src="/assets/avatar.jpeg" />
             {props?.userinfo?.username}
           </span>
         </Dropdown>

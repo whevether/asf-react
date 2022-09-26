@@ -9,6 +9,7 @@ import { getCookie } from 'utils/storage';
 import { setToken } from 'utils/request';
 import { Tabbar, Navbar } from 'components/index';
 import { Tag } from 'antd';
+import { BellOutlined,BookOutlined } from '@ant-design/icons';
 // 默认布局
 const DefaultLayout = (props) => {
   let localtion = useLocation();
@@ -69,7 +70,7 @@ const DefaultLayout = (props) => {
             <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={props?.toggleMenu} languages={props?.common.languageList} />
             {
               props?.common?.tagMenu?.length > 0 && <div className="tab-menu">{
-                props?.common?.tagMenu.map((item, index) => (item.menuHidden === 0 && <Tag key={index} closable color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? 'blue' : 'default'} onClose={() => {
+                props?.common?.tagMenu.map((item, index) => (item.menuHidden === 0 && <Tag key={index} closable color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? '#2db7f5' : 'default'} icon={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? <BellOutlined /> : <BookOutlined />} onClose={() => {
                   item.menuHidden = 1;
                   navigate(props?.common?.tagMenu.filter(f => f.menuHidden != 1).length != 0 ? props?.common?.tagMenu[props?.common?.tagMenu.filter(f => f.menuHidden != 1).length - 1]?.menuUrl : '/');
                   props?.addTagMenu(props?.common?.tagMenu);
