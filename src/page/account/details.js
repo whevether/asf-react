@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useSearchParams } from 'react-router-dom';
 import { ContactsOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
 import './details.less';
 const Details = (props) => {
   const [loading, setLoading] = useState(false);
@@ -103,6 +104,11 @@ const Details = (props) => {
       </Row>
     </div>
   );
+};
+
+Details.propTypes = {
+  accountFunc: PropTypes.object,
+  account: PropTypes.object,
 };
 export default connect(state => ({
   account: state?.account

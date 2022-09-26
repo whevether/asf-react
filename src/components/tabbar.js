@@ -44,7 +44,7 @@ const Tabbar = (props) => {
   );
   return (
     <div className="tabbar">
-      <div onClick={props?.toggleMenu} className="collapsed">
+      <div onClick={() => props?.toggleMenu()} className="collapsed">
         {React.createElement(props?.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
       </div>
       <div className="tabbar-menu">

@@ -13,7 +13,7 @@ export default function common(state = initData, action) {
     case types.FETCH_USER_DATA:
       return { ...state, data: action.payload };
     case types.TOGGLE_MENU:
-      return { ...state, collapsed: !state.collapsed };
+      return { ...state, collapsed: action.payload };
     case types.LOAD:
       return { ...state, loading: action.payload };
     case types.FETCH_TENANCY_LIST_DATA:

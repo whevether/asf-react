@@ -47,9 +47,11 @@ export const fetchUserInfo = ()=> async (dispatch,getState,api)=>{
   });
 };
 // 切换菜单
-export const toggleMenu = () => (dispatch)=>{
+export const toggleMenu = (collapsed = false) => (dispatch)=>{
+  console.log(collapsed);
   dispatch({
-    type: types.TOGGLE_MENU
+    type: types.TOGGLE_MENU,
+    payload: collapsed
   });
 };
 //添加菜单

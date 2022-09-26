@@ -16,7 +16,9 @@ const DefaultLayout = (props) => {
   let navigate = useNavigate();
   const resize = ()=>{
     if(window.innerWidth <= 768){
-      console.log('sss')
+      props?.toggleMenu(true);
+    }else{
+      props?.toggleMenu(false);
     }
   };
   useEffect(() => {
@@ -49,6 +51,9 @@ const DefaultLayout = (props) => {
     });
     return isPermission;
   };
+  const onToggle = ()=>{
+    props?.toggleMenu(!props?.common?.collapsed);
+  };
   const renderProtectedRoute = () => {
     if (!grantedPermission(props?.common?.data?.permissionMenu)) {
       return (
@@ -67,7 +72,7 @@ const DefaultLayout = (props) => {
             }
           }} />
           <div className="page-content">
-            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={props?.toggleMenu} languages={props?.common.languageList} />
+            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={()=>onToggle()} languages={props?.common.languageList} />
             {
               props?.common?.tagMenu?.length > 0 && <div className="tab-menu">{
                 props?.common?.tagMenu.map((item, index) => (item.menuHidden === 0 && <Tag key={index} closable color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? '#2db7f5' : 'default'} icon={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? <BellOutlined /> : <BookOutlined />} onClose={() => {
