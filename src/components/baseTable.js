@@ -1,12 +1,28 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button, InputNumber, Table,Select } from 'antd';
+import { Form, Input, Button, InputNumber, Table,Select, DatePicker } from 'antd';
 import AuthControl from './authControl';
+import * as dayjs from 'dayjs';
 const BaseTable = (props) => {
+  const { RangePicker } = DatePicker;
   const form = useRef(null);
   // console.log(props);
   const onFinish = (e) => {
     props?.querySubmit(e);
+    // let data = null;
+    // // 过滤空值
+    // Object.keys(e).forEach(f => {
+    //   if(e[f]){
+    //     data = Object.assign({...data,[f]: e[f]});
+    //   }
+    // });
+    // if(data === null){
+    //   notification['error']({
+    //     message: '至少输入一个查询值'
+    //   });
+    // }else{
+    //   props?.querySubmit(data);
+    // }
   };
   const onCancel = () => {
     form?.current?.resetFields();
@@ -14,6 +30,8 @@ const BaseTable = (props) => {
   const rederSearch = (item) => {
     if (item?.fromType === 'inputNumber') {
       return <InputNumber placeholder={item?.placeholder} />;
+    }else if(item?.fromType === 'daterange'){
+      return <RangePicker showTime={{defaultValue: [dayjs('00:00:00', 'HH:mm:ss'), dayjs('23:59:59', 'HH:mm:ss')]}}/>;
     } else if (item?.fromType === 'select') {
       return (
         <Select showSearch={item?.showSearch ?? false} placeholder={item?.placeholder} allowClear={item?.options?.allowClear} mode={item?.mode} optionLabelProp={item?.optionLabel} optionFilterProp="title"
@@ -31,7 +49,7 @@ const BaseTable = (props) => {
     }
   };
   return (
-    <div className="tabble-list">
+    <div className="tabble-list" style={props?.style}>
       {props?.formObj && <div className="tabble-header">
         <Form
           ref={form}
@@ -68,6 +86,7 @@ BaseTable.propTypes = {
   x: PropTypes.number,
   dataSource: PropTypes.arrayOf(Object).isRequired,
   columns: PropTypes.arrayOf(Object).isRequired,
+  style: PropTypes.object,
   rowSelection: PropTypes.object,
   querySubmit: PropTypes.func,
   pagination: PropTypes.object,
