@@ -14,6 +14,7 @@ import { BellOutlined,BookOutlined } from '@ant-design/icons';
 const DefaultLayout = (props) => {
   let localtion = useLocation();
   let navigate = useNavigate();
+  // 根据窗口大小缩放导航菜单栏
   const resize = ()=>{
     if(window.innerWidth <= 768){
       props?.toggleMenu(true);
