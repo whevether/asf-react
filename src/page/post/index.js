@@ -15,6 +15,8 @@ const Index = (props) => {
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 api 1: 修改api
   const [initFromValue, setInitFromValue] = useState(null);
+  const [page,setPage] = useState(1);
+  const [pageSize,setPageSize] = useState(20);
   let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
@@ -23,10 +25,13 @@ const Index = (props) => {
   // 分页对象
   const pagination = {
     total: props?.post?.listTotal,
-    onChange: (page, pageSize) => {
-      props?.postFunc?.fetchPostList({ pageNo: page, pageSize: pageSize });
+    onChange: (p, size) => {
+      setPage(p);
+      setPageSize(size);
+      props?.postFunc?.fetchPostList({ pageNo: p, pageSize: size });
     },
-    pageSize: 20,
+    current: page,
+    pageSize: pageSize,
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
@@ -65,7 +70,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.postFunc?.fetchPostList({ pageNo: 0, pageSize: 20 });
+            props?.postFunc?.fetchPostList({ pageSize: pageSize });
           }, 500);
         });
     } else if (drawType === 1) {
@@ -78,7 +83,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.postFunc?.fetchPostList({ pageNo: 0, pageSize: 20 });
+            props?.postFunc?.fetchPostList({  pageSize: pageSize });
           }, 500);
         });
     }
@@ -127,7 +132,7 @@ const Index = (props) => {
                 description: '删除岗位成功'
               });
               setTimeout(() => {
-                props?.postFunc?.fetchPostList();
+                props?.postFunc?.fetchPostList({pageSize:pageSize});
               }, 500);
             });
         }
@@ -209,7 +214,7 @@ const Index = (props) => {
       <Drawer
         title={mapTitle[drawType]}
         width={720}
-        visible={showDarw}
+        open={showDarw}
         onClose={() => setShowDarw(false)}
       >
         <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />

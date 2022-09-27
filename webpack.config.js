@@ -186,7 +186,7 @@ const config = {
             options: {
               postcssOptions: {
                 plugins: [
-                  ['autoprefixer',{/*options*/}],
+                  ['autoprefixer', {/*options*/ }],
                   require('postcss-pxtorem')({
                     rootValue: 16,
                     unitPrecision: 5,

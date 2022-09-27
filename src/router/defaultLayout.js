@@ -9,11 +9,21 @@ import { getCookie } from 'utils/storage';
 import { setToken } from 'utils/request';
 import { Tabbar, Navbar } from 'components/index';
 import { Tag } from 'antd';
+import { BellOutlined,BookOutlined } from '@ant-design/icons';
 // 默认布局
 const DefaultLayout = (props) => {
   let localtion = useLocation();
   let navigate = useNavigate();
+  // 根据窗口大小缩放导航菜单栏
+  const resize = ()=>{
+    if(window.innerWidth <= 768){
+      props?.toggleMenu(true);
+    }else{
+      props?.toggleMenu(false);
+    }
+  };
   useEffect(() => {
+    window.addEventListener('resize', resize);
     if (getCookie('token')) {
       document.getElementsByTagName('body')[0].className = 'login-svg-none';
       setToken(getCookie('token'));
@@ -24,14 +34,17 @@ const DefaultLayout = (props) => {
     } else {
       navigate('/login');
     }
+    return ()=>{
+      window.removeEventListener('resize', resize);
+    };
   }, []);
   //权限拦截
-  const grantedPermission = (menu, path) => {
+  const grantedPermission = (menu) => {
     let isPermission = menu.some((item) => {
       if (Array.isArray(item?.children) && item?.children.length > 0) {
         // console.log(item?.children);
-        return grantedPermission(item?.children, path);
-      } else if (item.code === path) {
+        return grantedPermission(item?.children);
+      } else if (window.location.href.match(item?.code)[0].length === item?.code.length) {
         return true;
       } else {
         return false;
@@ -40,13 +53,13 @@ const DefaultLayout = (props) => {
     return isPermission;
   };
   const renderProtectedRoute = () => {
-    if (!grantedPermission(props?.common?.data?.permissionMenu, localtion.pathname)) {
+    if (!grantedPermission(props?.common?.data?.permissionMenu)) {
       return (
         <Navigate to="/403" replace />
       );
     } else {
       return (
-        <div className="DefaultLayout-wrapper" >
+        <div className="defaultLayout-wrapper" >
           <Navbar userinfo={props?.common?.data} collapsed={props?.common?.collapsed} path={localtion.pathname + localtion.search} languages={props?.common.languageList} onAddTagMenu={(v) => {
             if (!props?.common?.tagMenu.some(s => s?.menuUrl === v?.menuUrl) || props?.common?.tagMenu.length === 0) {
               props?.common?.tagMenu?.push(v);
@@ -57,15 +70,15 @@ const DefaultLayout = (props) => {
             }
           }} />
           <div className="page-content">
-            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={props?.toggleMenu} languages={props?.common.languageList} />
+            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={()=>props?.toggleMenu(!props?.common?.collapsed)} languages={props?.common.languageList} />
             {
               props?.common?.tagMenu?.length > 0 && <div className="tab-menu">{
-                props?.common?.tagMenu.map((item, index) => (<Tag key={index} closable visible={item.menuHidden === 0} color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? 'blue' : 'default'} onClose={() => {
+                props?.common?.tagMenu.map((item, index) => (item.menuHidden === 0 && <Tag key={index} closable color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? '#2db7f5' : 'default'} icon={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? <BellOutlined /> : <BookOutlined />} onClose={() => {
                   item.menuHidden = 1;
                   navigate(props?.common?.tagMenu.filter(f => f.menuHidden != 1).length != 0 ? props?.common?.tagMenu[props?.common?.tagMenu.filter(f => f.menuHidden != 1).length - 1]?.menuUrl : '/');
                   props?.addTagMenu(props?.common?.tagMenu);
                 }}   >
-                  <span style={{ padding: '10px 15px', cursor: 'pointer', lineHeight: '50px', fontSize: '16px' }} onClick={() => navigate(item?.menuUrl)}>{item?.title}</span>
+                  <span style={{ padding: '5px 15px', cursor: 'pointer', lineHeight: '30px', fontSize: '16px' }} onClick={() => navigate(item?.menuUrl)}>{item?.title}</span>
                 </Tag>))
               }
               </div>

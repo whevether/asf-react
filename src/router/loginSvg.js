@@ -44,7 +44,6 @@ let animate = {
 
 
 let s = Snap('100%', '100%');
-
 let  sElems = {
 
 };
@@ -397,4 +396,7 @@ export const start = () => {
     group.attr({'opacity': 1});
     setTimeout(rotate, 2000);
     setTimeout(groupMove, 1000);
+};
+export const clear = () =>{
+    s.clear();
 };

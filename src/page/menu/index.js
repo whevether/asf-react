@@ -22,6 +22,8 @@ const Index = (props) => {
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 菜单 1: 修改菜单
   const [initFromValue, setInitFromValue] = useState(null);
+  const [page,setPage] = useState(1);
+  const [pageSize,setPageSize] = useState(20);
   let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
@@ -30,10 +32,13 @@ const Index = (props) => {
   // 分页对象
   const pagination = {
     total: props?.menu?.listTotal,
-    onChange: (page, pageSize) => {
-      props?.menuFunc?.fetchMenuList({ pageNo: page, pageSize: pageSize });
+    onChange: (p, size) => {
+      setPage(p);
+      setPageSize(size);
+      props?.menuFunc?.fetchMenuList({ pageNo: p, pageSize: size });
     },
-    pageSize: 20,
+    current: page,
+    pageSize: pageSize,
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
@@ -76,7 +81,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(()=>{
-            props?.menuFunc?.fetchMenuList({ pageNo: 0, pageSize: 20 });
+            props?.menuFunc?.fetchMenuList({ pageSize: pageSize });
           },500);
         });
     }else if (drawType === 1) {
@@ -90,7 +95,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(()=>{
-            props?.menuFunc?.fetchMenuList({ pageNo: 0, pageSize: 20 });
+            props?.menuFunc?.fetchMenuList({  pageSize: pageSize });
           },500);
         });
     }
@@ -145,7 +150,7 @@ const Index = (props) => {
                 description: '删除菜单成功'
               });
               setTimeout(()=>{
-                props?.menuFunc?.fetchMenuList({ pageNo: 0, pageSize: 20 });
+                props?.menuFunc?.fetchMenuList({  pageSize: pageSize });
               },500);
             });
         }
@@ -273,7 +278,7 @@ const Index = (props) => {
       <Drawer
         title={mapTitle[drawType]}
         width={720}
-        visible={showDarw}
+        open={showDarw}
         onClose={() => setShowDarw(false)}
       >
         <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />

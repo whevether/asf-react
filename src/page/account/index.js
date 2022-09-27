@@ -16,6 +16,8 @@ const Index = (props) => {
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); //0 添加账户 1修改账户, 2分配账户角色 3: 分配账户部门， 4分配账户岗位，  5 修改账户密码， 6 修改账户手机，7  修改账户邮箱,8 修改账户头像
   const [initFromValue, setInitFromValue] = useState(null);
+  const [page,setPage] = useState(1);
+  const [pageSize,setPageSize] = useState(20);
   let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
@@ -24,10 +26,13 @@ const Index = (props) => {
   // 分页对象
   const pagination = {
     total: props?.account?.listTotal,
-    onChange: (page, pageSize) => {
-      props?.accountFunc?.fetchAccountList({ pageNo: page, pageSize: pageSize });
+    onChange: (p, size) => {
+      setPage(p);
+      setPageSize(size);
+      props?.accountFunc?.fetchAccountList({ pageNo: p, pageSize: size });
     },
-    pageSize: 20,
+    current: page,
+    pageSize: pageSize,
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
@@ -113,7 +118,7 @@ const Index = (props) => {
             description: '添加账户成功'
           });
           setShowDarw(false);
-          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+          props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
         });
     } else if (drawType === 1) {
       data.departmentId = data.departmentId.slice(-1)[0];
@@ -125,7 +130,7 @@ const Index = (props) => {
             description: '修改账户成功'
           });
           setShowDarw(false);
-          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+          props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
         });
     } else if (drawType == 2) {
       data.id = initFromValue.id;
@@ -136,7 +141,7 @@ const Index = (props) => {
             description: '分配角色成功'
           });
           setShowDarw(false);
-          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+          props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
         });
     } else if (drawType == 3) {
       data.id = initFromValue.id;
@@ -148,7 +153,7 @@ const Index = (props) => {
             description: '分配部门成功'
           });
           setShowDarw(false);
-          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+          props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
         });
     } else if (drawType == 4) {
       data.id = initFromValue.id;
@@ -159,7 +164,7 @@ const Index = (props) => {
             description: '分配岗位成功'
           });
           setShowDarw(false);
-          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+          props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
         });
     } else if (drawType == 5) {
       data.id = initFromValue.id;
@@ -170,7 +175,7 @@ const Index = (props) => {
             description: '修改密码成功'
           });
           setShowDarw(false);
-          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+          props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
         });
     } else if (drawType == 6) {
       data.id = initFromValue.id;
@@ -181,7 +186,7 @@ const Index = (props) => {
             description: '修改手机成功'
           });
           setShowDarw(false);
-          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+          props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
         });
     } else if (drawType == 7) {
       data.id = initFromValue.id;
@@ -192,7 +197,7 @@ const Index = (props) => {
             description: '修改邮箱成功'
           });
           setShowDarw(false);
-          props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+          props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
         });
     }
   };
@@ -273,7 +278,7 @@ const Index = (props) => {
                 message: '删除成功',
                 description: '删除用户成功'
               });
-              props?.accountFunc?.fetchAccountList({ pageNo: 1, pageSize: 20 });
+              props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
             });
         }
       });
@@ -394,7 +399,7 @@ const Index = (props) => {
               message: '修改成功',
               description: '修改账户状态成功'
             });
-            props?.accountFunc?.fetchAccountList();
+            props?.accountFunc?.fetchAccountList({pageSize: pageSize});
           });
         }} /> : statusMap[text];
     }
@@ -456,7 +461,7 @@ const Index = (props) => {
       <Drawer
         title={mapDrawTitle[drawType]}
         width={720}
-        visible={showDarw}
+        open={showDarw}
         onClose={() => setShowDarw(false)}
       >
         <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />

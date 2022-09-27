@@ -21,7 +21,7 @@ const RootLayout = (props) => {
     }
   
   },[]);
-  const style = {position:'fixed',display: 'flex',width: '100%',height:'100%',alignItems:'center',justifyContent:'center',backgroundColor:'rgba(0,0,0,.7)',zIndex: 9999};
+  const style = {position:'fixed',display: 'flex',width: '100%',height:'100%',alignItems:'center',justifyContent:'center',backgroundColor:'rgba(0,0,0,.8)',zIndex: 9999};
   return (
     <div className="main" >
       {

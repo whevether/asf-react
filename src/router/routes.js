@@ -8,7 +8,7 @@ import { useRoutes } from 'react-router';
 //页面
 const DashPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/dash'));
 const LoginPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/login'));
-const  NotFound= LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/nodeFound'));
+const Error404 = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/404'));
 const Error403 = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/403'));
 const AccountPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/account/index'));
 const AccountDetailsPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/account/details'));
@@ -127,7 +127,7 @@ const routes = [{
     element: <Error403 />
   },{
     path: '*',
-    element: <NotFound />
+    element: <Error404 />
   }],
 }];
 const Routes = () => {

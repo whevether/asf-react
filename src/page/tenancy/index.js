@@ -15,6 +15,8 @@ const Index = (props) => {
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 api 1: 修改api
   const [initFromValue, setInitFromValue] = useState(null);
+  const [page,setPage] = useState(1);
+  const [pageSize,setPageSize] = useState(20);
   let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
@@ -23,10 +25,13 @@ const Index = (props) => {
   // 分页对象
   const pagination = {
     total: props?.tenancy?.listTotal,
-    onChange: (page, pageSize) => {
-      props?.tenancyFunc?.fetchTenancyList({ pageNo: page, pageSize: pageSize });
+    onChange: (p, size) => {
+      setPage(p);
+      setPageSize(size);
+      props?.tenancyFunc?.fetchTenancyList({ pageNo: p, pageSize: size });
     },
-    pageSize: 20,
+    current: page,
+    pageSize: pageSize,
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
@@ -184,7 +189,7 @@ const Index = (props) => {
       <Drawer
         title={mapTitle[drawType]}
         width={720}
-        visible={showDarw}
+        open={showDarw}
         onClose={() => setShowDarw(false)}
       >
         <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />

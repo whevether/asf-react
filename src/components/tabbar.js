@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, Menu } from 'antd';
+import { Dropdown, Menu, Tooltip } from 'antd';
 import { removeCookie,getCookie,setCookie } from 'utils/storage';
 import { useNavigate } from 'react-router-dom';
 import { MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined, GlobalOutlined, FontColorsOutlined } from '@ant-design/icons';
@@ -44,8 +44,8 @@ const Tabbar = (props) => {
   );
   return (
     <div className="tabbar">
-      <div onClick={props?.toggleMenu} className="collapsed">
-        {React.createElement(props?.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
+      <div onClick={() => props?.toggleMenu()} className="collapsed">
+        {props?.collapsed ? <Tooltip title="展开"><MenuUnfoldOutlined /></Tooltip> : <Tooltip title="收缩"><MenuFoldOutlined /></Tooltip>}
       </div>
       <div className="tabbar-menu">
         {
@@ -58,7 +58,7 @@ const Tabbar = (props) => {
         }
         <Dropdown overlay={menu}>
           <span className="tabbar-dropdown">
-            <img src="../../assets/avatar.jpeg" />
+            <img src="/assets/avatar.jpeg" />
             {props?.userinfo?.username}
           </span>
         </Dropdown>
