@@ -63,12 +63,12 @@ const LogsList = (props) => {
     title: '日志ID',
     dataIndex: 'id',
     key: 'id',
-    width: '50px'
+    width: 50
   }, {
     title: '日志类型',
     dataIndex: 'type',
     key: 'type',
-    width: '100px',
+    width: 100,
     render: (text) => {
       const mapType = {
         1: '登录日志',
@@ -81,27 +81,27 @@ const LogsList = (props) => {
     title: '账户名',
     dataIndex: 'accountName',
     key: 'accountName',
-    width: '100px'
+    width: 100
   }, {
     title: 'ip',
     dataIndex: 'clientIp',
     key: 'clientIp',
-    width: '100px'
+    width: 100
   }, {
     title: 'ip地址',
     dataIndex: 'clientLocation',
     key: 'clientLocation',
-    width: '100px',
+    width: 100,
   },{
     title: '请求地址',
     dataIndex: 'apiAddress',
     key: 'apiAddress',
-    width: '100px',
+    width: 100,
   },{
     title: '请求数据',
     dataIndex: 'apiRequest',
     key: 'apiRequest',
-    width: '150px',
+    width: 150,
     render: (text)=>{
       if(text){
         return (<pre lang='json'>{text}</pre>);
@@ -113,7 +113,7 @@ const LogsList = (props) => {
     title: '响应数据',
     dataIndex: 'apiResponse',
     key: 'apiResponse',
-    width: '150px',
+    width: 150,
     render: (text)=>{
       if(text){
         return (<pre lang='json'>{text}</pre>);
@@ -124,24 +124,24 @@ const LogsList = (props) => {
   }, {
     title: '说明',
     dataIndex: 'remark',
-    width: '100px',
+    width: 100,
     key: 'remark'
   }, {
     title: '日志主题',
     dataIndex: 'subject',
-    width: '100px',
+    width: 100,
     key: 'subject'
   }, {
     title: '创建时间',
     dataIndex: 'addTime',
     key: 'addTime',
-    width: '100px',
+    width: 100,
     render: (text) => {
       return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
     }
   }, {
     title: '操作',
-    width: '150px',
+    width: 150,
     key: 'action',
     // eslint-disable-next-line
     render: (text) => {
