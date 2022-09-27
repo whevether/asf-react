@@ -16,19 +16,24 @@ const Index = (props) => {
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 部门: 修改部门
   const [initFromValue, setInitFromValue] = useState(null);
+  const [page,setPage] = useState(1);
+  const [pageSize,setPageSize] = useState(200);
   let navigate = useNavigate();
   //获取部门列表
   useEffect(() => {
-    props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
+    props?.departmentFunc?.fetchDepartmentList({pageSize: pageSize });
   }, []);
   // 分页对象
   const pagination = {
     total: props?.department?.listTotal,
-    onChange: (page, pageSize) => {
-      props?.departmentFunc?.fetchDepartmentList({ pageNo: page, pageSize: pageSize });
+    onChange: (p, size) => {
+      setPage(p);
+      setPageSize(size);
+      props?.departmentFunc?.fetchDepartmentList({ pageNo: p, pageSize: size });
     },
-    pageSize: 200,
-    pageSizeOptions: ['10', '20', '50', '100'],
+    current: page,
+    pageSize: pageSize,
+    pageSizeOptions: ['200', '500', '1000'],
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
   };
@@ -104,7 +109,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
+            props?.departmentFunc?.fetchDepartmentList({pageSize: pageSize });
           }, 500);
         });
     } else if (drawType === 1) {
@@ -117,7 +122,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
+            props?.departmentFunc?.fetchDepartmentList({ pageSize: pageSize });
           }, 500);
         });
     } else if (drawType === 2) {
@@ -130,7 +135,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
+            props?.departmentFunc?.fetchDepartmentList({ pageSize: pageSize });
           }, 500);
         });
     }
@@ -196,7 +201,7 @@ const Index = (props) => {
                 description: '删除部门成功'
               });
               setTimeout(() => {
-                props?.departmentFunc?.fetchDepartmentList({ pageNo: 0, pageSize: 200 });
+                props?.departmentFunc?.fetchDepartmentList({ pageSize: pageSize });
               }, 500);
             });
         }
@@ -245,7 +250,7 @@ const Index = (props) => {
               message: '修改成功',
               description: '修改部门状态成功'
             });
-            props?.departmentFunc?.fetchDepartmentList({pageNo: 0,pageSize: 200});
+            props?.departmentFunc?.fetchDepartmentList({pageSize: pageSize});
           });
         }} /> : mapStatus[text];
     }

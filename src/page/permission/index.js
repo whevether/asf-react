@@ -18,19 +18,24 @@ const Index = (props) => {
   const [drawType, setDrawType] = useState(0); // 0 添加 权限 1修改权限, 2 分配权限
   const [initFromValue, setInitFromValue] = useState(null);
   const [permissionIds,setPermissionIds] = useState([]);
+  const [page,setPage] = useState(1);
+  const [pageSize,setPageSize] = useState(200);
   let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
-    props?.permissionFunc?.fetchPermissionList({ pageSize: 200, pageNo: 1 });
+    props?.permissionFunc?.fetchPermissionList({ pageSize: pageSize, pageNo: page });
   }, []);
   // 分页对象
   const pagination = {
     total: props?.permission?.listTotal,
-    onChange: (page, pageSize) => {
-      props?.permissionFunc?.fetchPermissionList({ pageNo: page, pageSize: pageSize });
+    onChange: (p, size) => {
+      setPage(p);
+      setPageSize(size);
+      props?.permissionFunc?.fetchPermissionList({ pageNo: p, pageSize: size });
     },
-    pageSize: 200,
-    pageSizeOptions: ['10', '20', '50', '100'],
+    current: page,
+    pageSize: pageSize,
+    pageSizeOptions: ['200', '500', '1000'],
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
   };
@@ -81,7 +86,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(()=>{
-            props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 });
+            props?.permissionFunc?.fetchPermissionList({ pageSize: pageSize });
           },500);
         });
     }else if(drawType === 1){
@@ -95,7 +100,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(()=>{
-            props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 });
+            props?.permissionFunc?.fetchPermissionList({ pageSize: pageSize });
           },500);
         });
     }else if(drawType === 2){
@@ -107,7 +112,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(()=>{
-            props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 });
+            props?.permissionFunc?.fetchPermissionList({ pageSize: pageSize });
           },500);
         });
     }
@@ -168,7 +173,7 @@ const Index = (props) => {
                 description: '删除权限成功'
               });
               setTimeout(()=>{
-                props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 });
+                props?.permissionFunc?.fetchPermissionList({  pageSize: pageSize });
               },500);
             });
         }
@@ -258,7 +263,7 @@ const Index = (props) => {
               message: '修改成功',
               description: '修改权限状态状态成功'
             });
-            props?.permissionFunc?.fetchPermissionList();
+            props?.permissionFunc?.fetchPermissionList({pageSize: pageSize});
           });
         }} /> : statusMap[text];
     }

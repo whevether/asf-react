@@ -16,6 +16,8 @@ const Index = (props) => {
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 api 1: 修改api
   const [initFromValue, setInitFromValue] = useState(null);
+  const [page,setPage] = useState(1);
+  const [pageSize,setPageSize] = useState(20);
   let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
@@ -24,10 +26,13 @@ const Index = (props) => {
   // 分页对象
   const pagination = {
     total: props?.authApi?.listTotal,
-    onChange: (page, pageSize) => {
-      props?.apiAuthFunc?.fetchApiList({ pageNo: page, pageSize: pageSize });
+    onChange: (p, size) => {
+      setPage(p);
+      setPageSize(size);
+      props?.apiAuthFunc?.fetchApiList({ pageNo: p, pageSize: size });
     },
-    pageSize: 20,
+    current: page,
+    pageSize: pageSize,
     pageSizeOptions: ['10', '20', '50', '100'],
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
@@ -35,7 +40,7 @@ const Index = (props) => {
   // 打开抽屉
   const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
-      props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })
+      props?.permissionFunc?.fetchPermissionList({ pageSize: 9999 })
         .then(res=>{
           setDrawType(type);
           let from = apiFrom(res);
@@ -71,7 +76,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(()=>{
-            props?.apiAuthFunc?.fetchApiList({ pageNo: 0, pageSize: 20 });
+            props?.apiAuthFunc?.fetchApiList({pageSize: pageSize });
           },500);
         });
     }else if(drawType === 1){
@@ -86,7 +91,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(()=>{
-            props?.apiAuthFunc?.fetchApiList({ pageNo: 0, pageSize: 20 });
+            props?.apiAuthFunc?.fetchApiList({pageSize: pageSize });
           },500);
         });
     }
@@ -139,7 +144,7 @@ const Index = (props) => {
                 description: '删除api成功'
               });
               setTimeout(()=>{
-                props?.apiAuthFunc?.fetchApiList({ pageNo: 0, pageSize: 20 });
+                props?.apiAuthFunc?.fetchApiList({ pageSize: pageSize });
               },500);
             });
         }
