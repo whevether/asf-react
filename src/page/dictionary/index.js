@@ -147,11 +147,11 @@ const Index = (props) => {
     title: 'ID',
     dataIndex: 'id',
     key: 'id',
-    width: '100px'
+    width: 100
   }, {
     title: '所属租户',
     dataIndex: 'tenancyId',
-    width: 150,
+    width: 100,
     key: 'tenancyId',
     render: (text) => {
       let data = props?.tenancyList.find(f => f.id == text);
@@ -161,20 +161,21 @@ const Index = (props) => {
     title: '字典名',
     dataIndex: 'name',
     key: 'name',
-    width: '100px'
+    width: 100
   }, {
     title: '键',
     dataIndex: 'key',
     key: 'key',
-    width: '100px'
+    width: 100
   }, {
     title: '值',
     dataIndex: 'value',
     key: 'value',
-    width: '100px'
+    width: 100
   }, {
     title: '创建时间',
     dataIndex: 'createTime',
+    width: 100,
     key: 'createTime',
     render: (text) => {
       return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
@@ -182,6 +183,8 @@ const Index = (props) => {
   }, {
     title: '操作',
     key: 'action',
+    width: 150,
+    fixed: 'right',
     // eslint-disable-next-line
     render: (text) => {
       return (<Dropdown overlay={menu(text)} name="action">

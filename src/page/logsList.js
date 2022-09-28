@@ -63,7 +63,7 @@ const LogsList = (props) => {
     title: '日志ID',
     dataIndex: 'id',
     key: 'id',
-    width: 50
+    width: 100
   }, {
     title: '日志类型',
     dataIndex: 'type',
@@ -104,7 +104,7 @@ const LogsList = (props) => {
     width: 150,
     render: (text)=>{
       if(text){
-        return (<pre lang='json'>{text}</pre>);
+        return (<pre lang="json">{text}</pre>);
       }else{
         return '';
       }
@@ -116,7 +116,7 @@ const LogsList = (props) => {
     width: 150,
     render: (text)=>{
       if(text){
-        return (<pre lang='json'>{text}</pre>);
+        return (<pre lang="json">{text}</pre>);
       }else{
         return '';
       }
@@ -143,6 +143,7 @@ const LogsList = (props) => {
     title: '操作',
     width: 150,
     key: 'action',
+    fixed: 'right',
     // eslint-disable-next-line
     render: (text) => {
       return (<Dropdown overlay={menu(text)} name="action">

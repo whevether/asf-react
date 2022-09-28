@@ -161,11 +161,11 @@ const Index = (props) => {
     dataIndex: 'id',
     key: 'id',
     fixed: 'left',
-    width: '100px'
+    width: 100
   }, {
     title: '所属租户',
     dataIndex: 'tenancyId',
-    width: 150,
+    width: 100,
     key: 'tenancyId',
     render: (text)=>{
       let data = props?.tenancyList.find(f=>f.id == text);
@@ -174,17 +174,17 @@ const Index = (props) => {
   },{
     title: 'api名称',
     dataIndex: 'name',
-    width: 150,
+    width: 100,
     key: 'name'
   },{
     title: '请求方法',
     dataIndex: 'httpMethods',
-    width: 150,
+    width: 70,
     key: 'httpMethods'
   },{
     title: 'api状态',
     dataIndex: 'status',
-    width: 150,
+    width: 80,
     key: 'status',
     render: (text,record)=>{
       const mapStatus = {
@@ -205,7 +205,7 @@ const Index = (props) => {
   },{
     title: 'api类型',
     dataIndex: 'type',
-    width: 150,
+    width: 80,
     key: 'type',
     render: (text)=>{
       const mapStatus = {
@@ -217,7 +217,7 @@ const Index = (props) => {
   },{
     title: '是否为系统api',
     dataIndex: 'isSystem',
-    width: 150,
+    width: 60,
     key: 'isSystem',
     render: (text)=>{
       const mapStatus = {
@@ -229,7 +229,7 @@ const Index = (props) => {
   },{
     title: '是否记录日志',
     dataIndex: 'isLogger',
-    width: 150,
+    width: 60,
     key: 'isLogger',
     render: (text)=>{
       const mapStatus = {
@@ -241,12 +241,12 @@ const Index = (props) => {
   },{
     title: 'api地址',
     dataIndex: 'path',
-    width: 150,
+    width: 100,
     key: 'path'
   }, {
     title: '权限id',
     dataIndex: 'permissionId',
-    width: 150,
+    width: 100,
     key: 'permissionId'
   }, {
     title: '说明',
@@ -257,7 +257,7 @@ const Index = (props) => {
     title: '创建时间',
     dataIndex: 'createTime',
     key: 'createTime',
-    width: 200,
+    width: 100,
     render: (text) => {
       return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
     }
@@ -265,6 +265,7 @@ const Index = (props) => {
     title: '操作',
     key: 'action',
     width: 150,
+    fixed: 'right',
     // eslint-disable-next-line
     render: (text) => {
       return (<Dropdown overlay={menu(text)} name="action">
