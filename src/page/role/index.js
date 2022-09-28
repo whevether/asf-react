@@ -212,11 +212,11 @@ const Index = (props) => {
     dataIndex: 'id',
     key: 'id',
     fixed: 'left',
-    width: '100px'
+    width: 100
   }, {
     title: '所属租户',
     dataIndex: 'tenancyId',
-    width: 150,
+    width: 100,
     key: 'tenancyId',
     render: (text)=>{
       let data = props?.tenancyList.find(f=>f.id == text);
@@ -225,12 +225,12 @@ const Index = (props) => {
   },{
     title: '角色名称',
     dataIndex: 'name',
-    width: 150,
+    width: 100,
     key: 'name'
   }, {
     title: '角色状态',
     dataIndex: 'enable',
-    width: 150,
+    width: 80,
     key: 'enable',
     render: (text, record) => {
       const mapStatus = {
@@ -257,7 +257,7 @@ const Index = (props) => {
     title: '创建时间',
     dataIndex: 'createTime',
     key: 'createTime',
-    width: 200,
+    width: 100,
     render: (text) => {
       return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
     }
@@ -265,6 +265,7 @@ const Index = (props) => {
     title: '操作',
     key: 'action',
     width: 150,
+    fixed: 'right',
     // eslint-disable-next-line
     render: (text) => {
       return (<Dropdown overlay={menu(text)} name="action">

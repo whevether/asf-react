@@ -167,11 +167,11 @@ const Index = (props) => {
     dataIndex: 'id',
     key: 'id',
     fixed: 'left',
-    width: '100px'
+    width: 100
   },{
     title: '所属租户',
     dataIndex: 'tenancyId',
-    width: 150,
+    width: 100,
     key: 'tenancyId',
     render: (text)=>{
       let data = props?.tenancyList.find(f=>f.id == text);
@@ -180,12 +180,12 @@ const Index = (props) => {
   }, {
     title: '菜单标题',
     dataIndex: 'title',
-    width: 150,
+    width: 100,
     key: 'title'
   },{
     title: '菜单副标题',
     dataIndex: 'subtitle',
-    width: 150,
+    width: 100,
     key: 'subtitle'
   },{
     title: '菜单地址',
@@ -200,11 +200,12 @@ const Index = (props) => {
   },{
     title: '菜单重定向地址',
     dataIndex: 'menuRedirect',
-    key: 'menuRedirect'
+    key: 'menuRedirect',
+    width: 150,
   },{
     title: '菜单图标',
     dataIndex: 'icon',
-    width: 150,
+    width: 100,
     key: 'icon',
     render: (text)=>{
       return (<IconFont type={text} />);
@@ -212,7 +213,7 @@ const Index = (props) => {
   }, {
     title: '权限id',
     dataIndex: 'permissionId',
-    width: 150,
+    width: 100,
     key: 'permissionId'
   }, {
     title: '说明',
@@ -223,7 +224,7 @@ const Index = (props) => {
     title: '是否隐藏菜单',
     dataIndex: 'menuHidden',
     key: 'menuHidden',
-    width: 150,
+    width: 80,
     // eslint-disable-next-line
     render: (text, record) => {
       let statusMap = {
@@ -244,13 +245,13 @@ const Index = (props) => {
   }, {
     title: '多语言',
     dataIndex: 'translate',
-    width: 150,
+    width: 100,
     key: 'translate'
   }, {
     title: '创建时间',
     dataIndex: 'createTime',
     key: 'createTime',
-    width: 200,
+    width: 100,
     render: (text) => {
       return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
     }
@@ -258,6 +259,7 @@ const Index = (props) => {
     title: '操作',
     key: 'action',
     width: 150,
+    fixed: 'right',
     // eslint-disable-next-line
     render: (text) => {
       return (<Dropdown overlay={menu(text)} name="action">

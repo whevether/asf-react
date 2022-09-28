@@ -329,11 +329,11 @@ const Index = (props) => {
     dataIndex: 'id',
     key: 'id',
     fixed: 'left',
-    width: '100px'
+    width: 100
   },{
     title: '所属租户',
     dataIndex: 'tenancyId',
-    width: 150,
+    width: 100,
     key: 'tenancyId',
     render: (text)=>{
       let data = props?.tenancyList.find(f=>f.id == text);
@@ -351,27 +351,27 @@ const Index = (props) => {
   }, {
     title: '账户昵称',
     dataIndex: 'name',
-    width: 150,
+    width: 100,
     key: 'name'
   }, {
     title: '账户名',
     dataIndex: 'username',
-    width: 150,
+    width: 100,
     key: 'username'
   }, {
     title: '手机号码',
     dataIndex: 'telPhone',
-    width: 150,
+    width: 100,
     key: 'telPhone'
   }, {
     title: '邮箱',
     dataIndex: 'email',
-    width: 150,
+    width: 100,
     key: 'email'
   }, {
     title: '性别',
     dataIndex: 'sex',
-    width: 150,
+    width: 60,
     key: 'sex',
     render: (text) => {
       let sexMap = {
@@ -384,7 +384,7 @@ const Index = (props) => {
   }, {
     title: '状态',
     dataIndex: 'status',
-    width: 150,
+    width: 80,
     key: 'status',
     // eslint-disable-next-line
     render: (text, record) => {
@@ -405,18 +405,18 @@ const Index = (props) => {
     }
   }, {
     title: '登录ip',
-    width: 150,
+    width: 100,
     dataIndex: 'loginIp',
     key: 'loginIp'
   }, {
     title: '登录地址',
     dataIndex: 'loginLocation',
-    width: 150,
+    width: 100,
     key: 'loginLocation'
   }, {
     title: '所属部门',
     dataIndex: 'department',
-    width: 150,
+    width: 100,
     key: 'department',
     // eslint-disable-next-line
     render: (text) => {
@@ -425,7 +425,7 @@ const Index = (props) => {
   }, {
     title: '创建时间',
     dataIndex: 'createTime',
-    width: 200,
+    width: 100,
     key: 'createTime',
     render: (text) => {
       return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
@@ -434,6 +434,7 @@ const Index = (props) => {
     title: '操作',
     width: 150,
     key: 'action',
+    fixed: 'right',
     // eslint-disable-next-line
     render: (text) => {
       return (<Dropdown overlay={menu(text)} name="action">

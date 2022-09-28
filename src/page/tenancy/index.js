@@ -132,26 +132,28 @@ const Index = (props) => {
     title: 'ID',
     dataIndex: 'id',
     key: 'id',
-    width: '100px'
+    fixed: 'left',
+    width: 100
   }, {
     title: '租户名',
     dataIndex: 'name',
     key: 'name',
-    width: '100px'
+    width: 100
   }, {
     title: '排序',
     dataIndex: 'sort',
-    key: 'sore',
-    width: '100px'
+    key: 'sort',
+    width: 50
   }, {
     title: '优先级',
     dataIndex: 'level',
-    width: '100px',
+    width: 50,
     key: 'level'
   }, {
     title: '状态',
     dataIndex: 'status',
     key: 'status',
+    width: 80,
     render: (text) => {
       let mapStatus = {
         0: '禁用',
@@ -163,12 +165,15 @@ const Index = (props) => {
     title: '创建时间',
     dataIndex: 'createTime',
     key: 'createTime',
+    width: 100,
     render: (text) => {
       return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
     }
   }, {
     title: '操作',
     key: 'action',
+    fixed: 'right',
+    width: 150,
     // eslint-disable-next-line
     render: (text) => {
       return (<Dropdown overlay={menu(text)} name="action">
