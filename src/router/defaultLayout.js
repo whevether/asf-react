@@ -73,7 +73,7 @@ const DefaultLayout = (props) => {
             <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={()=>props?.toggleMenu(!props?.common?.collapsed)} languages={props?.common.languageList} />
             {
               props?.common?.tagMenu?.length > 0 && <div className="tab-menu">{
-                props?.common?.tagMenu.map((item, index) => (item.menuHidden === 0 && <Tag key={index} closable color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? '#2db7f5' : 'default'} icon={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? <BellOutlined /> : <BookOutlined />} onClose={() => {
+                props?.common?.tagMenu.map((item, index) => (item.menuHidden === 0 && <Tag key={index} closable color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? '#1890ff' : 'default'} icon={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? <BellOutlined /> : <BookOutlined />} onClose={() => {
                   item.menuHidden = 1;
                   props?.addTagMenu(props?.common?.tagMenu);
                   navigate(props?.common?.tagMenu.filter(f => f.menuHidden != 1).length != 0 ? props?.common?.tagMenu.filter(f=>f.menuHidden != 1)[props?.common?.tagMenu.filter(f => f.menuHidden != 1).length - 1]?.menuUrl : '/');
