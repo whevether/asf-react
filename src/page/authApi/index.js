@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
 import { apiSearchFrom, apiFrom } from 'utils/json';
@@ -7,10 +7,9 @@ import * as apiAuthAction from 'store/actions/authApi';
 import * as permissionAction from 'store/actions/permission';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
+import { Dropdown, Drawer, Switch, notification, Modal, Badge, Tag,Descriptions } from 'antd';
 import {DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
-import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
@@ -18,7 +17,6 @@ const Index = (props) => {
   const [initFromValue, setInitFromValue] = useState(null);
   const [page,setPage] = useState(1);
   const [pageSize,setPageSize] = useState(20);
-  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.apiAuthFunc?.fetchApiList();
@@ -112,6 +110,7 @@ const Index = (props) => {
         'name': data?.name,
         'path': data?.path,
         'httpMethods': data?.httpMethods.split(','),
+        'permissionId': data?.permission?.parentId === '0' ? [data?.permission?.id] : [data?.permission?.parentId, data?.permission?.id],
         'status': data?.status,
         'type': data?.type,
         'isSystem': data?.isSystem,
@@ -124,7 +123,47 @@ const Index = (props) => {
     name: 'api详情',
     permission: 'api.details',
     click: (data) => {
-      navigate(`/control/authApi/details?id=${data?.id}`);
+      const mapType = {
+        1: '菜单目录',
+        2: '菜单条目',
+        3: '功能'
+      };
+      Modal.confirm({
+        title: '授权pi详情',
+        width: '100%',
+        content: (<Fragment>
+          <Descriptions
+              title="授权pi详情"
+              bordered
+              style={{ marginBottom: '10px' }}
+              column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+            >
+              <Descriptions.Item label="api名称">{data?.name}</Descriptions.Item>
+              <Descriptions.Item label="请求方法">{data?.httpMethods}</Descriptions.Item>
+              <Descriptions.Item label="api状态">{data?.status === 0 ? '禁用' : '启用'}</Descriptions.Item>
+              <Descriptions.Item label="api类型">{data?.type === 1 ? '公共api' : '授权api'}</Descriptions.Item>
+              <Descriptions.Item label="是否为系统api">{data?.isSystem === 1 ? <Tag title="是" color="red" /> : '否'}</Descriptions.Item>
+              <Descriptions.Item label="是否记录日志">{data?.isLogger === 0 ? '否': '是'}</Descriptions.Item>
+              <Descriptions.Item label="api地址">{data?.path}</Descriptions.Item>
+              <Descriptions.Item label="api说明">{data?.description}</Descriptions.Item>
+              <Descriptions.Item label="创建时间">{timeToDate(data?.createTime)}</Descriptions.Item>
+            </Descriptions>
+  
+            <Descriptions
+              title="权限详情"
+              bordered
+              style={{ marginBottom: '10px' }}
+              column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+            >
+              <Descriptions.Item label="权限名称">{data?.permission?.name}</Descriptions.Item>
+              <Descriptions.Item label="权限类型">{mapType[data?.permission?.type]}</Descriptions.Item>
+              <Descriptions.Item label="排序">{data?.permission?.sort}</Descriptions.Item>
+              <Descriptions.Item label="是否为系统权限">{data?.permission?.isSystem === 1 ? '系统权限' : '非系统权限'}</Descriptions.Item>
+              <Descriptions.Item label="权限code">{data?.permission?.code}</Descriptions.Item>
+              <Descriptions.Item label="是否启用">{data?.permission?.enable === 1 ? <Badge status="processing" text="启用" /> : '禁用'}</Descriptions.Item>
+            </Descriptions>
+        </Fragment>)
+       });
     }
   }, {
     name: '删除api',

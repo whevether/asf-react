@@ -1,14 +1,14 @@
-import { Card, Row, Col, Avatar,Tag } from 'antd';
+import { Card, Row, Col, Avatar, Tag } from 'antd';
 import React, { Fragment, useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import * as accountAction from 'store/actions/account';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useSearchParams } from 'react-router-dom';
-import {AppstoreAddOutlined,AimOutlined,FieldTimeOutlined, PhoneOutlined, AlignCenterOutlined, UsergroupDeleteOutlined, UserOutlined, UserSwitchOutlined, BankOutlined } from '@ant-design/icons';
+import { AppstoreAddOutlined, AimOutlined, FieldTimeOutlined, PhoneOutlined, AlignCenterOutlined, UsergroupDeleteOutlined, UserOutlined, UserSwitchOutlined, BankOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { timeToDate } from 'utils/storage';
-import {BaseTable} from 'components/index';
+import { BaseTable } from 'components/index';
 import './details.less';
 const Details = (props) => {
   const [loading, setLoading] = useState(false);
@@ -89,11 +89,11 @@ const Details = (props) => {
     dataIndex: 'tenancyId',
     width: 150,
     key: 'tenancyId',
-    render: (text)=>{
-      let data = props?.tenancyList.find(f=>f.id == text);
+    render: (text) => {
+      let data = props?.tenancyList.find(f => f.id == text);
       return <span>{data?.name}</span>;
     }
-  },{
+  }, {
     title: '角色名称',
     dataIndex: 'name',
     width: 150,
@@ -175,7 +175,7 @@ const Details = (props) => {
                   所属部门: <Tag color="#108ee9">{details?.department?.name}</Tag>
                 </p>
                 <p>
-                  <BankOutlined style={{marginRight: 8}}/>
+                  <BankOutlined style={{ marginRight: 8 }} />
                   所属租户: <Tag color="#108ee9">{details?.tenancys?.name}</Tag>
                 </p>
               </div>
@@ -188,14 +188,18 @@ const Details = (props) => {
             bordered={false}
             loading={loading}
           >
-            <div className="userinfo-wrapper">
-              <h3 style={{ fontWeight: 600 }}>用户角色</h3>
-              <BaseTable dataSource={details?.roles} columns={roleColumns} />
-            </div>
-            <div className="userinfo-wrapper">
-              <h3 style={{ fontWeight: 600 }}>用户岗位</h3>
-              <BaseTable dataSource={details?.posts} columns={postColumns} />
-            </div>
+            {
+              details && <Fragment>
+                <div className="userinfo-wrapper">
+                  <h3 style={{ fontWeight: 600 }}>用户角色</h3>
+                  <BaseTable dataSource={details?.roles} columns={roleColumns} />
+                </div>
+                <div className="userinfo-wrapper">
+                  <h3 style={{ fontWeight: 600 }}>用户岗位</h3>
+                  <BaseTable dataSource={details?.posts} columns={postColumns} />
+                </div>
+              </Fragment>
+            }
           </Card>
         </Col>
       </Row>
