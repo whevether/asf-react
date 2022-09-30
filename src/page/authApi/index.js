@@ -112,6 +112,7 @@ const Index = (props) => {
         'name': data?.name,
         'path': data?.path,
         'httpMethods': data?.httpMethods.split(','),
+        'permissionId': data?.permission?.parentId === '0' ? [data?.permission?.id] : [data?.permission?.parentId, data?.permission?.id],
         'status': data?.status,
         'type': data?.type,
         'isSystem': data?.isSystem,

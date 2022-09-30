@@ -117,6 +117,7 @@ const Index = (props) => {
         'icon': data?.icon,
         'subtitle': data?.subtitle,
         'translate': data?.translate,
+        'permissionId': data?.permission?.parentId === '0' ? [data?.permission?.id] : [data?.permission?.parentId, data?.permission?.id],
         'menuUrl': data?.menuUrl,
         'externalLink': data?.externalLink,
         'isSystem': data?.isSystem,
