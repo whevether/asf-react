@@ -346,7 +346,7 @@ const Index = (props) => {
     width: 150,
     // eslint-disable-next-line
     render: (text) => {
-      return <img name="avatar" src="../../assets/avatar.jpeg" style={{ width: '50px', height: '50px', borderRadius: '50%', lineHeight: '50px' }} crossOrigin={text} />;
+      return <img name="avatar" src={text} style={{ width: '50px', height: '50px', borderRadius: '50%', lineHeight: '50px' }} crossOrigin={text} />;
     }
   }, {
     title: '账户昵称',

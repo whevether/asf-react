@@ -48,20 +48,7 @@ const Login = (props) => {
         </div>
       </div>
       <div className="content">
-        <Tabs activeKey={type} onChange={setType} centered>
-          <Tabs.TabPane
-            key="account"
-            tab="账户密码登录"
-          />
-          <Tabs.TabPane
-            key="mobile"
-            tab="手机号登录"
-          />
-          <Tabs.TabPane
-            key="email"
-            tab="邮箱登录"
-          />
-        </Tabs>
+        <Tabs activeKey={type} onChange={setType} centered items={[{label: '账户密码登录',key: 'account'},{label: '手机号登录',key: 'mobile'},{label: '邮箱登录',key: 'email'}]} />
         {
           <Form
             name="login"
