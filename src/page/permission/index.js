@@ -315,7 +315,7 @@ const rowSelection = {
   return (
     <div className="list">
       {head('权限列表')}
-      <BaseTable formObj={permissionSearchFrom} querySubmit={querySubmit} dataSource={props?.permission?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加权限', permission: 'permission.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } },{ name: '分配权限到角色', permission: 'permission.assignpermission', type: 'primary', icon: <CloudSyncOutlined />, click: () => {if(permissionIds?.length === 0) {notification.error({message: '权限不能为空,请先选择权限'}); return;} ;setInitFromValue(null); onOpenDarw(2); } }]} rowSelection={{...rowSelection,checkStrictly:false}}/>
+      <BaseTable formObj={permissionSearchFrom} querySubmit={querySubmit} dataSource={props?.permission?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加权限', permission: 'permission.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } },{ name: '分配权限到角色', permission: 'permission.assignpermission', rest:{disabled: permissionIds?.length === 0 ? true : false},type: 'primary', icon: <CloudSyncOutlined />, click: () => {if(permissionIds?.length === 0) {notification.error({message: '权限不能为空,请先选择权限'}); return;} ;setInitFromValue(null); onOpenDarw(2); } }]} rowSelection={{...rowSelection,checkStrictly:false}}/>
       <Drawer
         title={mapTitle[drawType]}
         width={720}

@@ -10,7 +10,7 @@ export const fetchAudioList = (params) => async (dispatch,getState,api)=> {
   });
 };
 // 删除日志
-export const deleteAudio = (id) => async (dispatch,getState,api)=> {
-  const res = await api.post(`/asf/audio/deletelog/${id}`);
+export const deleteAudio = (data) => async (dispatch,getState,api)=> {
+  const res = await api.post(`/asf/audio/deletelog`,data);
   return res;
 };

@@ -254,12 +254,7 @@ const Index = (props) => {
           });
         }} /> : mapStatus[text];
     }
-  }, {
-    title: '说明',
-    dataIndex: 'description',
-    width: 150,
-    key: 'description'
-  }, {
+  },{
     title: '创建时间',
     dataIndex: 'createTime',
     key: 'createTime',

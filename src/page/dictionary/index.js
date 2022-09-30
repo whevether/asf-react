@@ -9,7 +9,6 @@ import { bindActionCreators } from 'redux';
 import { Drawer, Dropdown, Modal, notification } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl, BaseFrom } from 'components/index';
-import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
@@ -17,7 +16,6 @@ const Index = (props) => {
   const [initFromValue, setInitFromValue] = useState(null);
   const [page,setPage] = useState(1);
   const [pageSize,setPageSize] = useState(20);
-  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.dictionaryFunc?.fetchDictionaryList();
@@ -94,12 +92,6 @@ const Index = (props) => {
   };
   // 修改
   const list = [{
-    name: '字典详情',
-    permission: 'dictionary.details',
-    click: (data) => {
-      navigate(`/control/dictionary/details?id=${data?.id}`);
-    }
-  }, {
     name: '修改字典',
     permission: 'dictionary.modify',
     click: (data) => {

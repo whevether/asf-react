@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
 import { inputFrom, postFrom } from 'utils/json';
@@ -6,10 +6,9 @@ import PropTypes from 'prop-types';
 import * as postAction from 'store/actions/post';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Drawer, Dropdown, Modal, notification } from 'antd';
+import { Descriptions, Drawer, Dropdown, Modal, notification, Tag } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl, BaseFrom } from 'components/index';
-import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
@@ -17,7 +16,6 @@ const Index = (props) => {
   const [initFromValue, setInitFromValue] = useState(null);
   const [page,setPage] = useState(1);
   const [pageSize,setPageSize] = useState(20);
-  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.postFunc?.fetchPostList();
@@ -97,7 +95,23 @@ const Index = (props) => {
     name: '岗位详情',
     permission: 'post.details',
     click: (data) => {
-      navigate(`/control/post/details?id=${data?.id}`);
+      Modal.confirm({
+        width: '100%',
+        content: (<Fragment>
+          <Descriptions
+              title="岗位详情"
+              bordered
+              style={{ marginBottom: '10px' }}
+              column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+            >
+              <Descriptions.Item label="岗位名称">{data?.name}</Descriptions.Item>
+              <Descriptions.Item label="排序">{data?.sort}</Descriptions.Item>
+              <Descriptions.Item label="是否启用">{data?.enable === 0 ? <Tag  color="red" >禁用</Tag> : <Tag  color="success" >启用</Tag>}</Descriptions.Item>
+              <Descriptions.Item label="岗位说明">{data?.description}</Descriptions.Item>
+              <Descriptions.Item label="创建时间">{timeToDate(data?.createTime, 'YYYY-MM-DD  HH:mm:ss')}</Descriptions.Item>
+            </Descriptions>
+        </Fragment>)
+       });
     }
   }, {
     name: '修改岗位',
@@ -175,13 +189,13 @@ const Index = (props) => {
     width: 150
   }, {
     title: '状态',
-    dataIndex: 'status',
-    key: 'status',
+    dataIndex: 'enable',
+    key: 'enable',
     width: 80,
     render: (text) => {
       let mapStatus = {
-        0: '禁用',
-        1: '启用'
+        0: <Tag color="red">禁用</Tag>,
+        1: <Tag color="success">启用</Tag>
       };
       return mapStatus[text];
     }

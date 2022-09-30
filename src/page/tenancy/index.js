@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { inputFrom,tenancyFrom } from 'utils/json';
+import { inputFrom, tenancyFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as tenancyAction from 'store/actions/tenancy';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Drawer, Dropdown, Modal, notification } from 'antd';
+import { Descriptions, Drawer, Dropdown, Modal, notification, Tag } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl, BaseFrom } from 'components/index';
-import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 api 1: 修改api
   const [initFromValue, setInitFromValue] = useState(null);
-  const [page,setPage] = useState(1);
-  const [pageSize,setPageSize] = useState(20);
-  let navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
   //获取账户列表
   useEffect(() => {
     props?.tenancyFunc?.fetchTenancyList();
@@ -77,12 +75,113 @@ const Index = (props) => {
   const querySubmit = (e) => {
     props?.tenancyFunc?.fetchTenancyList(e);
   };
+  const accountColumns = [{
+    title: '账户ID',
+    dataIndex: 'id',
+    key: 'id',
+    fixed: 'left',
+    width: 100
+  }, {
+    title: '账户头像',
+    dataIndex: 'avatar',
+    key: 'avatar',
+    width: 150,
+    // eslint-disable-next-line
+    render: (text) => {
+      return <img name="avatar" src={text} style={{ width: '50px', height: '50px', borderRadius: '50%', lineHeight: '50px' }} crossOrigin={text} />;
+    }
+  }, {
+    title: '账户昵称',
+    dataIndex: 'name',
+    width: 100,
+    key: 'name'
+  }, {
+    title: '账户名',
+    dataIndex: 'username',
+    width: 100,
+    key: 'username'
+  }, {
+    title: '手机号码',
+    dataIndex: 'telPhone',
+    width: 100,
+    key: 'telPhone'
+  }, {
+    title: '邮箱',
+    dataIndex: 'email',
+    width: 100,
+    key: 'email'
+  }, {
+    title: '性别',
+    dataIndex: 'sex',
+    width: 60,
+    key: 'sex',
+    render: (text) => {
+      let sexMap = {
+        0: '未知',
+        1: '男',
+        2: '女'
+      };
+      return sexMap[text];
+    }
+  }, {
+    title: '状态',
+    dataIndex: 'status',
+    width: 80,
+    key: 'status',
+    // eslint-disable-next-line
+    render: (text) => {
+      let statusMap = {
+        0: '禁用',
+        1: '启用'
+      };
+      return statusMap[text];
+    }
+  }, {
+    title: '登录ip',
+    width: 100,
+    dataIndex: 'loginIp',
+    key: 'loginIp'
+  }, {
+    title: '登录地址',
+    dataIndex: 'loginLocation',
+    width: 100,
+    key: 'loginLocation'
+  }, {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    width: 100,
+    key: 'createTime',
+    render: (text) => {
+      return timeToDate(text, 'YYYY-MM-DD  HH:mm:ss');
+    }
+  }];
   // 修改
   const list = [{
     name: '租户详情',
     permission: 'tenancy.details',
     click: (data) => {
-      navigate(`/control/tenancy/details?id=${data?.id}`);
+      props?.tenancyFunc.detailsTenancy({ id: data?.id })
+        .then(res => {
+          Modal.confirm({
+            width: '100%',
+            content: (<Fragment>
+              <Descriptions
+                title="租户详情"
+                bordered
+                style={{ marginBottom: '10px' }}
+                column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+              >
+                <Descriptions.Item label="租户名称">{res?.name}</Descriptions.Item>
+                <Descriptions.Item label="排序">{res?.sort}</Descriptions.Item>
+                <Descriptions.Item label="是否启用">{res?.status === 0 ? <Tag color="red" >禁用</Tag> : <Tag color="success" >启用</Tag>}</Descriptions.Item>
+                <Descriptions.Item label="租户级别">{res?.level}</Descriptions.Item>
+                <Descriptions.Item label="创建时间">{timeToDate(res?.createTime, 'YYYY-MM-DD  HH:mm:ss')}</Descriptions.Item>
+              </Descriptions>
+              <h3 style={{ fontWeight: 600 }}>租户下属账户</h3>
+              <BaseTable dataSource={res?.accounts} columns={accountColumns} />
+            </Fragment>)
+          });
+        });
     }
   }, {
     name: '修改租户',

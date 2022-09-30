@@ -7,14 +7,14 @@ import * as audioAction from 'store/actions/audio';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Dropdown, notification } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { CloudSyncOutlined, DownOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl } from 'components/index';
 const LogsList = (props) => {
   //日志类型
   const [logType, setLogType] = useState(1);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [logsId,setLogsId] = useState([]);
+  const [logsId, setLogsId] = useState([]);
   //获取账户列表
   useEffect(() => {
     props?.audioFunc?.fetchAudioList({ logType: logType });
@@ -43,9 +43,9 @@ const LogsList = (props) => {
   const list = [{
     name: '删除日志',
     isAction: true,
-    permission: 'audio.deletelog.[0-9]{1,100}',
+    permission: 'audio.deletelog',
     click: (data) => {
-      props?.audioFunc?.deleteAudio(data.id)
+      props?.audioFunc?.deleteAudio({ ids: [data.id] })
         .then(() => {
           notification['success']({
             message: '删除成功',
@@ -171,7 +171,20 @@ const LogsList = (props) => {
   return (
     <div className="list">
       {head('审计日志')}
-      <BaseTable formObj={audioSearchFrom} querySubmit={querySubmit} dataSource={props?.audio?.list} columns={columns} pagination={pagination} rowSelection={{ ...rowSelection, checkStrictly: false }} />
+      <BaseTable formObj={audioSearchFrom} querySubmit={querySubmit} dataSource={props?.audio?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{
+        name: '批量删除', permission: 'audio.deletelog', rest: { disabled: logsId?.length === 0 ? true : false }, type: 'primary', icon: <CloudSyncOutlined />, click: () => {
+          if (logsId?.length === 0) { notification.error({ message: '日志不能为空,请先选择日志' }); return; }
+          props?.audioFunc?.deleteAudio({ ids: logsId })
+            .then(() => {
+              setLogsId([]);
+              notification['success']({
+                message: '删除成功',
+                description: '删除日志成功'
+              });
+              props?.audioFunc?.fetchAudioList({ logType: logType });
+            });
+        }
+      }]} rowSelection={{ ...rowSelection, checkStrictly: false }} />
     </div>
   );
 };

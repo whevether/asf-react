@@ -8,7 +8,6 @@ import { bindActionCreators } from 'redux';
 import { Drawer, Dropdown, Modal, notification } from 'antd';
 import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl, BaseFrom } from 'components/index';
-import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
@@ -16,7 +15,6 @@ const Index = (props) => {
   const [initFromValue, setInitFromValue] = useState(null);
   const [page,setPage] = useState(1);
   const [pageSize,setPageSize] = useState(20);
-  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.translateFunc?.fetchTranslateList();
@@ -93,12 +91,6 @@ const Index = (props) => {
   };
   // 修改
   const list = [{
-    name: '多语言详情',
-    permission: 'translate.details',
-    click: (data) => {
-      navigate(`/control/translate/details?id=${data?.id}`);
-    }
-  }, {
     name: '修改多语言',
     permission: 'translate.modify',
     click: (data) => {

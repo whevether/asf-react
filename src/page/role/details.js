@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import * as roleAction from 'store/actions/role';
-import * as permissionAction from 'store/actions/permission';
 import { connect } from 'react-redux';
 import { timeToDate } from 'utils/storage';
 import { bindActionCreators } from 'redux';
@@ -51,11 +50,6 @@ const Details = (props)=>{
       };
       return mapStatus[text];
     }
-  }, {
-    title: '说明',
-    dataIndex: 'description',
-    width: 150,
-    key: 'description'
   }, {
     title: '创建时间',
     dataIndex: 'createTime',
@@ -181,7 +175,6 @@ const Details = (props)=>{
 };
 Details.propTypes = {
   roleFunc: PropTypes.object,
-  permissionFunc: PropTypes.object,
   userInfo: PropTypes.object,
   role: PropTypes.object,
   tenancyList: PropTypes.arrayOf(Object)
@@ -192,7 +185,6 @@ export default connect(state => ({
   tenancyList: state?.common?.tenancyList
 }), dispatch => {
   return {
-    roleFunc: bindActionCreators(roleAction, dispatch),
-    permissionFunc: bindActionCreators(permissionAction, dispatch)
+    roleFunc: bindActionCreators(roleAction, dispatch)
   };
 })(Details);

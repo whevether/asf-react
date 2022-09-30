@@ -145,7 +145,7 @@ const Index = (props) => {
               <Descriptions.Item label="是否记录日志">{data?.isLogger === 1 ? <Tag  color="success" >是</Tag> : <Tag  color="red" >否</Tag>}</Descriptions.Item>
               <Descriptions.Item label="api地址">{data?.path}</Descriptions.Item>
               <Descriptions.Item label="api说明">{data?.description}</Descriptions.Item>
-              <Descriptions.Item label="创建时间">{timeToDate(data?.createTime)}</Descriptions.Item>
+              <Descriptions.Item label="创建时间">{timeToDate(data?.createTime, 'YYYY-MM-DD  HH:mm:ss')}</Descriptions.Item>
             </Descriptions>
   
             <Descriptions
@@ -320,7 +320,7 @@ const Index = (props) => {
   return (
     <div className="list">
       {head('api列表')}
-      <BaseTable formObj={apiSearchFrom} querySubmit={querySubmit} dataSource={props?.authApi?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加api', permission: 'api.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
+      <BaseTable formObj={apiSearchFrom} querySubmit={querySubmit} dataSource={props?.authApi?.list} columns={columns} pagination={pagination} userInfo={props?.userInfo} list={[{ name: '添加api', permission: 'api.create', type: 'primary',  icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} />
       <Drawer
         title={mapTitle[drawType]}
         width={720}
