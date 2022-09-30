@@ -75,8 +75,8 @@ const DefaultLayout = (props) => {
               props?.common?.tagMenu?.length > 0 && <div className="tab-menu">{
                 props?.common?.tagMenu.map((item, index) => (item.menuHidden === 0 && <Tag key={index} closable color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? '#2db7f5' : 'default'} icon={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? <BellOutlined /> : <BookOutlined />} onClose={() => {
                   item.menuHidden = 1;
-                  navigate(props?.common?.tagMenu.filter(f => f.menuHidden != 1).length != 0 ? props?.common?.tagMenu[props?.common?.tagMenu.filter(f => f.menuHidden != 1).length - 1]?.menuUrl : '/');
                   props?.addTagMenu(props?.common?.tagMenu);
+                  navigate(props?.common?.tagMenu.filter(f => f.menuHidden != 1).length != 0 ? props?.common?.tagMenu.filter(f=>f.menuHidden != 1)[props?.common?.tagMenu.filter(f => f.menuHidden != 1).length - 1]?.menuUrl : '/');
                 }}   >
                   <span style={{ padding: '5px 15px', cursor: 'pointer', lineHeight: '30px', fontSize: '14px' }} onClick={() => navigate(item?.menuUrl)}>{item?.title}</span>
                 </Tag>))

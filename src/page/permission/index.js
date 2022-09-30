@@ -145,7 +145,7 @@ const Index = (props) => {
     name: '权限详情',
     permission: 'permission.details',
     click: (data) => {
-      navigate(`/control/permission/details?id=${data?.id}`);
+      navigate(`/control/permission/details?id=${data?.id}&parentId=${data?.parentId}`);
     }
   },{
     name: '分配权限到角色',
@@ -261,7 +261,7 @@ const Index = (props) => {
           props?.permissionFunc?.modifyStatus({ id: record?.id, status: Number(e) }).then(() => {
             notification['success']({
               message: '修改成功',
-              description: '修改权限状态状态成功'
+              description: '修改权限状态成功'
             });
             props?.permissionFunc?.fetchPermissionList({pageSize: pageSize});
           });

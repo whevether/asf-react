@@ -6,14 +6,15 @@ import PropTypes from 'prop-types';
 import * as audioAction from 'store/actions/audio';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown,notification } from 'antd';
+import { Dropdown, notification } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl } from 'components/index';
 const LogsList = (props) => {
   //日志类型
   const [logType, setLogType] = useState(1);
-  const [page,setPage] = useState(1);
-  const [pageSize,setPageSize] = useState(20);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [logsId,setLogsId] = useState([]);
   //获取账户列表
   useEffect(() => {
     props?.audioFunc?.fetchAudioList({ logType: logType });
@@ -45,7 +46,7 @@ const LogsList = (props) => {
     permission: 'audio.deletelog.[0-9]{1,100}',
     click: (data) => {
       props?.audioFunc?.deleteAudio(data.id)
-        .then(()=>{
+        .then(() => {
           notification['success']({
             message: '删除成功',
             description: '删除日志成功'
@@ -58,6 +59,20 @@ const LogsList = (props) => {
     return (
       <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
     );
+  };
+  // rowSelection objects indicates the need for row selection
+  const rowSelection = {
+    // onChange: (selectedRowKeys, selectedRows) => {
+    //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    // },
+    onSelect: (record, selected, selectedRows) => {
+      let ids = selectedRows.map(m => m.key);
+      setLogsId(ids);
+    },
+    onSelectAll: (selected, selectedRows, changeRows) => {
+      let ids = changeRows.map(m => m.key);
+      setLogsId(ids);
+    },
   };
   const columns = [{
     title: '日志ID',
@@ -92,20 +107,20 @@ const LogsList = (props) => {
     dataIndex: 'clientLocation',
     key: 'clientLocation',
     width: 100,
-  },{
+  }, {
     title: '请求地址',
     dataIndex: 'apiAddress',
     key: 'apiAddress',
     width: 100,
-  },{
+  }, {
     title: '请求数据',
     dataIndex: 'apiRequest',
     key: 'apiRequest',
     width: 150,
-    render: (text)=>{
-      if(text){
+    render: (text) => {
+      if (text) {
         return (<pre lang="json">{text}</pre>);
-      }else{
+      } else {
         return '';
       }
     }
@@ -114,10 +129,10 @@ const LogsList = (props) => {
     dataIndex: 'apiResponse',
     key: 'apiResponse',
     width: 150,
-    render: (text)=>{
-      if(text){
+    render: (text) => {
+      if (text) {
         return (<pre lang="json">{text}</pre>);
-      }else{
+      } else {
         return '';
       }
     }
@@ -156,7 +171,7 @@ const LogsList = (props) => {
   return (
     <div className="list">
       {head('审计日志')}
-      <BaseTable formObj={audioSearchFrom} querySubmit={querySubmit} dataSource={props?.audio?.list} columns={columns} pagination={pagination} />
+      <BaseTable formObj={audioSearchFrom} querySubmit={querySubmit} dataSource={props?.audio?.list} columns={columns} pagination={pagination} rowSelection={{ ...rowSelection, checkStrictly: false }} />
     </div>
   );
 };
@@ -169,7 +184,7 @@ LogsList.propTypes = {
   initialValues: PropTypes.object
 };
 export default connect(state => ({
-  userInfo:  state?.common?.data,
+  userInfo: state?.common?.data,
   audio: state?.audio
 }), dispatch => {
   return {

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { timeToDate } from 'utils/storage';
 import { apiFrom } from 'utils/json';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { head } from 'utils/head';
 import { Badge, Descriptions, Drawer, Dropdown, Modal, notification, Switch, Tag } from 'antd';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
@@ -14,7 +14,6 @@ import './details.less';
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 const Details = (props) => {
   let [searchParams] = useSearchParams();
-  let navigate = useNavigate();
   const [details, setDetails] = useState(null);
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
@@ -66,6 +65,7 @@ const Details = (props) => {
         'tenancyId': data?.tenancyId,
         'name': data?.name,
         'path': data?.path,
+        'permissionId': searchParams.get('parentId') === '0' ? [searchParams.get('id')] : [searchParams.get('parentId'), searchParams.get('id')],
         'httpMethods': data?.httpMethods.split(','),
         'status': data?.status,
         'type': data?.type,
@@ -75,13 +75,7 @@ const Details = (props) => {
       });
       onOpenDarw(0);
     }
-  }, {
-    name: 'api详情',
-    permission: 'api.details',
-    click: (data) => {
-      navigate(`/control/authApi/details?id=${data?.id}`);
-    }
-  }, {
+  },{
     name: '删除api',
     permission: 'api.delete.[0-9]{1,100}',
     click: (data) => {

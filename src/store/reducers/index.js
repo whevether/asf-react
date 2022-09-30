@@ -10,6 +10,7 @@ import editor from './editor';
 import tenancy from './tenancy';
 import department from './department';
 import translate from './translate';
+import dictionary from './dictionary';
 import post from './post';
 const rootReducer = (history) => combineReducers({
     common: common,
@@ -18,6 +19,7 @@ const rootReducer = (history) => combineReducers({
     tenancy: tenancy,
     department: department,
     translate: translate,
+    dictionary: dictionary,
     post: post,
     role: role,
     authApi: authApi,

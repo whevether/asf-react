@@ -129,7 +129,6 @@ const Index = (props) => {
         3: '功能'
       };
       Modal.confirm({
-        title: '授权pi详情',
         width: '100%',
         content: (<Fragment>
           <Descriptions
@@ -139,11 +138,11 @@ const Index = (props) => {
               column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
             >
               <Descriptions.Item label="api名称">{data?.name}</Descriptions.Item>
-              <Descriptions.Item label="请求方法">{data?.httpMethods}</Descriptions.Item>
-              <Descriptions.Item label="api状态">{data?.status === 0 ? '禁用' : '启用'}</Descriptions.Item>
+              <Descriptions.Item label="请求方法"> <Tag  color="success" >{data?.httpMethods}</Tag></Descriptions.Item>
+              <Descriptions.Item label="api状态">{data?.status === 0 ? <Tag  color="red" >禁用</Tag> : <Tag  color="success" >启用</Tag>}</Descriptions.Item>
               <Descriptions.Item label="api类型">{data?.type === 1 ? '公共api' : '授权api'}</Descriptions.Item>
-              <Descriptions.Item label="是否为系统api">{data?.isSystem === 1 ? <Tag title="是" color="red" /> : '否'}</Descriptions.Item>
-              <Descriptions.Item label="是否记录日志">{data?.isLogger === 0 ? '否': '是'}</Descriptions.Item>
+              <Descriptions.Item label="是否为系统api">{data?.isSystem === 1 ? <Tag  color="success" >是</Tag> : <Tag  color="red" >否</Tag>}</Descriptions.Item>
+              <Descriptions.Item label="是否记录日志">{data?.isLogger === 1 ? <Tag  color="success" >是</Tag> : <Tag  color="red" >否</Tag>}</Descriptions.Item>
               <Descriptions.Item label="api地址">{data?.path}</Descriptions.Item>
               <Descriptions.Item label="api说明">{data?.description}</Descriptions.Item>
               <Descriptions.Item label="创建时间">{timeToDate(data?.createTime)}</Descriptions.Item>
@@ -158,9 +157,9 @@ const Index = (props) => {
               <Descriptions.Item label="权限名称">{data?.permission?.name}</Descriptions.Item>
               <Descriptions.Item label="权限类型">{mapType[data?.permission?.type]}</Descriptions.Item>
               <Descriptions.Item label="排序">{data?.permission?.sort}</Descriptions.Item>
-              <Descriptions.Item label="是否为系统权限">{data?.permission?.isSystem === 1 ? '系统权限' : '非系统权限'}</Descriptions.Item>
+              <Descriptions.Item label="是否为系统权限">{data?.permission?.isSystem === 1 ? <Tag  color="success" >是</Tag> : <Tag  color="red" >否</Tag>}</Descriptions.Item>
               <Descriptions.Item label="权限code">{data?.permission?.code}</Descriptions.Item>
-              <Descriptions.Item label="是否启用">{data?.permission?.enable === 1 ? <Badge status="processing" text="启用" /> : '禁用'}</Descriptions.Item>
+              <Descriptions.Item label="是否启用">{data?.permission?.enable === 1 ? <Badge status="processing" text="启用" /> : <Tag  color="red" >禁用</Tag>}</Descriptions.Item>
             </Descriptions>
         </Fragment>)
        });

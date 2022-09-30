@@ -147,8 +147,8 @@ const Index = (props) => {
             <Descriptions.Item label="菜单标题">{data?.title}</Descriptions.Item>
             <Descriptions.Item label="菜单副标题">{data?.subtitle}</Descriptions.Item>
             <Descriptions.Item label="菜单地址">{data?.menuUrl}</Descriptions.Item>
-            <Descriptions.Item label="是否为系统菜单">{data?.isSystem === 1 ? '系统菜单' : '非系统权限'}</Descriptions.Item>
-            <Descriptions.Item label="是否隐藏菜单">{data?.menuHidden === 1 ? <Tag title="隐藏" color="red" /> : '不隐藏'}</Descriptions.Item>
+            <Descriptions.Item label="是否为系统菜单">{data?.isSystem === 1 ? <Tag  color="success" >是</Tag> : <Tag  color="red" >否</Tag>}</Descriptions.Item>
+            <Descriptions.Item label="是否隐藏菜单">{data?.menuHidden === 1 ? <Tag title="隐藏" color="red" /> : <Tag  color="success" >不隐藏</Tag>}</Descriptions.Item>
             <Descriptions.Item label="菜单图标">{data?.icon}</Descriptions.Item>
             <Descriptions.Item label="菜单说明">{data?.description}</Descriptions.Item>
           </Descriptions>
@@ -160,11 +160,11 @@ const Index = (props) => {
             column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
           >
             <Descriptions.Item label="权限名称">{data?.permission?.name}</Descriptions.Item>
-            <Descriptions.Item label="权限类型">{mapType[data?.permission?.type]}</Descriptions.Item>
-            <Descriptions.Item label="排序">{data?.permission?.sort}</Descriptions.Item>
-            <Descriptions.Item label="是否为系统权限">{data?.permission?.isSystem === 1 ? '系统权限' : '非系统权限'}</Descriptions.Item>
-            <Descriptions.Item label="权限code">{data?.permission?.code}</Descriptions.Item>
-            <Descriptions.Item label="是否启用">{data?.permission?.enable === 1 ? <Badge status="processing" text="启用" /> : '禁用'}</Descriptions.Item>
+              <Descriptions.Item label="权限类型">{mapType[data?.permission?.type]}</Descriptions.Item>
+              <Descriptions.Item label="排序">{data?.permission?.sort}</Descriptions.Item>
+              <Descriptions.Item label="是否为系统权限">{data?.permission?.isSystem === 1 ? <Tag  color="success" >是</Tag> : <Tag  color="red" >否</Tag>}</Descriptions.Item>
+              <Descriptions.Item label="权限code">{data?.permission?.code}</Descriptions.Item>
+              <Descriptions.Item label="是否启用">{data?.permission?.enable === 1 ? <Badge status="processing" text="启用" /> : <Tag  color="red" >禁用</Tag>}</Descriptions.Item>
           </Descriptions>
       </Fragment>)
      });
