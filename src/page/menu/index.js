@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
 import { menuSearchFrom, menuFrom } from 'utils/json';
@@ -8,10 +8,9 @@ import * as permissionAction from 'store/actions/permission';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
+import { Dropdown, Drawer, Switch, notification, Modal, Descriptions, Tag, Badge } from 'antd';
 import { createFromIconfontCN, DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
-import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
   const IconFont = createFromIconfontCN({
     scriptUrl: [
@@ -24,7 +23,6 @@ const Index = (props) => {
   const [initFromValue, setInitFromValue] = useState(null);
   const [page,setPage] = useState(1);
   const [pageSize,setPageSize] = useState(20);
-  let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
     props?.menuFunc?.fetchMenuList();
@@ -131,7 +129,45 @@ const Index = (props) => {
     name: '菜单详情',
     permission: 'menu.details',
     click: (data) => {
-      navigate(`/control/menu/details?id=${data?.id}`);
+      const mapType = {
+        1: '菜单目录',
+        2: '菜单条目',
+        3: '功能'
+      };
+     Modal.confirm({
+      title: '菜单详情',
+      width: '100%',
+      content: (<Fragment>
+        <Descriptions
+            title="菜单详情"
+            bordered
+            style={{ marginBottom: '10px' }}
+            column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+          >
+            <Descriptions.Item label="菜单标题">{data?.title}</Descriptions.Item>
+            <Descriptions.Item label="菜单副标题">{data?.subtitle}</Descriptions.Item>
+            <Descriptions.Item label="菜单地址">{data?.menuUrl}</Descriptions.Item>
+            <Descriptions.Item label="是否为系统菜单">{data?.isSystem === 1 ? '系统菜单' : '非系统权限'}</Descriptions.Item>
+            <Descriptions.Item label="是否隐藏菜单">{data?.menuHidden === 1 ? <Tag title="隐藏" color="red" /> : '不隐藏'}</Descriptions.Item>
+            <Descriptions.Item label="菜单图标">{data?.icon}</Descriptions.Item>
+            <Descriptions.Item label="菜单说明">{data?.description}</Descriptions.Item>
+          </Descriptions>
+
+          <Descriptions
+            title="权限详情"
+            bordered
+            style={{ marginBottom: '10px' }}
+            column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+          >
+            <Descriptions.Item label="权限名称">{data?.permission?.name}</Descriptions.Item>
+            <Descriptions.Item label="权限类型">{mapType[data?.permission?.type]}</Descriptions.Item>
+            <Descriptions.Item label="排序">{data?.permission?.sort}</Descriptions.Item>
+            <Descriptions.Item label="是否为系统权限">{data?.permission?.isSystem === 1 ? '系统权限' : '非系统权限'}</Descriptions.Item>
+            <Descriptions.Item label="权限code">{data?.permission?.code}</Descriptions.Item>
+            <Descriptions.Item label="是否启用">{data?.permission?.enable === 1 ? <Badge status="processing" text="启用" /> : '禁用'}</Descriptions.Item>
+          </Descriptions>
+      </Fragment>)
+     });
     }
   }, {
     name: '删除菜单',
