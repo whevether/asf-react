@@ -1,11 +1,12 @@
-import { Card, Row, Col, Avatar, Tag } from 'antd';
+import { Card, Row, Col, Avatar, Tag, notification, Modal, Upload } from 'antd';
 import React, { Fragment, useEffect, useState } from 'react';
 import { head } from 'utils/head';
 import * as accountAction from 'store/actions/account';
+import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useSearchParams } from 'react-router-dom';
-import { AppstoreAddOutlined, AimOutlined, FieldTimeOutlined, PhoneOutlined, AlignCenterOutlined, UsergroupDeleteOutlined, UserOutlined, UserSwitchOutlined, BankOutlined } from '@ant-design/icons';
+import { AppstoreAddOutlined, AimOutlined, FieldTimeOutlined, PhoneOutlined, AlignCenterOutlined, UsergroupDeleteOutlined, UserOutlined, UserSwitchOutlined, BankOutlined, InboxOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { timeToDate } from 'utils/storage';
 import { BaseTable } from 'components/index';
@@ -13,7 +14,9 @@ import './details.less';
 const Details = (props) => {
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   let [searchParams] = useSearchParams();
+
   const onGetAaccountDetails = () => {
     setLoading(true);
     props?.accountFunc.getAccountDetails({ id: searchParams.get('id') })
@@ -128,7 +131,7 @@ const Details = (props) => {
           <Card bordered={false} style={{ marginBottom: 24 }} loading={loading}>
             <Fragment>
               <div className="avatarHolder">
-                <Avatar alt="" src={details?.avatar} className="avatar" />
+                <Avatar alt="" src={decodeURIComponent(details?.avatar)} className="avatar" onClick={() => setShowModal(true)} style={{cursor: 'pointer'}}/>
                 <div className="name m-10">用户名称: <Tag color="#108ee9">{details?.name}</Tag></div>
                 <div className="m-10">用户账号: <Tag color="#108ee9">{details?.username}</Tag></div>
                 <div className="m-10">用户标识: <Tag color="#108ee9">{details?.id}</Tag></div>
@@ -203,12 +206,43 @@ const Details = (props) => {
           </Card>
         </Col>
       </Row>
+      <Modal title="修改头像" open={showModal} closable={true} onCancel={()=>setShowModal(false)} onOk={()=>setShowModal(false)}>
+        <Upload.Dragger name="files" customRequest={(obj) => {
+          let formData = new FormData();
+          formData.append('file', obj.file);
+          formData.append('type', 'avatar');
+          props?.commonFunc?.upload(formData)
+            .then(res => {
+              if (res?.length <= 0) {
+                notification.error({ message: '上传头像为空，请确认' });
+                return;
+              }
+              props?.accountFunc.modifyAccountAvatar({ id: details?.id, avatar: res[0]?.url })
+                .then(() => {
+                  onGetAaccountDetails();
+                  setShowModal(false);
+                });
+            });
+        }} beforeUpload={(file) => {
+          const isImg = file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/gif' || file.type === 'image/svg';
+          if (!isImg) {
+            notification.error({ message: '只能上传图片格式' });
+          }
+          return isImg;
+        }} accept="image/*">
+          <p className="ant-upload-drag-icon">
+            <InboxOutlined />
+          </p>
+          <p className="ant-upload-text">单击或拖动文件到此区域进行上载</p>
+        </Upload.Dragger>
+      </Modal>
     </div>
   );
 };
 
 Details.propTypes = {
   accountFunc: PropTypes.object,
+  commonFunc: PropTypes.object,
   account: PropTypes.object,
   tenancyList: PropTypes.arrayOf(Object)
 };
@@ -217,6 +251,7 @@ export default connect(state => ({
   tenancyList: state?.common?.tenancyList
 }), dispatch => {
   return {
-    accountFunc: bindActionCreators(accountAction, dispatch)
+    accountFunc: bindActionCreators(accountAction, dispatch),
+    commonFunc: bindActionCreators(commonAction, dispatch)
   };
 })(Details);

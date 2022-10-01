@@ -60,3 +60,8 @@ export const addTagMenu = (data)=>(dispatch)=>{
     payload: data
   });
 };
+//上传文件
+export const upload = (data)=> async (dispatch,getState,api)=>{
+  const res = await api.post('/asf/upload/index',data);
+  return res?.result;
+};

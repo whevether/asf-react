@@ -75,7 +75,7 @@ const Details = (props) => {
       });
       onOpenDarw(0);
     }
-  },{
+  }, {
     name: '删除api',
     permission: 'api.delete.[0-9]{1,100}',
     click: (data) => {
@@ -244,9 +244,9 @@ const Details = (props) => {
         setShowDarw(false);
         setTimeout(() => {
           props?.permissionFunc?.detailsPermission({ id: searchParams.get('id') })
-              .then(res => {
-                setDetails(res);
-              });
+            .then(res => {
+              setDetails(res);
+            });
         }, 500);
       });
 
@@ -265,24 +265,26 @@ const Details = (props) => {
             <Descriptions.Item label="权限名称">{details?.name}</Descriptions.Item>
             <Descriptions.Item label="权限类型">{mapType[details?.type]}</Descriptions.Item>
             <Descriptions.Item label="排序">{details?.sort}</Descriptions.Item>
-            <Descriptions.Item label="是否为系统权限">{details?.isSystem === 1 ? '系统权限' : '非系统权限'}</Descriptions.Item>
+            <Descriptions.Item label="是否为系统权限">{details?.isSystem === 1 ? <Tag color="success">是</Tag> : <Tag color="red">否</Tag>}</Descriptions.Item>
             <Descriptions.Item label="权限code">{details?.code}</Descriptions.Item>
             <Descriptions.Item label="是否启用">{details?.enable === 1 ? <Badge status="processing" text="启用" /> : '禁用'}</Descriptions.Item>
           </Descriptions>
-          <Descriptions
-            title="权限菜单"
-            bordered
-            style={{ marginBottom: '10px' }}
-            column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
-          >
-            <Descriptions.Item label="菜单标题">{details?.permissionMenus?.title}</Descriptions.Item>
-            <Descriptions.Item label="菜单副标题">{details?.permissionMenus?.subtitle}</Descriptions.Item>
-            <Descriptions.Item label="菜单地址">{details?.permissionMenus?.menuUrl}</Descriptions.Item>
-            <Descriptions.Item label="是否为系统菜单">{details?.permissionMenus?.isSystem === 1 ? '系统菜单' : '非系统权限'}</Descriptions.Item>
-            <Descriptions.Item label="是否隐藏菜单">{details?.permissionMenus?.menuHidden === 1 ? <Tag title="隐藏" color="red" /> : '不隐藏'}</Descriptions.Item>
-            <Descriptions.Item label="菜单图标">{details?.permissionMenus?.icon}</Descriptions.Item>
-            <Descriptions.Item label="菜单说明">{details?.permissionMenus?.description}</Descriptions.Item>
-          </Descriptions>
+          {
+            details?.permissionMenus && <Descriptions
+              title="权限菜单"
+              bordered
+              style={{ marginBottom: '10px' }}
+              column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+            >
+              <Descriptions.Item label="菜单标题">{details?.permissionMenus?.title}</Descriptions.Item>
+              <Descriptions.Item label="菜单副标题">{details?.permissionMenus?.subtitle}</Descriptions.Item>
+              <Descriptions.Item label="菜单地址">{details?.permissionMenus?.menuUrl}</Descriptions.Item>
+              <Descriptions.Item label="是否为系统菜单">{details?.permissionMenus?.isSystem === 1 ? '系统菜单' : '非系统权限'}</Descriptions.Item>
+              <Descriptions.Item label="是否隐藏菜单">{details?.permissionMenus?.menuHidden === 1 ? <Tag title="隐藏" color="red" /> : '不隐藏'}</Descriptions.Item>
+              <Descriptions.Item label="菜单图标">{details?.permissionMenus?.icon}</Descriptions.Item>
+              <Descriptions.Item label="菜单说明">{details?.permissionMenus?.description}</Descriptions.Item>
+            </Descriptions>
+          }
 
           <h3 style={{ fontWeight: 600 }}>权限api</h3>
           <BaseTable dataSource={details?.apis} columns={columns} />

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, Menu, Tooltip } from 'antd';
+import { Avatar, Dropdown, Menu, Tooltip } from 'antd';
 import { removeCookie,getCookie,setCookie } from 'utils/storage';
 import { useNavigate } from 'react-router-dom';
-import { MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined, GlobalOutlined, FontColorsOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined, GlobalOutlined, FontColorsOutlined, UserOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 const Tabbar = (props) => {
   let navigate = useNavigate();
@@ -25,6 +25,11 @@ const Tabbar = (props) => {
       <Menu.Item key="0" onClick={onLogout}>
         <span >
           <LogoutOutlined /> 登出
+        </span>
+      </Menu.Item>
+      <Menu.Item key="1" onClick={()=>handleGoNav(`/user/center?id=${props?.userinfo?.id}`)}>
+        <span >
+          <UserOutlined /> 个人中心
         </span>
       </Menu.Item>
     </Menu>
@@ -58,8 +63,8 @@ const Tabbar = (props) => {
         }
         <Dropdown overlay={menu}>
           <span className="tabbar-dropdown">
-            <img src={props?.userinfo?.avatar} />
-            {props?.userinfo?.username}
+            <Avatar src={decodeURIComponent(props?.userinfo?.avatar)} />
+            <span style={{marginLeft: '5px'}}>{props?.userinfo?.username}</span>
           </span>
         </Dropdown>
       </div>

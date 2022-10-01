@@ -599,6 +599,13 @@ export const apiFrom = (options) => [{
   options: {
     allowClear: true//是否显示清除框
   }
+},{
+  title: 'api说明',
+  fromType: 'textarea',
+  inputType: 'text',
+  name: 'description',
+  placeholder: '请输入api说明',
+  rules: [{ type: 'string', min: 1, max: 500, message: '最少输入1个字符的api说明或最多输入500个字符的api说明' }]
 }];
 
 export const roleSearchFrom = [{

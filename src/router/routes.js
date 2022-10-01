@@ -28,6 +28,7 @@ const DepartmentDetailsPage = LoadableComponent(() => import(/* webpackPrefetch:
 const PostPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/post/index'));
 const TranslatePage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/translate/index'));
 const DictionaryPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/dictionary/index'));
+const UserCenter = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/account/details'));
 const routes = [{
   path: "/",
   element: <RootLayout />,
@@ -90,6 +91,9 @@ const routes = [{
     },{
       path: 'control/audio/getlog',
       element: <LogsPage />
+    },{
+      path: 'user/center',
+      element: <UserCenter />
     }]
   },{
     path: '/login',
