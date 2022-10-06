@@ -224,7 +224,7 @@ const Details = (props) => {
                 });
             });
         }} beforeUpload={(file) => {
-          const isImg = file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/gif' || file.type === 'image/svg';
+          const isImg = file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/gif' || file.type === 'image/svg+xml';
           if (!isImg) {
             notification.error({ message: '只能上传图片格式' });
           }

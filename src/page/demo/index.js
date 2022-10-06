@@ -1,0 +1,281 @@
+import React, { useState, Fragment } from 'react';
+import { head } from 'utils/head';
+import { Editor } from '@tinymce/tinymce-react';
+/* tui 系列组件 */
+import Calendar from '@toast-ui/react-calendar';
+import '@toast-ui/calendar/dist/toastui-calendar.min.css';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import { Editor as TuiEditor } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/i18n/zh-cn';
+import 'tui-grid/dist/tui-grid.css';
+import Grid from '@toast-ui/react-grid';
+import 'tui-image-editor/dist/tui-image-editor.css';
+import ImageEditor from '@toast-ui/react-image-editor';
+import { blackTheme, locale } from './option';
+const Index = () => {
+  const [editorValue, setEditorValue] = useState('');
+  const calendars = [{ id: 'cal1', name: '日历' }];
+  const handleEditor = (value) => {
+    setEditorValue(value);
+  };
+  // 日历
+  const WEEKLY_CUSTOM_THEME = {
+    // week header 'dayname'
+    'week.dayname.height': '41px',
+    'week.dayname.borderTop': '1px solid #ddd',
+    'week.dayname.borderBottom': '1px solid #ddd',
+    'week.dayname.borderLeft': '1px solid #ddd',
+    'week.dayname.paddingLeft': '5px',
+    'week.dayname.backgroundColor': 'inherit',
+    'week.dayname.textAlign': 'left',
+    'week.today.color': '#b857d8',
+    'week.pastDay.color': '#999',
+
+    // week vertical panel 'vpanel'
+    'week.vpanelSplitter.border': '1px solid #ddd',
+    'week.vpanelSplitter.height': '3px',
+
+    // week daygrid 'daygrid'
+    'week.daygrid.borderRight': '1px solid #ddd',
+    'week.daygrid.backgroundColor': 'inherit',
+
+    'week.daygridLeft.width': '77px',
+    'week.daygridLeft.backgroundColor': '#a8def74d',
+    'week.daygridLeft.paddingRight': '5px',
+    'week.daygridLeft.borderRight': '1px solid #ddd',
+
+    'week.today.backgroundColor': '#b857d81f',
+    'week.weekend.backgroundColor': 'inherit',
+
+    // week timegrid 'timegrid'
+    'week.timegridLeft.width': '77px',
+    'week.timegridLeft.backgroundColor': '#03a9f44d',
+    'week.timegridLeft.borderRight': '1px solid #ddd',
+    'week.timegridLeft.fontSize': '12px',
+    'week.timegridLeftTimezoneLabel.height': '51px',
+    'week.timegridLeftAdditionalTimezone.backgroundColor': '#fdfdfd',
+
+    'week.timegridOneHour.height': '48px',
+    'week.timegridHalfHour.height': '24px',
+    'week.timegridHalfHour.borderBottom': '1px dotted #f9f9f9',
+    'week.timegridHorizontalLine.borderBottom': '1px solid #eee',
+
+    'week.timegrid.paddingRight': '10px',
+    'week.timegrid.borderRight': '1px solid #ddd',
+    'week.timegridSchedule.borderRadius': '0',
+    'week.timegridSchedule.paddingLeft': '0',
+
+    'week.currentTime.color': '#135de6',
+    'week.currentTime.fontSize': '12px',
+    'week.currentTime.fontWeight': 'bold',
+
+    'week.pastTime.color': '#808080',
+    'week.pastTime.fontWeight': 'normal',
+
+    'week.futureTime.color': '#333',
+    'week.futureTime.fontWeight': 'normal',
+
+    'week.currentTimeLinePast.border': '1px solid rgba(19, 93, 230, 0.3)',
+    'week.currentTimeLineBullet.backgroundColor': '#135de6',
+    'week.currentTimeLineToday.border': '1px solid #135de6',
+    'week.currentTimeLineFuture.border': '1px solid #135de6',
+
+    // week creation guide style
+    'week.creationGuide.color': '#135de6',
+    'week.creationGuide.fontSize': '12px',
+    'week.creationGuide.fontWeight': 'bold',
+
+    // week daygrid schedule style
+    'week.dayGridSchedule.borderRadius': '0',
+    'week.dayGridSchedule.height': '18px',
+    'week.dayGridSchedule.marginTop': '2px',
+    'week.dayGridSchedule.marginLeft': '10px',
+    'week.dayGridSchedule.marginRight': '10px'
+  };
+  const gridData = [
+    {
+      name: 'Beautiful Lies',
+      artist: 'Birdy',
+      release: '2016.03.26',
+      type: 'Deluxe',
+      genre: 'Pop'
+    },
+    {
+      name: 'X',
+      artist: 'Ed Sheeran',
+      release: '2014.06.24',
+      type: 'Deluxe',
+      genre: 'Pop',
+      _attributes: {
+        disabled: true // A current row is disabled
+      }
+    },
+    {
+      name: 'Moves Like Jagger',
+      release: '2011.08.08',
+      artist: 'Maroon5',
+      type: 'Single',
+      genre: 'Pop,Rock',
+      _attributes: {
+        checkDisabled: true // A checkbox is disabled only
+      }
+    },
+    {
+      name: 'A Head Full Of Dreams',
+      artist: 'Coldplay',
+      release: '2015.12.04',
+      type: 'Deluxe',
+      genre: 'Rock',
+      _attributes: {
+        checked: true, // A checkbox is already checked while rendering
+        className: {
+          // Add class name on a row
+          row: ['red']
+        }
+      }
+    },
+    {
+      name: '19',
+      artist: 'Adele',
+      release: '2008.01.27',
+      type: 'EP',
+      genre: 'Pop,R&B',
+      _attributes: {
+        rowSpan: {
+          // Merge rows
+          artist: 3,
+          genre: 2
+        }
+      }
+    },
+    {
+      name: '21',
+      artist: 'Adele',
+      release: '2011.01.21',
+      type: 'Deluxe',
+      genre: 'Pop,R&B'
+    },
+    {
+      name: '25',
+      artist: 'Adele',
+      release: '2015.11.20',
+      type: 'EP',
+      genre: 'Pop',
+      _attributes: {
+        className: {
+          // Add class name on each columns
+          column: {
+            type: ['blue'],
+            genre: ['blue']
+          }
+        }
+      }
+    }
+  ];
+
+  const columns = [
+    {
+      header: 'Name',
+      name: 'name',
+      sortable: true,
+      filter: { type: 'text', showApplyBtn: true, showClearBtn: true }
+    },
+    {
+      header: 'Artist',
+      name: 'artist',
+      sortable: true
+    },
+    {
+      header: 'Type',
+      name: 'type',
+      sortable: true
+    },
+    {
+      header: 'Release',
+      name: 'release',
+      sortable: true
+    },
+    {
+      header: 'Genre',
+      name: 'genre',
+      sortable: true
+    }
+  ];
+  return (
+    <div className="editor">
+      {head('组件示例')}
+      <Fragment>
+        <h3>tiny 富文本</h3>
+        <Editor id="editor" apiKey="f0ujtvkxmw64jnj6xstg4adv3vgxh73c5wbsgusq7si3pi1n" init={{
+          'plugins': 'print preview fullpage  searchreplace autolink directionality  visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount  imagetools textpattern help',
+          'min_height': 1200,
+          'insert_button_items': 'insertfile',
+          'language': 'zh_CN',
+          'fontsize_formats': "8pt 10pt 12pt 14pt 16pt 18pt 22pt 24pt 36pt", // 第二步
+          'language_url': '/assets/langs/zh_CN.js',
+          'importcss_append': true,
+          'toolbar': 'formatselect | bold | file italic strikethrough forecolor backcolor  | link image media  | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment',
+          'image_advtab': true,
+          // 'images_upload_handler': (blobInfo,success,failure)=>{
+          //   console.log(blobInfo);
+
+          // }
+        }} outputFormat="html" value={editorValue} onEditorChange={handleEditor} tagName="t_editor" />
+      </Fragment>
+      <Fragment>
+        <h3 style={{ marginTop: '20px' }}>tui 富文本</h3>
+        <TuiEditor
+          initialValue="hello react editor world!"
+          previewStyle="vertical"
+          height="600px"
+          language="zh_CN"
+          initialEditType="markdown"
+          useCommandShortcut={true}
+        />
+      </Fragment>
+
+      <Fragment>
+        <h3 style={{ marginTop: '20px' }}>tui 日历组件</h3>
+        <Calendar
+          height="900px"
+          view="month"
+          theme={WEEKLY_CUSTOM_THEME}
+          month={{
+            dayNames: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+          }}
+          calendars={calendars}
+          usageStatistics={true}
+          useFormPopup={true}
+          useDetailPopup={true}
+        />
+      </Fragment>
+      <Fragment>
+        <h3 style={{ marginTop: '20px' }}>tui 表格</h3>
+        <Grid
+          data={gridData}
+          columns={columns}
+          rowHeight={25}
+          heightResizable={true}
+          draggable={true}
+          rowHeaders={['checkbox']}
+        />
+      </Fragment>
+      <Fragment>
+        <h3 style={{ marginTop: '20px' }}>tui 图片组件</h3>
+        <ImageEditor
+          style={{height: '500px'}}
+          includeUI={{
+            theme: blackTheme, // or whiteTheme
+            initMenu: 'filter',
+            menu: ['crop', 'flip', 'rotate', 'draw', 'shape', 'text', 'filter'],
+            menuBarPosition: 'bottom',
+            locale: locale
+          }}
+          cssMaxHeight={500}
+          cssMaxWidth={700}
+        />
+      </Fragment>
+    </div>
+  );
+};
+export default Index;

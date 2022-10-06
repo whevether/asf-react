@@ -13,9 +13,7 @@ const Error403 = LoadableComponent(() => import(/* webpackPrefetch: true */ '../
 const AccountPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/account/index'));
 const AccountDetailsPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/account/details'));
 const LogsPage =  LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/logsList'));
-const EditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/editor/editorList'));
-const ModifyEditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/editor/modify'));
-const CreateEditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/editor/add'));
+const EditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/demo/index'));
 const PermissionPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/permission/index'));
 const PermissionDetailsPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/permission/details'));
 const MenuPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/menu/index'));
@@ -80,14 +78,8 @@ const routes = [{
       path: 'control/dictionary',
       element: <DictionaryPage />
     },{
-      path: 'editor/getlist',
+      path: 'components',
       element: <EditorPage />
-    },{
-      path: 'editor/modify',
-      element: <ModifyEditorPage />
-    },{
-      path: 'editor/create',
-      element: <CreateEditorPage />
     },{
       path: 'control/audio/getlog',
       element: <LogsPage />
