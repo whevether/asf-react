@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import { timeToDate } from 'utils/storage';
 import { head } from 'utils/head';
 import { useSearchParams } from 'react-router-dom';
-import './details.less';
 import { Descriptions, Tag } from 'antd';
 import { BaseTable } from 'components/index';
 const Details = (props)=>{

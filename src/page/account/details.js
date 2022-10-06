@@ -10,7 +10,6 @@ import { AppstoreAddOutlined, AimOutlined, FieldTimeOutlined, PhoneOutlined, Ali
 import PropTypes from 'prop-types';
 import { timeToDate } from 'utils/storage';
 import { BaseTable } from 'components/index';
-import './details.less';
 const Details = (props) => {
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState(null);

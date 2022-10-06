@@ -10,7 +10,6 @@ import { head } from 'utils/head';
 import { Badge, Descriptions, Drawer, Dropdown, Modal, notification, Switch, Tag } from 'antd';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 import * as apiAuthAction from 'store/actions/authApi';
-import './details.less';
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 const Details = (props) => {
   let [searchParams] = useSearchParams();

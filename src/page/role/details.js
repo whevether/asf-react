@@ -8,7 +8,6 @@ import { useSearchParams } from 'react-router-dom';
 import { head } from 'utils/head';
 import { Descriptions, Tag } from 'antd';
 import { BaseTable } from 'components/index';
-import './details.less';
 const Details = (props)=>{
   let [searchParams] = useSearchParams();
   const [details, setDetails] = useState(null);
