@@ -17,12 +17,12 @@ export const createPermission = (data) => async (dispatch,getState,api)=> {
 };
 // 修改权限
 export const modifyPermission = (data) => async (dispatch,getState,api)=> {
-  const res = await api.post('/asf/permission/modify',data);
+  const res = await api.put('/asf/permission/modify',data);
   return res?.result;
 };
 // 修改权限
 export const modifyStatus = (data) => async (dispatch,getState,api)=> {
-  const res = await api.post('/asf/permission/modifyStatus',data);
+  const res = await api.put('/asf/permission/modifyStatus',data);
   return res?.result;
 };
 //删除权限
