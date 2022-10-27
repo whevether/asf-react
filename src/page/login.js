@@ -7,7 +7,7 @@ import { UserOutlined, LockOutlined, GithubOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setCookie, getCookie } from 'utils/storage';
-import {head} from 'utils/head';
+import { head } from 'utils/head';
 import { useNavigate } from 'react-router';
 const Login = (props) => {
   const [zindex, setZindex] = useState({});
@@ -18,7 +18,7 @@ const Login = (props) => {
     navigate(e, params);
   };
   useEffect(() => {
-    if(getCookie('token')){
+    if (getCookie('token')) {
       handleGoNav('/');
     }
     setTimeout(() => {
@@ -48,7 +48,7 @@ const Login = (props) => {
         </div>
       </div>
       <div className="content">
-        <Tabs activeKey={type} onChange={setType} centered items={[{label: '账户密码登录',key: 'account'},{label: '手机号登录',key: 'mobile'},{label: '邮箱登录',key: 'email'}]} />
+        <Tabs activeKey={type} onChange={setType} centered items={[{ label: '账户密码登录', key: 'account' }, { label: '手机号登录', key: 'mobile' }, { label: '邮箱登录', key: 'email' }]} />
         {
           <Form
             name="login"
@@ -117,11 +117,11 @@ const Login = (props) => {
             </Form.Item>
           </Form>
         }
-      </div>
-      <div className="footer">
-        <Tooltip title="github地址">
-          <a title="github" target="_blank" href="https://github.com/whevether/asf"><GithubOutlined /></a>
-        </Tooltip>
+        <div className="footer">
+          <Tooltip title="github地址">
+            <a title="github" target="_blank" href="https://github.com/whevether/asf"><GithubOutlined /></a>
+          </Tooltip>
+        </div>
       </div>
     </div>
   );
