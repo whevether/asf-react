@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Menu } from 'antd';
-import {getCookie } from 'utils/storage';
+import { getCookie } from 'utils/storage';
 import {
   createFromIconfontCN
 } from '@ant-design/icons';
-const { SubMenu } = Menu;
 const NavBar = (props) => {
   const IconFont = createFromIconfontCN({
     scriptUrl: [
@@ -14,21 +13,24 @@ const NavBar = (props) => {
     ],
   });
   let o = props?.path.split('/');
-  const [openKeys, setOpenKeys] = useState(['/'+o[1],'/'+o[o.length-2]]);
-  const [selectKeys,setSelectKeys] = useState([decodeURIComponent(props?.path)]);
-  const renderLanguages = (item)=>{
-    if(props?.languages.length > 0 && item?.translate){
-      return props?.languages?.find(f=>f?.key === item?.translate && f.languages === getCookie('languages'))?.value;
-    }else{
+  const [openKeys, setOpenKeys] = useState(['/' + o[1], '/' + o[o.length - 2]]);
+  const [selectKeys, setSelectKeys] = useState([decodeURIComponent(props?.path)]);
+  const permissionMenu = localStorage.getItem('permissionMenu');
+  const renderLanguages = (item) => {
+    if (props?.languages.length > 0 && item?.translate) {
+      return props?.languages?.find(f => f?.key === item?.translate && f.languages === getCookie('languages'))?.value;
+    } else {
       return item.title;
     }
   };
   // 获取菜单数据生成菜单
   const getNavMenuItems = (menusData) => {
-    if (!menusData) {
+    const menu = menusData;
+    if (!menu) {
       return [];
     }
-    return menusData.map((item) => {
+
+    return menu.map((item) => {
       if (!item.title) {
         return null;
       }
@@ -39,43 +41,57 @@ const NavBar = (props) => {
         itemPath = item?.menuUrl ?? '';
       }
       const icon = item.icon && <IconFont type={item.icon} />;
+      item.disabled = Boolean(!item.enable);
+      item.key = item.menuUrl || item.id;
+      item.icon = icon;
       if (item?.children && item?.children.some(child => child.title)) {
-        return (
-          <SubMenu
-            disabled={Boolean(!item.enable)}
-            title={
-              item.icon ? (
-                <span>
-                  {icon}
-                  <span>{renderLanguages(item)}</span>
-                </span>
-              ) : item.title
-            }
-            key={item.menuUrl || item.id}
-          >
-            {getNavMenuItems(item?.children)}
-          </SubMenu>
-        );
+        item.type = 'group';
+        item.label = (<span>{renderLanguages(item)}</span>);
+        item.children = (getNavMenuItems(item?.children));
+        delete item.enable;
+        delete item.isSystem;
+        delete item.type;
+        delete item.code;
+        delete item.createTime;
+        delete item.id;
+        delete item.menuHidden;
+        delete item.name;
+        delete item.parentId;
+        delete item.subtitle;
+        delete item.sort;
+        delete item.title;
+        delete item.menuUrl;
+        return item;
+      } else {
+        delete item.children;
       }
-      return (
-        <Menu.Item disabled={Boolean(!item.enable)} key={item.menuUrl || item.id}>
-          {
-            /^https?:\/\//.test(itemPath) ? (
-              <a href={itemPath} target="_blank">
-                {icon}<span>{renderLanguages(item)}</span>
-              </a>
-            ) : (
-              <Link
-                to={itemPath}
-                onClick={()=>props?.onAddTagMenu(item)}
-                replace
-              >
-                {icon}<span>{renderLanguages(item)}</span>
-              </Link>
-            )
-          }
-        </Menu.Item>
+      item.label = /^https?:\/\//.test(itemPath) ? (
+        <a href={itemPath} target="_blank">
+          <span>{renderLanguages(item)}</span>
+        </a>
+      ) : (
+        <Link
+          to={itemPath}
+          onClick={() => props?.onAddTagMenu(item)}
+          replace
+        >
+          <span>{renderLanguages(item)}</span>
+        </Link>
       );
+      delete item.enable;
+      delete item.isSystem;
+      delete item.type;
+      delete item.code;
+      delete item.createTime;
+      delete item.id;
+      delete item.menuHidden;
+      delete item.name;
+      delete item.parentId;
+      delete item.subtitle;
+      delete item.sort;
+      delete item.title;
+      delete item.menuUrl;
+      return item;
     });
   };
   const onOpenChange = (e) => {
@@ -87,7 +103,7 @@ const NavBar = (props) => {
   return (
     <div className="slidebar" >
       <div className="logo" >
-        <a href="https://www.keep-wan.me" target="_blank" style={{minWidth:!props?.collapsed?'200px':'80px' }}/>
+        <a href="https://zytravel.shop" target="_blank" style={{ minWidth: !props?.collapsed ? '200px' : '80px' }} />
       </div>
       <Menu
         selectedKeys={selectKeys}
@@ -95,11 +111,12 @@ const NavBar = (props) => {
         mode="inline"
         theme="dark"
         onOpenChange={onOpenChange}
-        onSelect = {onSelectChange}
+        onSelect={onSelectChange}
+        items={permissionMenu ? getNavMenuItems(JSON.parse(permissionMenu)) : []}
         inlineCollapsed={props?.collapsed}
-      >
-        {getNavMenuItems(props?.userinfo?.permissionMenu)}
-      </Menu>
+      />
+      {/* {getNavMenuItems(props?.userinfo?.permissionMenu)} */}
+      {/* </Menu> */}
       {/* <Button type="primary" onClick={toggleCollapsed} className="collapsed">
         {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
       </Button> */}

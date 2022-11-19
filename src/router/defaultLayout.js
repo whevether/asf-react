@@ -60,7 +60,7 @@ const DefaultLayout = (props) => {
     } else {
       return (
         <div className="defaultLayout-wrapper" >
-          <Navbar userinfo={props?.common?.data} collapsed={props?.common?.collapsed} path={localtion.pathname + localtion.search} languages={props?.common.languageList} onAddTagMenu={(v) => {
+          <Navbar collapsed={props?.common?.collapsed} path={localtion.pathname + localtion.search} languages={props?.common.languageList} onAddTagMenu={(v) => {
             if (!props?.common?.tagMenu.some(s => s?.menuUrl === v?.menuUrl) || props?.common?.tagMenu.length === 0) {
               props?.common?.tagMenu?.push(v);
               props?.addTagMenu(props?.common?.tagMenu);

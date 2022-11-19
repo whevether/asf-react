@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import {notification} from 'antd';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 /*
 获取/设置cookie/移除coolkie
 */

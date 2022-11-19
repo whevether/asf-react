@@ -14,7 +14,7 @@ const { store, h } = configureStore(history); //第二个参数是初始状态
 import Routes from 'router/routes';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
-import locale from 'antd/lib/locale/zh_CN';
+import zhCN from 'antd/locale/zh_CN';
 //服务端渲染的时候样式需要放在入口这里。放别的地方环境会报错; 
 import 'style/style.less';
 dayjs.locale('zh-cn');
@@ -35,7 +35,7 @@ const root = createRoot(container);
 // ReactDOM.hydrate  服务端渲染用
 root.render(
   <Provider store={store} >
-    <ConfigProvider locale={locale}>
+    <ConfigProvider locale={zhCN}>
       <Router history={h}>
         <Routes />
       </Router>
