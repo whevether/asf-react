@@ -44,6 +44,19 @@ const NavBar = (props) => {
       item.disabled = Boolean(!item.enable);
       item.key = item.menuUrl || item.id;
       item.icon = icon;
+      item.label = /^https?:\/\//.test(itemPath) ? (
+        <a href={itemPath} target="_blank">
+          <span>{renderLanguages(item)}</span>
+        </a>
+      ) : (
+        <Link
+          to={itemPath}
+          onClick={() => props?.onAddTagMenu(item)}
+          replace
+        >
+          <span>{renderLanguages(item)}</span>
+        </Link>
+      );
       if (item?.children && item?.children.some(child => child.title)) {
         item.type = 'group';
         item.label = (<span>{renderLanguages(item)}</span>);
@@ -65,19 +78,6 @@ const NavBar = (props) => {
       } else {
         delete item.children;
       }
-      item.label = /^https?:\/\//.test(itemPath) ? (
-        <a href={itemPath} target="_blank">
-          <span>{renderLanguages(item)}</span>
-        </a>
-      ) : (
-        <Link
-          to={itemPath}
-          onClick={() => props?.onAddTagMenu(item)}
-          replace
-        >
-          <span>{renderLanguages(item)}</span>
-        </Link>
-      );
       delete item.enable;
       delete item.isSystem;
       delete item.type;
