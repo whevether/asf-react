@@ -11,7 +11,6 @@ let initData = {
 export default function common(state = initData, action) {
   switch (action.type) {
     case types.FETCH_USER_DATA:
-      localStorage.setItem('permissionMenu',JSON.stringify(action?.payload?.permissionMenu));
       return { ...state, data: action.payload };
     case types.TOGGLE_MENU:
       return { ...state, collapsed: action.payload };

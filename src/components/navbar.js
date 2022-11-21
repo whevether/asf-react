@@ -15,7 +15,6 @@ const NavBar = (props) => {
   let o = props?.path.split('/');
   const [openKeys, setOpenKeys] = useState(['/' + o[1], '/' + o[o.length - 2]]);
   const [selectKeys, setSelectKeys] = useState([decodeURIComponent(props?.path)]);
-  const permissionMenu = localStorage.getItem('permissionMenu');
   const renderLanguages = (item) => {
     if (props?.languages.length > 0 && item?.translate) {
       return props?.languages?.find(f => f?.key === item?.translate && f.languages === getCookie('languages'))?.value;
@@ -40,11 +39,12 @@ const NavBar = (props) => {
       } else {
         itemPath = item?.menuUrl ?? '';
       }
+      let menu = {};
       const icon = item.icon && <IconFont type={item.icon} />;
-      item.disabled = Boolean(!item.enable);
-      item.key = item.menuUrl || item.id;
-      item.icon = icon;
-      item.label = /^https?:\/\//.test(itemPath) ? (
+      menu.disabled = Boolean(!item.enable);
+      menu.key = item.menuUrl || item.id;
+      menu.icon = icon;
+      menu.label = /^https?:\/\//.test(itemPath) ? (
         <a href={itemPath} target="_blank">
           <span>{renderLanguages(item)}</span>
         </a>
@@ -58,40 +58,12 @@ const NavBar = (props) => {
         </Link>
       );
       if (item?.children && item?.children.some(child => child.title)) {
-        item.type = 'group';
-        item.label = (<span>{renderLanguages(item)}</span>);
-        item.children = (getNavMenuItems(item?.children));
-        delete item.enable;
-        delete item.isSystem;
-        delete item.type;
-        delete item.code;
-        delete item.createTime;
-        delete item.id;
-        delete item.menuHidden;
-        delete item.name;
-        delete item.parentId;
-        delete item.subtitle;
-        delete item.sort;
-        delete item.title;
-        delete item.menuUrl;
-        return item;
-      } else {
-        delete item.children;
+        // item.type = 'group';
+        menu.label = (<span>{renderLanguages(item)}</span>);
+        menu.children = (getNavMenuItems(item?.children));
+        return menu;
       }
-      delete item.enable;
-      delete item.isSystem;
-      delete item.type;
-      delete item.code;
-      delete item.createTime;
-      delete item.id;
-      delete item.menuHidden;
-      delete item.name;
-      delete item.parentId;
-      delete item.subtitle;
-      delete item.sort;
-      delete item.title;
-      delete item.menuUrl;
-      return item;
+      return menu;
     });
   };
   const onOpenChange = (e) => {
@@ -112,7 +84,7 @@ const NavBar = (props) => {
         theme="dark"
         onOpenChange={onOpenChange}
         onSelect={onSelectChange}
-        items={permissionMenu ? getNavMenuItems(JSON.parse(permissionMenu)) : []}
+        items={getNavMenuItems(props?.userinfo?.permissionMenu)}
         inlineCollapsed={props?.collapsed}
       />
       {/* {getNavMenuItems(props?.userinfo?.permissionMenu)} */}
