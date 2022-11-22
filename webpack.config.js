@@ -164,7 +164,7 @@ const config = {
         // ]
       },
       {
-        test: /\.css|\.less$/,
+        test: /\.css|\.scss$/,
         // exclude: /node_modules/, //排除这个文件夹
         use: [
           'style-loader',
@@ -198,15 +198,25 @@ const config = {
               }
             }
           }, {
-            loader: 'less-loader',
+            loader: "sass-loader",
             options: {
-              lessOptions: {
-                paths: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
-                javascriptEnabled: true,
-                sourceMap: false
-              }
+              sassOptions: {
+                webpackImporter: false,
+                indentWidth: 4,
+                includePaths: [path.resolve(__dirname, 'src', 'scss'),'node_modules'],
+              },
             }
           }
+          //  {
+          //   loader: 'less-loader',
+          //   options: {
+          //     lessOptions: {
+          //       paths: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
+          //       javascriptEnabled: true,
+          //       sourceMap: false
+          //     }
+          //   }
+          // }
         ]
       }
     ]

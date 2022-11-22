@@ -78,7 +78,7 @@ const config = {
       maxAsyncRequests: 5,
       maxInitialRequests: 3,
       // name: true,
-      automaticNameDelimiter: '~', 
+      automaticNameDelimiter: '~',
       cacheGroups: {
         vendor: {//node_modules内的依赖库
           chunks: "all",
@@ -243,7 +243,7 @@ const config = {
         // ]
       },
       {
-        test: /\.css|\.less$/,
+        test: /\.css|\.scss$/,
         // exclude: /node_modules/,
         use: [
           MiniCssExtractPlugin.loader,
@@ -263,7 +263,7 @@ const config = {
             options: {
               postcssOptions: {
                 plugins: [
-                  ['autoprefixer',{/*options*/}],
+                  ['autoprefixer', {/*options*/ }],
                   require('postcss-pxtorem')({
                     rootValue: 16,
                     unitPrecision: 5,
@@ -278,15 +278,25 @@ const config = {
               }
             }
           }, {
-            loader: 'less-loader',
+            loader: "sass-loader",
             options: {
-              lessOptions: {
-                paths: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
-                javascriptEnabled: true,
-                sourceMap: false
-              }
+              sassOptions: {
+                webpackImporter: false,
+                indentWidth: 4,
+                includePaths: [path.resolve(__dirname, 'src', 'scss'), 'node_modules'],
+              },
             }
           }
+          // {
+          //   loader: 'less-loader',
+          //   options: {
+          //     lessOptions: {
+          //       paths: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
+          //       javascriptEnabled: true,
+          //       sourceMap: false
+          //     }
+          //   }
+          // }
         ]
       }
     ]

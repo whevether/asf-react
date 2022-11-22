@@ -9,6 +9,7 @@
 - 自定义webpack 体积更小。如果不加echarts tui tiny体积能控制在200 kb
 - 封装了一些常用组件，例如echarts, tabbar. 侧边栏菜单
 - 全部使用react hooks 编写, 保证组件纯洁性
+- 升级 antd5, 全新写法
 ##### 示例图片
 ![示例图片](./gif/1.gif) 
 ![示例图片](./gif/2.gif) 
@@ -23,3 +24,4 @@
 
 - react全部功能已经完成
 - 下一个版本将支持angular 与 vue3
+- vue3 正在开发中

@@ -16,7 +16,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import zhCN from 'antd/locale/zh_CN';
 //服务端渲染的时候样式需要放在入口这里。放别的地方环境会报错; 
-import 'style/style.less';
+import 'style/style.scss';
 dayjs.locale('zh-cn');
 const loading = () => {
   setTimeout(() => {
