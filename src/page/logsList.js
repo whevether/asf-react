@@ -131,7 +131,7 @@ const LogsList = (props) => {
     width: 150,
     render: (text) => {
       if (text) {
-        return (<pre lang="json">{text}</pre>);
+        return (<pre lang="json" style={{whiteSpace:'normal'}}>{text}</pre>);
       } else {
         return '';
       }

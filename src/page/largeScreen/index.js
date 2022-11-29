@@ -19,9 +19,9 @@ const Index = () => {
     };
     t = setTimeout(time, 1000);
   };
-  useEffect(()=>{
+  useEffect(() => {
     onShowTime();
-  },[]);
+  }, []);
   return (
     <div className="large-screen">
       <div className="head">
@@ -33,6 +33,201 @@ const Index = () => {
           <span className="showTime">
             {showTime}
           </span>
+        </div>
+      </div>
+      <div className="data_main">
+        <div className="main_left fl">
+          <div className="left_1">
+
+            <div id="chart_1" className="chart" style={{ width: '100%', height: '280px' }}></div>
+          </div>
+          <div className="left_2">
+
+            <div id="chart_2" className="chart" style={{ width: '100%', height: '280px' }}></div>
+          </div>
+        </div>
+        <div className="main_center fl">
+          <div className="center_text">
+
+            <div id="chart_map" style={{ width: '100%', height: '610px' }}></div>
+          </div>
+        </div>
+        <div className="main_right fr">
+          <div className="right_1">
+            <div id="chart_3" className="echart" style={{ width: '100%', height: '280px' }}></div>
+          </div>
+          <div className="right_2">
+
+            <div id="chart_4" className="echart fl" style={{ width: '80%', height: '230px' }}></div>
+          </div>
+        </div>
+      </div>
+      <div className="data_bottom">
+        <div className="bottom_1 fl">
+
+          <div className="main_table">
+            <table>
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>车牌号</th>
+                  <th>里程数(km)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>京A12345</td>
+                  <td>134.2</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>京A12345</td>
+                  <td>134.2</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>京A12345</td>
+                  <td>134.2</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>京A12345</td>
+                  <td>134.2</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>京A12345</td>
+                  <td>134.2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="bottom_center fl">
+          <div className="bottom_2 fl">
+
+            <div className="main_table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>排名</th>
+                    <th>车牌号</th>
+                    <th>时长(h)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>京A12345</td>
+                    <td>134.2</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>京A12345</td>
+                    <td>134.2</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>京A12345</td>
+                    <td>134.2</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>京A12345</td>
+                    <td>134.2</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>京A12345</td>
+                    <td>134.2</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="bottom_3 fl">
+
+            <div className="main_table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>排名</th>
+                    <th>车牌号</th>
+                    <th>速度(km/h)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>京A12345</td>
+                    <td>134.2</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>京A12345</td>
+                    <td>134.2</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>京A12345</td>
+                    <td>134.2</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>京A12345</td>
+                    <td>134.2</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>京A12345</td>
+                    <td>134.2</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div className="bottom_4 fr">
+
+          <div className="main_table">
+            <table>
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>车牌号</th>
+                  <th>次数(次)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>京A12345</td>
+                  <td>134.2</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>京A12345</td>
+                  <td>134.2</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>京A12345</td>
+                  <td>134.2</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>京A12345</td>
+                  <td>134.2</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>京A12345</td>
+                  <td>134.2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
