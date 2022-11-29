@@ -190,6 +190,12 @@ canvas {
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+    .tabbar-menu{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+    }
     .collapsed{
       width: 30px;
       height: 30px;
