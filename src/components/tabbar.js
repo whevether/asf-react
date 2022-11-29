@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, Dropdown, Tooltip } from 'antd';
+import { Avatar, Dropdown, message, Tooltip } from 'antd';
 import { removeCookie, getCookie, setCookie } from 'utils/storage';
 import { useNavigate } from 'react-router-dom';
-import { MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined, GlobalOutlined, FontColorsOutlined, UserOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined, GlobalOutlined, FontColorsOutlined, UserOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
+import screenfull from 'screenfull';
 const Tabbar = (props) => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const [full, setFull] = useState(false);
   //跳转路由
   const handleGoNav = (e, params = {}) => {
     navigate(e, params);
@@ -19,6 +21,16 @@ const Tabbar = (props) => {
       payload: null
     });
     handleGoNav('/login');
+  };
+  const onScreenfull = () => {
+    if(!screenfull.isEnabled){
+      message.error({content: '浏览器不支持'});
+      return;
+    }
+    screenfull.toggle();
+    screenfull.on('change',()=>{
+      setFull(!full);
+    });
   };
   const menu = [{
     key: '1',
@@ -55,6 +67,11 @@ const Tabbar = (props) => {
             <span style={{ marginLeft: '5px' }}>{props?.userinfo?.username}</span>
           </span>
         </Dropdown>
+        <div style={{ marginLeft: '10px' }}>
+          {
+            full ? <Tooltip title="缩小"><FullscreenExitOutlined onClick={() => onScreenfull()} /></Tooltip> : <Tooltip title="全屏"><FullscreenOutlined onClick={() => onScreenfull()} /></Tooltip>
+          }
+        </div>
       </div>
     </div>
   );
