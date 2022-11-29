@@ -13,9 +13,8 @@ const Index = () => {
       let m = dt.getMinutes();//获取分
       let s = dt.getSeconds();//获取秒
       let tt = `${y}年${mt}月${day}-${h}时${m}分${s}秒`;
-      console.log(tt);
       // y + "年" + mt + "月" + day + "-" + h + "时" + m + "分" + s + "秒"
-      setShowTime(`${y}年${mt}月${day}-${h}时${m}分${s}秒`);
+      setShowTime(tt);
       t = setTimeout(time, 1000);
     };
     t = setTimeout(time, 1000);
@@ -26,7 +25,10 @@ const Index = () => {
   return (
     <div className="large-screen">
       <div className="head">
-        <h1>液奶清洁部数字化平台</h1>
+        <div className="roll-text">
+          热烈欢迎各位领导莅临指导
+        </div>
+        <h1>液奶事业部清洁数字化平台</h1>
         <div className="weather">
           <span className="showTime">
             {showTime}

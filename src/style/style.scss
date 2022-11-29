@@ -552,6 +552,10 @@ canvas {
     text-align: center;
     font-size: 34px;
     line-height: 50px;
+    font-weight: bold;
+    background-image: -webkit-gradient(linear,0 top,0 bottom,from(#CAE0FF),to(#6EB2FF));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .head h1 img {
@@ -560,7 +564,53 @@ canvas {
     vertical-align: middle;
     margin-right: .2rem
   }
-
+  .roll-text{
+    position: absolute;
+    left: 15px;
+    top: 0px;
+    line-height: 45px;
+    font-size: 16px;
+    color: #fff;
+    animation:roll-ami 10s linear infinite  ;
+  }
+  @keyframes roll-ami {
+    0%{
+      left: 15px;
+    }
+    10%{
+      left:  -10%;
+    }
+    20%{
+      left:  -20%;
+    }
+    30%{
+      left:  -30%;
+    }
+    40%{
+      left:  -40%;
+    }
+    50%{
+      left:  -50%;
+    }
+    60%{
+      left:  -60%;
+    }
+    70%{
+      left:  -70%;
+    }
+    80%{
+      left:  -80%;
+    }
+    90%{
+      left:  -90%;
+    }
+    95%{
+      left:  -100%;
+    }
+    100%{
+      left: -110%;
+    }
+  }
   .weather {
     position: absolute;
     right: 10px;
