@@ -6,7 +6,6 @@ import { Editor } from '@tinymce/tinymce-react';
 import TuiGrid from 'tui-grid';
 import TuiEditor from '@toast-ui/editor';
 import { blackTheme, locale } from './option';
-import './index.scss';
 import 'tui-grid/dist/tui-grid.min.css';
 import '@toast-ui/editor/dist/i18n/zh-cn';
 import '@toast-ui/editor/dist/toastui-editor.css';
