@@ -8,8 +8,8 @@ import * as permissionAction from 'store/actions/permission';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer, Switch, notification, Modal, Descriptions, Tag, Badge } from 'antd';
-import { createFromIconfontCN, DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import {  Drawer, Switch, notification, Modal, Descriptions, Tag, Badge } from 'antd';
+import { createFromIconfontCN, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 const Index = (props) => {
   const IconFont = createFromIconfontCN({
@@ -194,11 +194,6 @@ const Index = (props) => {
       });
     }
   }];
-  const menu = (record) => {
-    return (
-      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
-    );
-  };
   const columns = [{
     title: '菜单ID',
     dataIndex: 'id',
@@ -298,12 +293,8 @@ const Index = (props) => {
     width: 150,
     fixed: 'right',
     // eslint-disable-next-line
-    render: (text) => {
-      return (<Dropdown overlay={menu(text)} name="action">
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-          操作 <DownOutlined />
-        </a>
-      </Dropdown>);
+    render: (record) => {
+      return (<AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }
   }];
   const mapTitle = {

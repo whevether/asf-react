@@ -7,8 +7,8 @@ import * as roleAuthAction from 'store/actions/role';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
-import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import {  Drawer, Switch, notification, Modal } from 'antd';
+import {  ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
@@ -202,11 +202,6 @@ const Index = (props) => {
       });
     }
   }];
-  const menu = (record) => {
-    return (
-      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
-    );
-  };
   const columns = [{
     title: 'ID',
     dataIndex: 'id',
@@ -267,12 +262,8 @@ const Index = (props) => {
     width: 150,
     fixed: 'right',
     // eslint-disable-next-line
-    render: (text) => {
-      return (<Dropdown overlay={menu(text)} name="action">
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-          操作 <DownOutlined />
-        </a>
-      </Dropdown>);
+    render: (record) => {
+      return (<AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }
   }];
   const mapTitle = {

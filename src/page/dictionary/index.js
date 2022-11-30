@@ -6,16 +6,16 @@ import PropTypes from 'prop-types';
 import * as dictionaryAction from 'store/actions/dictionary';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Drawer, Dropdown, Modal, notification } from 'antd';
-import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Modal, notification,Drawer } from 'antd';
+import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl, BaseFrom } from 'components/index';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); // 0 添加 字典 1: 修改字典
   const [initFromValue, setInitFromValue] = useState(null);
-  const [page,setPage] = useState(1);
-  const [pageSize,setPageSize] = useState(20);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
   //获取账户列表
   useEffect(() => {
     props?.dictionaryFunc?.fetchDictionaryList();
@@ -68,7 +68,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.dictionaryFunc?.fetchDictionaryList({pageSize: pageSize });
+            props?.dictionaryFunc?.fetchDictionaryList({ pageSize: pageSize });
           }, 500);
         });
     } else if (drawType === 1) {
@@ -81,7 +81,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.dictionaryFunc?.fetchDictionaryList({pageSize: pageSize });
+            props?.dictionaryFunc?.fetchDictionaryList({ pageSize: pageSize });
           }, 500);
         });
     }
@@ -123,18 +123,13 @@ const Index = (props) => {
                 description: '删除字典成功'
               });
               setTimeout(() => {
-                props?.dictionaryFunc?.fetchDictionaryList({pageSize: pageSize});
+                props?.dictionaryFunc?.fetchDictionaryList({ pageSize: pageSize });
               }, 500);
             });
         }
       });
     }
   }];
-  const menu = (record) => {
-    return (
-      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
-    );
-  };
   const columns = [{
     title: 'ID',
     dataIndex: 'id',
@@ -178,12 +173,8 @@ const Index = (props) => {
     width: 150,
     fixed: 'right',
     // eslint-disable-next-line
-    render: (text) => {
-      return (<Dropdown overlay={menu(text)} name="action">
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-          操作 <DownOutlined />
-        </a>
-      </Dropdown>);
+    render: (record) => {
+      return (<AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }
   }];
   const mapTitle = {

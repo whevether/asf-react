@@ -7,8 +7,8 @@ import * as permissionAction from 'store/actions/permission';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer, Switch, notification, Modal } from 'antd';
-import { CloudSyncOutlined, DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import {  Drawer, Switch, notification, Modal } from 'antd';
+import { CloudSyncOutlined,  ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 /* eslint-disable no-extra-semi */
@@ -180,11 +180,7 @@ const Index = (props) => {
       });
     }
   }];
-  const menu = (record) => {
-    return (
-      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu"/>
-    );
-  };
+
   const columns = [{
     title: '权限ID',
     dataIndex: 'id',
@@ -286,12 +282,8 @@ const Index = (props) => {
     key: 'action',
     fixed: 'right',
     // eslint-disable-next-line
-    render: (text) => {
-      return (<Dropdown overlay={menu(text)} name="action">
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-          操作 <DownOutlined />
-        </a>
-      </Dropdown>);
+    render: (record) => {
+      return (<AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }
   }];
   const mapTitle = {

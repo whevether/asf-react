@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import * as tenancyAction from 'store/actions/tenancy';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Descriptions, Drawer, Dropdown, Modal, notification, Tag } from 'antd';
-import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Descriptions, Drawer, Modal, notification, Tag } from 'antd';
+import {  ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl, BaseFrom } from 'components/index';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
@@ -222,11 +222,6 @@ const Index = (props) => {
       });
     }
   }];
-  const menu = (record) => {
-    return (
-      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
-    );
-  };
   const columns = [{
     title: 'ID',
     dataIndex: 'id',
@@ -274,12 +269,8 @@ const Index = (props) => {
     fixed: 'right',
     width: 150,
     // eslint-disable-next-line
-    render: (text) => {
-      return (<Dropdown overlay={menu(text)} name="action">
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-          操作 <DownOutlined />
-        </a>
-      </Dropdown>);
+    render: (record) => {
+      return (<AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }
   }];
   const mapTitle = {

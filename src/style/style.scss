@@ -343,7 +343,9 @@ canvas {
   }
 }
 
-
+.anticon.anticon-exclamation-circle{
+  display: none;
+}
 /* editor */
 .editor {
   padding: 25px;
@@ -756,10 +758,6 @@ canvas {
     border: 1px solid #034c6a;
     /*background: url("../img/chart_8.png") no-repeat;*/
   }
-
-
-
-
 
   .data_bottom div .main_table tr {
     height: 42px;

@@ -7,8 +7,8 @@ import * as accountAction from 'store/actions/account';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Drawer, notification, Switch, Modal } from 'antd';
-import { DownOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Drawer, notification, Switch, Modal } from 'antd';
+import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
@@ -16,8 +16,8 @@ const Index = (props) => {
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0); //0 添加账户 1修改账户, 2分配账户角色 3: 分配账户部门， 4分配账户岗位，  5 修改账户密码， 6 修改账户手机，7  修改账户邮箱,8 修改账户头像
   const [initFromValue, setInitFromValue] = useState(null);
-  const [page,setPage] = useState(1);
-  const [pageSize,setPageSize] = useState(20);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
   let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
@@ -319,24 +319,19 @@ const Index = (props) => {
       notification.info({ message: '用户头像' });
     }
   }];
-  const menu = (record) => {
-    return (
-      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
-    );
-  };
   const columns = [{
     title: '账户ID',
     dataIndex: 'id',
     key: 'id',
     fixed: 'left',
     width: 100
-  },{
+  }, {
     title: '所属租户',
     dataIndex: 'tenancyId',
     width: 100,
     key: 'tenancyId',
-    render: (text)=>{
-      let data = props?.tenancyList.find(f=>f.id == text);
+    render: (text) => {
+      let data = props?.tenancyList.find(f => f.id == text);
       return <span>{data?.name}</span>;
     }
   }, {
@@ -399,7 +394,7 @@ const Index = (props) => {
               message: '修改成功',
               description: '修改账户状态成功'
             });
-            props?.accountFunc?.fetchAccountList({pageSize: pageSize});
+            props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
           });
         }} /> : statusMap[text];
     }
@@ -436,12 +431,8 @@ const Index = (props) => {
     key: 'action',
     fixed: 'right',
     // eslint-disable-next-line
-    render: (text) => {
-      return (<Dropdown overlay={menu(text)} name="action">
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-          操作 <DownOutlined />
-        </a>
-      </Dropdown>);
+    render: (record) => {
+      return (<AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }
   }];
   const mapDrawTitle = {
