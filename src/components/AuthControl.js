@@ -35,13 +35,13 @@ const AuthControl = (props) => {
                         操作 <DownOutlined />
                     </a>
                 </Dropdown>);
+            }else {
+                return props?.list.map((item, i) => {
+                    return props?.userInfo?.actions?.includes(item.permission) ? <Button key={i} onClick={() => item?.click(props?.record)} type={item?.type} icon={item?.icon} loading={item?.loading} size={item?.size} style={{ marginLeft: '10px', marginBottom: '10px' }} {...item?.rest}>{item?.name}</Button> : null;
+    
+                });
             }
-        } else {
-            return props?.list.map((item, i) => {
-                return props?.userInfo?.actions?.includes(item.permission) ? <Button key={i} onClick={() => item?.click(props?.record)} type={item?.type} icon={item?.icon} loading={item?.loading} size={item?.size} style={{ marginLeft: '10px', marginBottom: '10px' }} {...item?.rest}>{item?.name}</Button> : null;
-
-            });
-        }
+        } 
     };
     return (
         <>

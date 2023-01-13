@@ -7,7 +7,6 @@ import LoginLayout  from './loginLayout';
 import { useRoutes } from 'react-router';
 //页面
 const DashPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/dash'));
-// const DashPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/largeScreen/index'));
 const LoginPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/login'));
 const Error404 = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/404'));
 const Error403 = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/403'));
