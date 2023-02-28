@@ -73,7 +73,7 @@ const NavBar = (props) => {
     setSelectKeys(e.key);
   };
   return (
-    <div className="slidebar" >
+    <div className={`slidebar ${props?.collapsed ? 'close' : ''}`}>
       <div className="logo" >
         <a href="https://zytravel.shop" target="_blank" style={{ minWidth: !props?.collapsed ? '200px' : '80px' }} />
       </div>

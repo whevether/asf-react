@@ -242,7 +242,7 @@ const Index = () => {
     onRenderImageEditor();
     onRenderGrid();
     onRenderTuiEditor();
-  });
+  },[]);
   return (
     <div className="demo-wrapper">
       {head('组件示例')}
