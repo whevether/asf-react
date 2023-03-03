@@ -41,16 +41,15 @@ const DefaultLayout = (props) => {
   //权限拦截
   const grantedPermission = (menu) => {
     let isPermission = menu.some((item) => {
-      if (Array.isArray(item?.children) && item?.children.length > 0) {
-        // console.log(item?.children);
-        return grantedPermission(item?.children);
-      } else if (window.location.href.match(item?.code)[0].length === item?.code.length) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    return isPermission;
+      if (localtion.pathname === item?.code) {
+       return true;
+     } else if (Array.isArray(item?.children) && item?.children.length > 0) {
+       return grantedPermission(item?.children);
+     }else{
+       return false;
+     }
+   });
+   return isPermission;
   };
   const renderProtectedRoute = () => {
     if (!grantedPermission(props?.common?.data?.permissionMenu)) {
