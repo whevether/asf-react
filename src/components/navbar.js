@@ -30,7 +30,7 @@ const NavBar = (props) => {
     }
 
     return menu.map((item) => {
-      if (!item.title) {
+      if (!item.title || item?.type === 3 || item?.menuHidden === 1) {
         return null;
       }
       let itemPath;
