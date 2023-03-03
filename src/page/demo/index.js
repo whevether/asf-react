@@ -225,7 +225,7 @@ const Index = () => {
     };
     new TuiGrid(options);
   };
-  const onRenderTuiEditor = ()=>{
+  const onRenderTuiEditor = () => {
     const options = {
       el: tuieditorRef.current,
       initialValue: '欢迎使用',
@@ -242,7 +242,7 @@ const Index = () => {
     onRenderImageEditor();
     onRenderGrid();
     onRenderTuiEditor();
-  },[]);
+  }, []);
   return (
     <div className="demo-wrapper">
       {head('组件示例')}
@@ -254,14 +254,16 @@ const Index = () => {
       <Fragment>
         <h3>tiny 富文本</h3>
         <Editor apiKey="f0ujtvkxmw64jnj6xstg4adv3vgxh73c5wbsgusq7si3pi1n" init={{
-          'plugins': 'print preview fullpage  searchreplace autolink directionality  visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount  imagetools textpattern help',
+          'plugins': 'print preview fullpage  searchreplace autolink directionality  visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount  imagetools textpattern help code',
           'min_height': 1200,
+          'skin': 'snow',
           'insert_button_items': 'insertfile',
           'language': 'zh_CN',
-          'fontsize_formats': "8pt 10pt 12pt 14pt 16pt 18pt 22pt 24pt 36pt", // 第二步
+          'font_size_formats': "8pt 10pt 12pt 14pt 16pt 18pt 22pt 24pt 36pt", // 第二步
+          'font_family_formats': "微软雅黑='微软雅黑';宋体='宋体';黑体='黑体';仿宋='仿宋';楷体='楷体';隶书='隶书';幼圆='幼圆';华文楷体='华文楷体';华文仿宋='华文仿宋';Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings",
           'language_url': '/assets/langs/zh_CN.js',
           'importcss_append': true,
-          'toolbar': 'formatselect | bold | file italic strikethrough forecolor backcolor  | link image media  | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment',
+          'toolbar': 'blocks  | fontsize | fontfamily | styles | bold | file italic strikethrough forecolor backcolor  | link image media  | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment | code',
           'image_advtab': true,
           // 'images_upload_handler': (blobInfo,success,failure)=>{
           //   console.log(blobInfo);
@@ -279,7 +281,7 @@ const Index = () => {
       </Fragment>
       <Fragment>
         <h3 style={{ marginTop: '20px' }}>tui 富文本</h3>
-        <div ref={tuieditorRef} style={{ height: '600px' }}/>
+        <div ref={tuieditorRef} style={{ height: '600px' }} />
       </Fragment>
     </div>
   );

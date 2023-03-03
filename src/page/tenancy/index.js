@@ -295,10 +295,7 @@ const Index = (props) => {
 Index.propTypes = {
   tenancyFunc: PropTypes.object,
   userInfo: PropTypes.object,
-  tenancy: PropTypes.object,
-  tenancyList: PropTypes.arrayOf(Object),
-  roleName: PropTypes.string,
-  initialValues: PropTypes.object
+  tenancy: PropTypes.object
 };
 export default connect(state => ({
   userInfo: state?.common?.data,

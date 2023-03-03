@@ -464,13 +464,9 @@ const Index = (props) => {
 Index.propTypes = {
   accountFunc: PropTypes.object,
   commonFunc: PropTypes.object,
-  fetchAccountList: PropTypes.func,
   account: PropTypes.object,
-  getDepartmentList: PropTypes.func,
-  createAccount: PropTypes.func,
   tenancyList: PropTypes.arrayOf(Object),
-  userInfo: PropTypes.object,
-  initialValues: PropTypes.object
+  userInfo: PropTypes.object
 };
 export default connect(state => ({
   account: state?.account,

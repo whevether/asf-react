@@ -99,8 +99,8 @@ canvas {
     .logo {
       background-image: url('assets/logo.png');
       background-repeat: no-repeat;
-      background-size: 100% 150px;
-      background-position: 0px -32px;
+      background-size: cover;
+      background-position: center;
       height: 75px;
       line-height: 75px;
 
@@ -163,12 +163,12 @@ canvas {
       background-color: #fff;
       background-image: url('assets/logo.png');
       background-repeat: no-repeat;
-      background-size: 100% 100%;
-      background-position: 0px 0px;
-      height: 150px;
+      background-size:cover;
+      background-position: center;
+      height: 40px;
       display: flex;
       z-index: 10;
-      line-height: 150px;
+      line-height: 40px;
 
       a {
         width: 100%;
@@ -336,10 +336,10 @@ canvas {
 .tabble-list {
   padding: 25px 15px;
   background-color: #fff;
-  margin-top: 10px;
-  margin-left: 15px;
-  margin-right: 15px;
-  margin-bottom: 15px;
+  // margin-top: 10px;
+  // margin-left: 15px;
+  // margin-right: 15px;
+  // margin-bottom: 15px;
 
   .tabble-header {
     border-bottom: 1px solid #eee;
@@ -369,7 +369,7 @@ canvas {
 }
 
 .list {
-  padding: 20px 0px;
+  padding: 20px;
 }
 
 .account-details {

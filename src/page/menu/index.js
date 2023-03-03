@@ -322,9 +322,7 @@ Index.propTypes = {
   commonFunc: PropTypes.object,
   userInfo: PropTypes.object,
   menu: PropTypes.object,
-  tenancyList: PropTypes.arrayOf(Object),
-  roleName: PropTypes.string,
-  initialValues: PropTypes.object
+  tenancyList: PropTypes.arrayOf(Object)
 };
 export default connect(state => ({
   userInfo: state?.common?.data,

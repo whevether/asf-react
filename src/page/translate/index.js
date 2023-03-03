@@ -197,10 +197,7 @@ Index.propTypes = {
   translateFunc: PropTypes.object,
   userInfo: PropTypes.object,
   translate: PropTypes.object,
-  translateList: PropTypes.arrayOf(Object),
-  roleName: PropTypes.string,
-  tenancyList: PropTypes.arrayOf(Object),
-  initialValues: PropTypes.object
+  tenancyList: PropTypes.arrayOf(Object)
 };
 export default connect(state => ({
   userInfo: state?.common?.data,

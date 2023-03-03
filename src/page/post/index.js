@@ -235,10 +235,7 @@ Index.propTypes = {
   postFunc: PropTypes.object,
   userInfo: PropTypes.object,
   post: PropTypes.object,
-  postList: PropTypes.arrayOf(Object),
-  roleName: PropTypes.string,
-  tenancyList: PropTypes.arrayOf(Object),
-  initialValues: PropTypes.object
+  tenancyList: PropTypes.arrayOf(Object)
 };
 export default connect(state => ({
   userInfo: state?.common?.data,
