@@ -7,7 +7,7 @@ import * as commonAction from 'store/actions/common';
 import { bindActionCreators } from 'redux';
 import { getCookie } from 'utils/storage';
 import { setToken } from 'utils/request';
-import { Tabbar, Navbar } from 'components/index';
+import { Tabbar, Navbar,BreadcrumbItems } from 'components/index';
 import { Tag } from 'antd';
 import { BellOutlined,BookOutlined } from '@ant-design/icons';
 // 默认布局
@@ -82,6 +82,7 @@ const DefaultLayout = (props) => {
               }
               </div>
             }
+            <BreadcrumbItems mapBreadcrumbItems={props?.common?.data?.breadcrumbItems}/>
             {/* 路由占位符  */}
             <Outlet />
           </div>

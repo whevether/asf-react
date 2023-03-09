@@ -10,7 +10,7 @@ import { head } from 'utils/head';
 import { Badge, Descriptions, Drawer, Dropdown, Modal, notification, Switch, Tag } from 'antd';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 import * as apiAuthAction from 'store/actions/authApi';
-import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 const Details = (props) => {
   let [searchParams] = useSearchParams();
   const [details, setDetails] = useState(null);
@@ -102,11 +102,6 @@ const Details = (props) => {
       });
     }
   }];
-  const menu = (record) => {
-    return (
-      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
-    );
-  };
   const columns = [{
     title: 'ID',
     dataIndex: 'id',
@@ -221,12 +216,8 @@ const Details = (props) => {
     width: 150,
     fixed: 'right',
     // eslint-disable-next-line
-    render: (text) => {
-      return (<Dropdown overlay={menu(text)} name="action">
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-          操作 <DownOutlined />
-        </a>
-      </Dropdown>);
+    render: (record) => {
+      return ( <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }
   }];
   //提交表单

@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import * as audioAction from 'store/actions/audio';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, notification } from 'antd';
-import { CloudSyncOutlined, DownOutlined } from '@ant-design/icons';
+import { notification } from 'antd';
+import { CloudSyncOutlined } from '@ant-design/icons';
 import { BaseTable, AuthControl } from 'components/index';
 const LogsList = (props) => {
   //日志类型
@@ -55,11 +55,6 @@ const LogsList = (props) => {
         });
     }
   }];
-  const menu = (record) => {
-    return (
-      <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />
-    );
-  };
   // rowSelection objects indicates the need for row selection
   const rowSelection = {
     // onChange: (selectedRowKeys, selectedRows) => {
@@ -160,12 +155,8 @@ const LogsList = (props) => {
     key: 'action',
     fixed: 'right',
     // eslint-disable-next-line
-    render: (text) => {
-      return (<Dropdown overlay={menu(text)} name="action">
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-          操作 <DownOutlined />
-        </a>
-      </Dropdown>);
+    render: (record) => {
+      return ( <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }
   }];
   return (
