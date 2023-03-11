@@ -132,7 +132,7 @@ const Index = (props) => {
         width: '100%',
         content: (<Fragment>
           <Descriptions
-            title="授权pi详情"
+            title="授权api详情"
             bordered
             style={{ marginBottom: '10px' }}
             column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
