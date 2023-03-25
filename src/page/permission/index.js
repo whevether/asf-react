@@ -43,7 +43,7 @@ const Index = (props) => {
   const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
       let list = props?.permission?.list;
-      if (!list.some(f => f.value === 0)) {
+      if (!list.some(f => f.value === '0')) {
         list.unshift({ label: '顶级权限', value: '0', children: [] });
       }
       let from = permissionFrom(list);
@@ -131,7 +131,7 @@ const Index = (props) => {
         'id': data?.id,
         'tenancyId': data?.tenancyId,
         'code': data?.code,
-        'parentId':  data?.parentId == 0 ? [data?.parentId]:[data?.parentId, data?.id],
+        'parentId':  data?.parentId === '0' ? [data?.parentId]: [],
         'name': data?.name,
         'type': data?.type,
         'isSystem': data?.isSystem,

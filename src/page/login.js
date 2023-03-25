@@ -53,7 +53,7 @@ const Login = (props) => {
           <Form
             name="login"
             className="login-form"
-            initialValues={{ remember: true }}
+            initialValues={{ remember: true,tenancyId: '1' }}
             onFinish={onFinish}
           >
             <Form.Item name="tenancyId" rules={[{ required: true, message: '请选择需要登录的租户' }]}>
