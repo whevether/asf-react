@@ -53,13 +53,6 @@ export const toggleMenu = (collapsed = false) => (dispatch)=>{
     payload: collapsed
   });
 };
-//添加菜单
-export const addTagMenu = (data)=>(dispatch)=>{
-  dispatch({
-    type: types.GET_TAG_MENU,
-    payload: data
-  });
-};
 //上传文件
 export const upload = (data)=> async (dispatch,getState,api)=>{
   const res = await api.post('/asf/upload/index',data);

@@ -5,8 +5,7 @@ let initData = {
   tenancyList: null,
   languageList: [],
   collapsed: false,
-  loading: false,
-  tagMenu: []
+  loading: false
 };
 export default function common(state = initData, action) {
   switch (action.type) {
@@ -20,8 +19,6 @@ export default function common(state = initData, action) {
       return { ...state, tenancyList: action?.payload };
     case types.GET_TRANSLATE:
       return { ...state, languageList: action?.payload };
-    case types.GET_TAG_MENU:
-      return { ...state, tagMenu: action?.payload };
     default:
       return state;
   }

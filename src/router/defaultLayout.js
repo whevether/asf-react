@@ -7,18 +7,18 @@ import * as commonAction from 'store/actions/common';
 import { bindActionCreators } from 'redux';
 import { getCookie } from 'utils/storage';
 import { setToken } from 'utils/request';
-import { Tabbar, Navbar,BreadcrumbItems } from 'components/index';
+import { Tabbar, Navbar, BreadcrumbItems } from 'components/index';
 import { Tag } from 'antd';
-import { BellOutlined,BookOutlined } from '@ant-design/icons';
+import { BellOutlined, BookOutlined } from '@ant-design/icons';
 // 默认布局
 const DefaultLayout = (props) => {
   let localtion = useLocation();
   let navigate = useNavigate();
   // 根据窗口大小缩放导航菜单栏
-  const resize = ()=>{
-    if(window.innerWidth <= 768){
+  const resize = () => {
+    if (window.innerWidth <= 768) {
       props?.toggleMenu(true);
-    }else{
+    } else {
       props?.toggleMenu(false);
     }
   };
@@ -34,7 +34,7 @@ const DefaultLayout = (props) => {
     } else {
       navigate('/login');
     }
-    return ()=>{
+    return () => {
       window.removeEventListener('resize', resize);
     };
   }, []);
@@ -42,14 +42,34 @@ const DefaultLayout = (props) => {
   const grantedPermission = (menu) => {
     let isPermission = menu.some((item) => {
       if (localtion.pathname === item?.code) {
-       return true;
-     } else if (Array.isArray(item?.children) && item?.children.length > 0) {
-       return grantedPermission(item?.children);
-     }else{
-       return false;
-     }
-   });
-   return isPermission;
+        return true;
+      } else if (Array.isArray(item?.children) && item?.children.length > 0) {
+        return grantedPermission(item?.children);
+      } else {
+        return false;
+      }
+    });
+    return isPermission;
+  };
+  const onRenderNavTag = () => {
+    let tabmenu = localStorage.getItem('tabmenu');
+    if (tabmenu) {
+      let arr = JSON.parse(tabmenu);
+      if (Array.isArray(arr)) {
+        return (
+          <div className="tab-menu">{
+            arr.map((item, index) => (item.menuHidden === 0 && <Tag key={index} closable color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? '#1890ff' : 'default'} icon={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? <BellOutlined /> : <BookOutlined />} onClose={() => {
+              let data = arr.filter(f => f?.menuUrl !== item?.menuUrl);
+              localStorage.setItem('tabmenu', JSON.stringify(data));
+              navigate(data.length > 0 ? data[data.length - 1]?.menuUrl : '/');
+            }}>
+              <span style={{ padding: '5px 15px', cursor: 'pointer', lineHeight: '30px', fontSize: '14px' }} onClick={() => navigate(item?.menuUrl)}>{item?.title}</span>
+            </Tag>))
+          }
+          </div>
+        );
+      }
+    }
   };
   const renderProtectedRoute = () => {
     if (!grantedPermission(props?.common?.data?.permissionMenu)) {
@@ -59,30 +79,13 @@ const DefaultLayout = (props) => {
     } else {
       return (
         <div className="defaultLayout-wrapper" >
-          <Navbar userinfo={props?.common?.data} collapsed={props?.common?.collapsed} path={localtion.pathname + localtion.search} languages={props?.common.languageList} onAddTagMenu={(v) => {
-            if (!props?.common?.tagMenu.some(s => s?.menuUrl === v?.menuUrl) || props?.common?.tagMenu.length === 0) {
-              props?.common?.tagMenu?.push(v);
-              props?.addTagMenu(props?.common?.tagMenu);
-            } else {
-              v.menuHidden = 0;
-              props?.addTagMenu(props?.common?.tagMenu);
-            }
-          }} />
+          <Navbar userinfo={props?.common?.data} collapsed={props?.common?.collapsed} path={localtion.pathname + localtion.search} languages={props?.common.languageList} />
           <div className="page-content">
-            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={()=>props?.toggleMenu(!props?.common?.collapsed)} languages={props?.common.languageList} />
+            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={() => props?.toggleMenu(!props?.common?.collapsed)} languages={props?.common.languageList} />
             {
-              props?.common?.tagMenu?.length > 0 && <div className="tab-menu">{
-                props?.common?.tagMenu.map((item, index) => (item.menuHidden === 0 && <Tag key={index} closable color={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? '#1890ff' : 'default'} icon={item?.menuUrl == decodeURIComponent(localtion.pathname + localtion.search) ? <BellOutlined /> : <BookOutlined />} onClose={() => {
-                  item.menuHidden = 1;
-                  props?.addTagMenu(props?.common?.tagMenu);
-                  navigate(props?.common?.tagMenu.filter(f => f.menuHidden != 1).length != 0 ? props?.common?.tagMenu.filter(f=>f.menuHidden != 1)[props?.common?.tagMenu.filter(f => f.menuHidden != 1).length - 1]?.menuUrl : '/');
-                }}   >
-                  <span style={{ padding: '5px 15px', cursor: 'pointer', lineHeight: '30px', fontSize: '14px' }} onClick={() => navigate(item?.menuUrl)}>{item?.title}</span>
-                </Tag>))
-              }
-              </div>
+              onRenderNavTag()
             }
-            <BreadcrumbItems mapBreadcrumbItems={props?.common?.data?.breadcrumbItems}/>
+            <BreadcrumbItems mapBreadcrumbItems={props?.common?.data?.breadcrumbItems} />
             {/* 路由占位符  */}
             <Outlet />
           </div>

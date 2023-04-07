@@ -22,6 +22,20 @@ const NavBar = (props) => {
       return item.title;
     }
   };
+  const onAddMenu = (item) => {
+    let arr = [];
+    const tabmenu = localStorage.getItem("tabmenu");
+    if (tabmenu) {
+      arr = JSON.parse(tabmenu);
+      if (arr.find(s => s?.menuUrl === item?.menuUrl) === undefined) {
+        arr.push(item);
+        localStorage.setItem('tabmenu', JSON.stringify(arr));
+      }
+    } else {
+      arr.push(item);
+      localStorage.setItem('tabmenu', JSON.stringify(arr));
+    }
+  };
   // 获取菜单数据生成菜单
   const getNavMenuItems = (menusData) => {
     const menu = menusData;
@@ -51,7 +65,7 @@ const NavBar = (props) => {
       ) : (
         <Link
           to={itemPath}
-          onClick={() => props?.onAddTagMenu(item)}
+          onClick={() => onAddMenu(item)}
           replace
         >
           <span>{renderLanguages(item)}</span>
@@ -75,7 +89,7 @@ const NavBar = (props) => {
   return (
     <div className={`slidebar ${props?.collapsed ? 'close' : ''}`}>
       <div className="logo" >
-        <a href="https://zytravel.shop" target="_blank" style={{ minWidth: !props?.collapsed ? '200px' : '80px' }} />
+        <a href="https://zhixiaowang.shop" target="_blank" style={{ minWidth: !props?.collapsed ? '200px' : '80px' }} />
       </div>
       <Menu
         selectedKeys={selectKeys}
@@ -97,7 +111,6 @@ const NavBar = (props) => {
 };
 NavBar.propTypes = {
   collapsed: PropTypes.bool.isRequired,
-  onAddTagMenu: PropTypes.func,
   userinfo: PropTypes.object,
   languages: PropTypes.arrayOf(Object),
   path: PropTypes.string
