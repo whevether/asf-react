@@ -57,7 +57,8 @@ const BaseTable = (props) => {
             <Button htmlType="button" style={{ marginLeft: '10px' }} onClick={onCancel}>
               重置
             </Button>
-            {/* 权限按钮 */}
+          </Form.Item>
+          <Form.Item>
             <AuthControl userInfo={props?.userInfo} list={props?.list} type="button" />
           </Form.Item>
         </Form>
