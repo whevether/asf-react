@@ -471,8 +471,8 @@ export const apiSearchFrom = [{
 }, {
   title: 'api请求方法',
   fromType: 'select',
-  name: 'httpMethods',
-  mode: 'multiple',
+  name: 'httpMethod',
+  // mode: 'multiple',
   placeholder: '请选择api请求方法',
   selOption: [{
     name: 'get',

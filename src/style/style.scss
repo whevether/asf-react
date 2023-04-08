@@ -35,6 +35,17 @@ body {
     left: 0px;
   }
 }
+.remove-avatar{
+  position: relative;
+  .anticon-delete{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 22px;
+    z-index: 10;
+    cursor: pointer;
+  }
+}
 .bread{
   padding: 20px;
   background-color: #fff;

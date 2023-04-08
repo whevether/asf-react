@@ -7,8 +7,8 @@ import * as accountAction from 'store/actions/account';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Drawer, notification, Switch, Modal } from 'antd';
-import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Drawer, notification, Switch, Modal, Upload, Image, Tooltip } from 'antd';
+import { ExclamationCircleOutlined, InboxOutlined, PlusCircleOutlined,DeleteOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 const Index = (props) => {
@@ -18,6 +18,7 @@ const Index = (props) => {
   const [initFromValue, setInitFromValue] = useState(null);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
+  const [account, setAccount] = useState(null);
   let navigate = useNavigate();
   //获取账户列表
   useEffect(() => {
@@ -315,8 +316,8 @@ const Index = (props) => {
   }, {
     name: '修改账户头像',
     permission: 'account.modifyavatar',
-    click: () => {
-      notification.info({ message: '用户头像' });
+    click: (data) => {
+      setAccount(data);
     }
   }];
   const columns = [{
@@ -458,6 +459,41 @@ const Index = (props) => {
       >
         <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
+      <Modal title="修改头像" open={account} closable={true} onCancel={() => setAccount(null)} onOk={() => setAccount(null)}>
+        {
+          account?.avatar && <div className="remove-avatar"><Tooltip title="删除"><DeleteOutlined size={22} onClick={() => setAccount({...account,avatar: null})}/></Tooltip><Image width="100%" height="100%" src={account?.avatar}/></div>
+        }
+        {
+          !account?.avatar && <Upload.Dragger name="files" customRequest={(obj) => {
+            let formData = new FormData();
+            formData.append('file', obj.file);
+            formData.append('type', 'avatar');
+            props?.commonFunc?.upload(formData)
+              .then(res => {
+                if (res?.length <= 0) {
+                  notification.error({ message: '上传头像为空，请确认' });
+                  return;
+                }
+                props?.accountFunc.modifyAccountAvatar({ id: account?.id, avatar: res[0]?.url })
+                  .then(() => {
+                    props?.accountFunc?.fetchAccountList({ pageSize: pageSize });
+                    setAccount(null);
+                  });
+              });
+          }} beforeUpload={(file) => {
+            const isImg = file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/gif' || file.type === 'image/svg+xml';
+            if (!isImg) {
+              notification.error({ message: '只能上传图片格式' });
+            }
+            return isImg;
+          }} accept="image/*">
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text">单击或拖动文件到此区域进行上载</p>
+          </Upload.Dragger>
+        }
+      </Modal>
     </div>
   );
 };
