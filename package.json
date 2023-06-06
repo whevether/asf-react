@@ -93,7 +93,7 @@
     "postcss-pxtorem": "^6.0.0",
     "react-refresh": "^0.14.0",
     "regenerator-runtime": "^0.13.11",
-    "rimraf": "^4.4.1",
+    "rimraf": "^5.0.1",
     "sass": "^1.56.1",
     "sass-loader": "^13.2.2",
     "style-loader": "^3.3.2",
