@@ -10,8 +10,8 @@ import { bindActionCreators } from 'redux';
 import { Drawer, Switch, notification, Modal } from 'antd';
 import { CloudSyncOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+import { findParentIds } from 'utils/help';
 import { useNavigate } from 'react-router-dom';
-import {findParentIds} from 'utils/help';
 /* eslint-disable no-extra-semi */
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
@@ -40,14 +40,17 @@ const Index = (props) => {
     showTotal: (total) => `总条目: ${total} 条`,
     showSizeChanger: true
   };
+  const onAddTree = () => {
+    let list = props?.permission?.list;
+    if (!list.some(f => f.value === '0')) {
+      list.unshift({ label: '顶级权限', value: '0', children: [] });
+    }
+    return list;
+  };
   // 打开抽屉
-  const onOpenDarw = (type, data) => {
+  const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
-      let list = props?.permission?.list;
-      if (!list.some(f => f.value === '0')) {
-        list.unshift({ label: '顶级权限', value: '0', children: [] });
-      }
-      let from = permissionFrom(list);
+      let from = permissionFrom(onAddTree());
       //判断是否为超级管理员。如果为则显示选择租户
       if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
         from.unshift({
@@ -60,22 +63,6 @@ const Index = (props) => {
           options: {
             allowClear: true//是否显示清除框
           }
-        });
-      }
-      if (type === 1) {
-        let initSel = findParentIds(props?.permission?.list,data?.parentId).filter(f=>data?.parentId !== f && data?.id !== f).map(m=>m);
-        initSel.push(data?.parentId);
-        setInitFromValue({
-          'id': data?.id,
-          'tenancyId': data?.tenancyId,
-          'code': data?.code,
-          'parentId': initSel,
-          'name': data?.name,
-          'type': data?.type,
-          'isSystem': data?.isSystem,
-          'description': data?.description,
-          'enable': data?.enable,
-          'sort': data?.sort
         });
       }
       setDrawType(type);
@@ -144,7 +131,22 @@ const Index = (props) => {
     permission: 'permission.modify',
     isAction: true,
     click: (data) => {
-      onOpenDarw(1, data);
+      let initArr = findParentIds(onAddTree(), data?.parentId).filter(f => data?.parentId !== f && data?.key !== f).map(m => m);
+      initArr.push(data?.parentId);
+      initArr.push(data?.key);
+      setInitFromValue({
+        'id': data?.id,
+        'tenancyId': data?.tenancyId,
+        'code': data?.code,
+        'parentId': initArr,
+        'name': data?.name,
+        'type': data?.type,
+        'isSystem': data?.isSystem,
+        'description': data?.description,
+        'enable': data?.enable,
+        'sort': data?.sort
+      });
+      onOpenDarw(1);
     }
   }, {
     name: '权限详情',

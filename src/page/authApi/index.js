@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import { Drawer, Switch, notification, Modal, Badge, Tag, Descriptions } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+import { findParentIds } from 'utils/help';
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
@@ -36,7 +37,7 @@ const Index = (props) => {
     showSizeChanger: true
   };
   // 打开抽屉
-  const onOpenDarw = (type) => {
+  const onOpenDarw = (type, data) => {
     if (type === 0 || type === 1) {
       props?.permissionFunc?.fetchPermissionList({ pageSize: 9999 })
         .then(res => {
@@ -57,6 +58,24 @@ const Index = (props) => {
             });
           }
           setFromData(from);
+          if (data) {
+            let initArr = findParentIds(res, data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
+            initArr.push(data?.permission?.parentId);
+            initArr.push(data?.permission?.id);
+            setInitFromValue({
+              'id': data?.id,
+              'tenancyId': data?.tenancyId,
+              'name': data?.name,
+              'path': data?.path,
+              'httpMethods': data?.httpMethods.split(','),
+              'permissionId': initArr,
+              'status': data?.status,
+              'type': data?.type,
+              'isSystem': data?.isSystem,
+              'description': data?.description,
+              'isLogger': data?.isLogger
+            });
+          }
           setShowDarw(true);
         });
     }
@@ -104,20 +123,7 @@ const Index = (props) => {
     permission: 'api.modify',
     isAction: true,
     click: (data) => {
-      setInitFromValue({
-        'id': data?.id,
-        'tenancyId': data?.tenancyId,
-        'name': data?.name,
-        'path': data?.path,
-        'httpMethods': data?.httpMethods.split(','),
-        'permissionId': data?.permission?.parentId === '0' ? [data?.permission?.id] : [data?.permission?.parentId, data?.permission?.id],
-        'status': data?.status,
-        'type': data?.type,
-        'isSystem': data?.isSystem,
-        'description': data?.description,
-        'isLogger': data?.isLogger
-      });
-      onOpenDarw(1);
+      onOpenDarw(1, data);
     }
   }, {
     name: 'api详情',
