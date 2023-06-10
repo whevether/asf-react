@@ -25,3 +25,25 @@ export const findParentIds = (dataSource, nodeId) => {
   }
   return parentIds; // 返回所有父节点ID的数组
 };
+export const isImage = (url)=>{
+  let arr = ['.bmp','.jpg','.png','.tif','.gif','.pcx','.tga','.exif','.fpx','.svg','.psd','.cdr','.pcd','.dxf','.ufo','.eps','.ai','.raw','.WMF','.webp','.avif','.apng','.jpeg'];
+  let result = false;
+  for(let item  of arr){
+    if(url.endsWith(item)){
+      result = true;
+      break;
+    }
+  }
+  return result;
+};
+export const isVideo = (url)=>{
+  let arr = ['.mp4','.wav','.flv','.mkv','.mov','.ogg'];
+  let result = false;
+  for(let item  of arr){
+    if(url.endsWith(item)){
+      result = true;
+      break;
+    }
+  }
+  return result;
+};

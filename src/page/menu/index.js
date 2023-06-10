@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux';
 import {  Drawer, Switch, notification, Modal, Descriptions, Tag, Badge } from 'antd';
 import { createFromIconfontCN, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+import { findParentIds } from 'utils/help';
 const Index = (props) => {
   const IconFont = createFromIconfontCN({
     scriptUrl: [
@@ -42,7 +43,7 @@ const Index = (props) => {
     showSizeChanger: true
   };
   // 打开抽屉
-  const onOpenDarw = (type) => {
+  const onOpenDarw = (type,data) => {
     if (type === 0 || type === 1) {
       Promise.all([props?.commonFunc?.getTranslatetList(true), props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })])
         .then(res=>{
@@ -63,6 +64,28 @@ const Index = (props) => {
             });
           }
           setFromData(from);
+          if(data){
+            let initArr = findParentIds(res[1], data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
+            if(data?.permission?.parentId !== '0'){
+              initArr.push(data?.permission?.parentId);
+            }
+            initArr.push(data?.permission?.id);
+            setInitFromValue({
+              'id': data?.id,
+              'tenancyId': data?.tenancyId,
+              'title': data?.title,
+              'icon': data?.icon,
+              'subtitle': data?.subtitle,
+              'translate': data?.translate,
+              'permissionId': initArr,
+              'menuUrl': data?.menuUrl,
+              'externalLink': data?.externalLink,
+              'isSystem': data?.isSystem,
+              'description': data?.description,
+              'menuRedirect': data?.menuRedirect,
+              'menuHidden': data?.menuHidden
+            });
+          }
           setShowDarw(true);
         });
     }
@@ -83,7 +106,7 @@ const Index = (props) => {
           },500);
         });
     }else if (drawType === 1) {
-      data.permissionId = data?.permissionId.slice(-1)[0];
+      data.permissionId = data?.permissionId[data?.permissionId.length -1];
       data.id = initFromValue?.id;
       props?.menuFunc?.modifyMenu(data)
         .then(() => {
@@ -108,22 +131,7 @@ const Index = (props) => {
     permission: 'menu.modify',
     isAction: true,
     click: (data) => {
-      setInitFromValue({
-        'id': data?.id,
-        'tenancyId': data?.tenancyId,
-        'title': data?.title,
-        'icon': data?.icon,
-        'subtitle': data?.subtitle,
-        'translate': data?.translate,
-        'permissionId': data?.permission?.parentId === '0' ? [data?.permission?.id] : [data?.permission?.parentId, data?.permission?.id],
-        'menuUrl': data?.menuUrl,
-        'externalLink': data?.externalLink,
-        'isSystem': data?.isSystem,
-        'description': data?.description,
-        'menuRedirect': data?.menuRedirect,
-        'menuHidden': data?.menuHidden
-      });
-      onOpenDarw(1);
+      onOpenDarw(1,data);
     }
   }, {
     name: '菜单详情',

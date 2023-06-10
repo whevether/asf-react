@@ -94,7 +94,7 @@ const Index = (props) => {
           }, 500);
         });
     } else if (drawType === 1) {
-      data.parentId = data?.parentId.slice(-1)[0];
+      data.parentId = data?.parentId[data?.parentId?.length - 2];
       data.id = initFromValue.id;
       props?.permissionFunc?.modifyPermission(data)
         .then(() => {
@@ -131,9 +131,11 @@ const Index = (props) => {
     permission: 'permission.modify',
     isAction: true,
     click: (data) => {
-      let initArr = findParentIds(onAddTree(), data?.parentId).filter(f => data?.parentId !== f && data?.key !== f).map(m => m);
+      let initArr = findParentIds(onAddTree(),data?.parentId).filter(f => data?.parentId !== f && data?.key !== f).map(m => m);
       initArr.push(data?.parentId);
-      initArr.push(data?.key);
+      if(data?.parentId !== '0'){
+        initArr.push(data?.key);
+      }
       setInitFromValue({
         'id': data?.id,
         'tenancyId': data?.tenancyId,

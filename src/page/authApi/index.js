@@ -60,7 +60,9 @@ const Index = (props) => {
           setFromData(from);
           if (data) {
             let initArr = findParentIds(res, data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
-            initArr.push(data?.permission?.parentId);
+            if(data?.permission?.parentId !== '0'){
+              initArr.push(data?.permission?.parentId);
+            }
             initArr.push(data?.permission?.id);
             setInitFromValue({
               'id': data?.id,
@@ -97,7 +99,7 @@ const Index = (props) => {
           }, 500);
         });
     } else if (drawType === 1) {
-      data.permissionId = data?.permissionId.slice(-1)[0];
+      data.permissionId = data?.permissionId[data?.permissionId?.length -1];
       data.httpMethods = data?.httpMethods.join(',');
       data.id = initFromValue.id;
       props?.apiAuthFunc?.modifyApi(data)
