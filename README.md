@@ -7,9 +7,10 @@
 - 细分权限到按钮级别
 - 使用react + antd+ redux编写
 - 自定义webpack 体积更小。如果不加echarts tui tiny体积能控制在200 kb
-- 封装了一些常用组件，例如echarts, tabbar. 侧边栏菜单
+- 封装了一些常用组件，例如echarts, tabbar. 侧边栏菜单, 动态表单, 搜索表格
 - 全部使用react hooks 编写, 保证组件纯洁性
 - 升级 antd5, 全新写法
+- 互斥登陆
 - 测试账号 admin  admin  请不要胡乱编辑修改或删除权限
 ##### 示例图片
 ![示例图片](./gif/1.gif) 
