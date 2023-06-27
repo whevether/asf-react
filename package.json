@@ -17,7 +17,7 @@
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "rimraf ./dist",
     "prebuild": "npm run clean-dist && npm run lint",
-    "build": "node tools/build.js  && npm run open:dist",
+    "build": "node tools/build.js",
     "test": "jest",
     "test:watch": "jest --watchAll"
   },
