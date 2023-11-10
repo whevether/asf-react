@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Button, InputNumber, Table,Select, DatePicker } from 'antd';
 import AuthControl from './authControl';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 const BaseTable = (props) => {
   const { RangePicker } = DatePicker;
   const form = useRef(null);

@@ -51,7 +51,7 @@ export const request = (history, store) => {
       notification['error']({
         message: '请求错误',
         description:
-          '没有权限'
+          '请重新登录'
       });
       removeCookie(['token', 'refreshToken']);
       setToken('');

@@ -8,6 +8,7 @@ const path = require('path');
 // 设置node.js生产环境变量
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production'),
+  'process.env.BUILD_TYPE': JSON.stringify('webpack'),
   __DEV__: false
 };
 
@@ -24,13 +25,13 @@ const config = {
       style: path.resolve(__dirname, 'src/style/'),
       store: path.resolve(__dirname, 'src/store/'),
       utils: path.resolve(__dirname, 'src/utils/'),
-      assets: path.resolve(__dirname, 'src/assets/')
+      assets: path.resolve(__dirname, 'src/public/assets/')
     }
   },
   //开启调试
 
   entry: {
-    app: path.resolve(__dirname, 'src/index')
+    app: path.resolve(__dirname, 'src/index.jsx') // 定位客户端目标
   },
   target: 'web', // 目标是web服务
   mode: "production",
@@ -38,8 +39,8 @@ const config = {
     //输出目录
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'js/[name].js?v=[chunkhash]',
-    chunkFilename: 'js/[name].js?v=[chunkhash]',
+    filename: 'js/[name]-[hash].js?v=[chunkhash]',
+    chunkFilename: 'js/[name]-[hash].js?v=[chunkhash]',
   },
   optimization: {
     minimize: true,
@@ -108,18 +109,21 @@ const config = {
     allowCollectingMemory: true,
   },
   plugins: [
+    require('unplugin-auto-import/webpack')({
+      imports: ["react","react-router-dom"],
+    }),
     // 编译环境变量
     new webpack.DefinePlugin(GLOBALS),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional eea1d28b685828b67788
-      filename: "css/[name].css?v=[chunkhash]",
-      chunkFilename: "css/vendor.css?v=[chunkhash]"
+      filename: "css/[name]-[hash].css?v=[chunkhash]",
+      chunkFilename: "css/[id]-[hash].css?v=[chunkhash]"
     }),
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'src/assets'),
+          from: path.resolve(__dirname, 'src/public/assets'),
           to: path.resolve(__dirname, 'dist/assets'),
           // ignore: ['.*']
         }
@@ -159,9 +163,9 @@ const config = {
       },
       {
         test: /\.eot(\?v=\d+.\d+.\d+)?$/,
-        type: 'javascript/auto',
+        type: 'asset/resource',
         generator: {
-          filename: 'assets/[name].[ext]'
+          filename: '[name].[ext]'
         }
         // use: [
         //   {
@@ -174,7 +178,7 @@ const config = {
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        type: 'javascript/auto',
+        type: 'asset/resource',
         generator: {
           filename: '[name].[ext]'
         }
@@ -191,7 +195,7 @@ const config = {
       },
       {
         test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/,
-        type: 'javascript/auto',
+        type: 'asset/resource',
         generator: {
           filename: '[name].[ext]'
         }
@@ -250,20 +254,20 @@ const config = {
           {
             loader: 'css-loader',
             options: {
-              // minimize: true,
-              sourceMap: false
+              sourceMap: false,
+              url: false
               // importLoaders: 2,
-              // modules: true,
-              // // namedExport: true, // this is  invalid Options ,I find it
-              // camelCase: true,
-              // localIdentName: '[path][name]__[local]--[hash:base64:5]',
+              // modules: {
+                // auto: (resourcePath) => resourcePath.endsWith('.scss'),
+                // localIdentName: '[path][name]__[local]--[hash:base64:5]'
+              // },
             }
           }, {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
                 plugins: [
-                  ['autoprefixer', {/*options*/ }],
+                  ['autoprefixer',{/*options*/}],
                   require('postcss-pxtorem')({
                     rootValue: 16,
                     unitPrecision: 5,
@@ -283,20 +287,18 @@ const config = {
               sassOptions: {
                 webpackImporter: false,
                 indentWidth: 4,
-                includePaths: [path.resolve(__dirname, 'src', 'scss'), 'node_modules'],
+                includePaths: [path.resolve(__dirname, 'src', 'scss'),'node_modules'],
               },
             }
+            // loader: 'less-loader',
+            // options: {
+            //   lessOptions: {
+            //     paths: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
+            //     javascriptEnabled: true,
+            //     sourceMap: false
+            //   }
+            // }
           }
-          // {
-          //   loader: 'less-loader',
-          //   options: {
-          //     lessOptions: {
-          //       paths: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
-          //       javascriptEnabled: true,
-          //       sourceMap: false
-          //     }
-          //   }
-          // }
         ]
       }
     ]

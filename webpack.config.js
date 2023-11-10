@@ -15,7 +15,7 @@ const config = {
       style: path.resolve(__dirname, 'src/style/'),
       store: path.resolve(__dirname, 'src/store/'),
       utils: path.resolve(__dirname, 'src/utils/'),
-      assets: path.resolve(__dirname, 'src/assets/')
+      assets: path.resolve(__dirname, 'src/public/assets/')
     }
   },
 
@@ -23,14 +23,15 @@ const config = {
   mode: "development",
   entry: {
     app: [
-      path.resolve(__dirname, 'src/index.js') // 定位客户端目标
+      path.resolve(__dirname, 'src/index.jsx') // 定位客户端目标
     ]
   },
   target: 'web', // 目标是web 服务器
   output: {
     path: path.resolve(__dirname, 'dist'), // 输出编译文件目录
     publicPath: '/', //根目录
-    filename: 'js/[name].js'
+    filename: 'js/[name]-[hash].js?v=[chunkhash]',
+    chunkFilename: 'js/[name]-[hash].js?v=[chunkhash]',
   },
   devServer: {
     client: { overlay: false },
@@ -62,14 +63,18 @@ const config = {
     allowCollectingMemory: true,
   },
   plugins: [
+    require('unplugin-auto-import/webpack')({
+      imports: ["react","react-router-dom"],
+    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
+      'process.env.BUILD_TYPE': JSON.stringify('webpack'),
       __DEV__: true
     }),
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'src/assets'),
+          from: path.resolve(__dirname, 'src/public/assets'),
           to: path.resolve(__dirname, 'dist/assets'),
           // ignore: ['.*']
         }
@@ -90,7 +95,7 @@ const config = {
       },
       inject: true
     })
-  ],
+  ].filter(Boolean),
   module: {
     //  编译模式
     rules: [
@@ -120,7 +125,7 @@ const config = {
       },
       {
         test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/,
-        type: 'javascript/auto',
+        type: 'asset/resource',
         generator: {
           filename: '[name].[ext]'
         }
@@ -178,14 +183,15 @@ const config = {
               // // namedExport: true, // this is  invalid Options ,I find it
               // camelCase: true,
               // localIdentName: '[path][name]__[local]--[hash:base64:5]',
-              sourceMap: true
+              sourceMap: true,
+              url: false
             }
           }, {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
                 plugins: [
-                  ['autoprefixer', {/*options*/ }],
+                  ['autoprefixer',{/*options*/}],
                   require('postcss-pxtorem')({
                     rootValue: 16,
                     unitPrecision: 5,
@@ -208,17 +214,15 @@ const config = {
                 includePaths: [path.resolve(__dirname, 'src', 'scss'),'node_modules'],
               },
             }
+            // loader: 'less-loader',
+            // options: {
+            //   lessOptions: {
+            //     paths: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
+            //     javascriptEnabled: true,
+            //     sourceMap: false
+            //   }
+            // }
           }
-          //  {
-          //   loader: 'less-loader',
-          //   options: {
-          //     lessOptions: {
-          //       paths: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
-          //       javascriptEnabled: true,
-          //       sourceMap: false
-          //     }
-          //   }
-          // }
         ]
       }
     ]

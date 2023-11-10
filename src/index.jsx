@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
 import { createBrowserHistory } from 'history';
 import { HistoryRouter as Router } from "redux-first-history/rr6";
-import configureStore from 'store/configureStore';
+import {configureStore} from 'store/configureStore';
 const history = createBrowserHistory();
 const { store, h } = configureStore(history); //第二个参数是初始状态
 import Routes from 'router/routes';

@@ -887,12 +887,18 @@ export const dictionaryFrom = () => [{
   placeholder: '请输入字典值',
   rules: [{ required: true, message: '字典值不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的字典值或最多输入50个字符的字典值' }]
 },{
+  title: '字典编码',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'code',
+  placeholder: '请输入字典编码',
+  rules: [{ required: true, message: '字典编码不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的字典编码或最多输入50个字符的字典编码' }]
+},{
   title: '字典额外配置',
   fromType: 'input',
   inputType: 'text',
-  name: 'languages',
-  placeholder: '请输入字典额外配置',
-  rules: [{ required: true, message: '字典额外配置不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的字典额外配置或最多输入50个字符的字典额外配置' }]
+  name: 'option',
+  placeholder: '请输入字典额外配置'
 }];
 //部门表单
 export const departmentFrom = (options,roleOption) => {
