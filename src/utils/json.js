@@ -973,3 +973,53 @@ export const audioSearchFrom = [{
     allowClear: true//是否显示清除框
   }
 }];
+//国家表单
+export const countryFrom = () => [{
+  title: '国家名称',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'name',
+  placeholder: '请输入国家名称',
+  rules: [{ required: true, message: '国家名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的国家名称或最多输入50个字符的国家名称' }]
+},{
+  title: '国家code',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'languageCode',
+  placeholder: '请输入国家code',
+  rules: [{ required: true, message: '国家code不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的国家code或最多输入50个字符的国家code' }]
+},{
+  title: '国家币种代码',
+  fromType: 'input',
+  inputType: 'text',
+  name: 'currencyType',
+  placeholder: '请输入国家币种代码',
+  rules: [{ required: true, message: '国家币种代码不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的国家币种代码或最多输入50个字符的国家币种代码' }]
+},{
+  title: '目标国与RMB之间汇率',
+  fromType: 'inputnumber',
+  name: 'ratio',
+  placeholder: '请输入目标国与RMB之间汇率',
+  rules: [{ required: true, message: '目标国与RMB之间汇率不能为空' }]
+},{
+  title: '目标国提现手续费利率',
+  fromType: 'inputnumber',
+  name: 'withdrawalRatio',
+  placeholder: '请输入目标提现手续费利率',
+  rules: [{ required: true, message: '目标提现手续费利率不能为空' }]
+},{
+  title: '国家状态',
+  fromType: 'select',
+  name: 'status',
+  placeholder: '请选择国家状态',
+  selOption: [{
+    name: '禁用',
+    id: 0
+  }, {
+    name: '启用',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
+}];

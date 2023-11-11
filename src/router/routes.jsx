@@ -26,6 +26,7 @@ const DepartmentDetailsPage = LoadableComponent(() => import(/* webpackPrefetch:
 const PostPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/post/index'));
 const TranslatePage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/translate/index'));
 const DictionaryPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/dictionary/index'));
+const CountryPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/country/index'));
 const UserCenter = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/account/details'));
 const routes = [{
   path: "/",
@@ -78,11 +79,14 @@ const routes = [{
       path: 'control/dictionary',
       element: <DictionaryPage />
     },{
-      path: 'components',
-      element: <EditorPage />
-    },{
       path: 'control/audio/getlog',
       element: <LogsPage />
+    },{
+      path: 'control/country',
+      element: <CountryPage />
+    },{
+      path: 'components',
+      element: <EditorPage />
     },{
       path: 'user/center',
       element: <UserCenter />

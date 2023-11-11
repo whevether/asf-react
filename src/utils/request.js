@@ -49,7 +49,7 @@ export const request = (history, store) => {
     const { response } = err;
     if ([401, 403].indexOf(response?.status) > -1) {
       notification['error']({
-        message: '请求错误',
+        message: '系统提示',
         description:
           '请重新登录'
       });

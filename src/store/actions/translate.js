@@ -8,24 +8,24 @@ export const fetchTranslateList = (params) => async (dispatch,getState,api)=> {
     payload: res
   });
 };
-// 添加岗位
+// 添加多语言
 export const createTranslate = (params) => async(dispatch,getState,api) => {
   const res = await api.post('/asf/translate/create',params);
   return res?.result;
 };
-//修改岗位
+//修改多语言
 export const modifyTranslate = (params) => async(dispatch,getState,api) => {
   const res = await api.put('/asf/translate/modify',params);
   return res?.result;
 };
-// 岗位详情
+// 多语言详情
 export const detailsTranslate = (params) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/translate/details',{
     params: params
   });
   return res?.result;
 };
-// 删除岗位
+// 删除多语言
 export const deleteTranslate = (id) => async(dispatch,getState,api) => {
   const res = await api.post(`/asf/translate/delete/${id}`);
   return res?.result;

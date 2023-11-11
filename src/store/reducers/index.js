@@ -12,6 +12,7 @@ import department from './department';
 import translate from './translate';
 import dictionary from './dictionary';
 import post from './post';
+import country from './country';
 const rootReducer = (history) => combineReducers({
     common: common,
     account: account,
@@ -26,6 +27,7 @@ const rootReducer = (history) => combineReducers({
     editor: editor,
     menu: menu,
     permission: permission,
+    country: country,
     router: history
 });
 export default rootReducer;

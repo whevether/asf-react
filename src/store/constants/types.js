@@ -34,3 +34,5 @@ export const GET_TRANSLATE_LIST = 'GET_TRANSLATE_LIST';
 export const GET_DICTIONARY_LIST = 'GET_DICTIONARY_LIST';
 // 获取 多语言
 export const GET_TRANSLATE = 'GET_TRANSLATE';
+// 获取国家列表
+export const GET_COUNTRY_LIST = 'GET_COUNTRY_LIST';
