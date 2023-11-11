@@ -27,10 +27,18 @@ export const getPermissionList = ()=> async (dispatch,getState,api)=>{
   const res = await api.get('/asf/permission/getLists');
   return res?.result;
 };
+// 获取国家列表
+export const getCountryList = ()=> async (dispatch,getState,api)=>{
+  const res = await api.get('/asf/country/getLists');
+  dispatch({
+    type: types.FETCH_COUNTRY_LIST_DATA,
+    payload: res?.result
+  });
+};
 // 获取多语言列表
-export const getTranslatetList = (isDistinct = false) => async(dispatch,getState,api) => {
+export const getTranslatetList = (isAdmin = true) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/translate/getLists',{
-    params: {isDistinct:isDistinct}
+    params: {isAdmin:isAdmin}
   });
   dispatch({
     type: types.GET_TRANSLATE,

@@ -9,15 +9,18 @@ import { getCookie, setCookie } from 'utils/storage';
 //总布局
 const RootLayout = (props) => {
   useEffect(() => {
+    if(props?.common?.countryList?.length === 0){
+      props?.getCountryList();
+    }
     if (props?.common?.languageList.length === 0) {
       props?.getTranslatetList();
     }
     //当没有租户列表就获取租户列表
     if (!props?.common?.tenancyList) {
       props?.fetchTenancyList();
-      if (!getCookie('languages')) {
-        setCookie('languages', '中文');
-      }
+    }
+    if (!getCookie('languages')) {
+      setCookie('languages', '中文');
     }
 
   }, []);
@@ -35,7 +38,8 @@ const RootLayout = (props) => {
 RootLayout.propTypes = {
   fetchTenancyList: PropTypes.func,
   common: PropTypes.object,
-  getTranslatetList: PropTypes.func
+  getTranslatetList: PropTypes.func,
+  getCountryList: PropTypes.func
 };
 export default connect(state => ({
   common: state?.common

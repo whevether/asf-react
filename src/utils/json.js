@@ -843,13 +843,6 @@ export const translateFrom = () => [{
   placeholder: '请输入多语言名称',
   rules: [{ required: true, message: '多语言名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的多语言名称或最多输入50个字符的多语言名称' }]
 },{
-  title: '多语言语种',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'languages',
-  placeholder: '请输入多语言语种',
-  rules: [{ required: true, message: '多语言语种不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的多语言语种或最多输入50个字符的多语言语种' }]
-},{
   title: '多语言键',
   fromType: 'input',
   inputType: 'text',
@@ -863,6 +856,21 @@ export const translateFrom = () => [{
   name: 'value',
   placeholder: '请输入多语言值',
   rules: [{ required: true, message: '多语言值不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的多语言值或最多输入50个字符的多语言值' }]
+},{
+  title: '是否管理后台',
+  fromType: 'select',
+  name: 'isAdmin',
+  placeholder: '请选择是否管理后台',
+  selOption: [{
+    name: '否',
+    id: 0
+  }, {
+    name: '是',
+    id: 1
+  }],
+  options: {
+    allowClear: true//是否显示清除框
+  }
 }];
 //字典表单
 export const dictionaryFrom = () => [{

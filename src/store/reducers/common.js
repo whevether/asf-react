@@ -4,6 +4,7 @@ let initData = {
   data: null,
   tenancyList: null,
   languageList: [],
+  countryList: [],
   collapsed: false,
   loading: false
 };
@@ -19,6 +20,8 @@ export default function common(state = initData, action) {
       return { ...state, tenancyList: action?.payload };
     case types.GET_TRANSLATE:
       return { ...state, languageList: action?.payload };
+    case types.FETCH_COUNTRY_LIST_DATA:
+      return { ...state, countryList: action?.payload };
     default:
       return state;
   }

@@ -3,6 +3,7 @@ import { head } from 'utils/head';
 import { inputFrom, translateFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as translateAction from 'store/actions/translate';
+import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Drawer, Modal, notification } from 'antd';
@@ -52,12 +53,27 @@ const Index = (props) => {
           }
         });
       }
+      from.unshift({
+        title: '国家',
+        fromType: 'select',
+        name: 'countryId',
+        selOption: props?.countryList,
+        placeholder: '请选择国家',
+        rules: [{ required: true, message: '国家不能为空' }],
+        options: {
+          allowClear: true//是否显示清除框
+        }
+      });
       setFromData(from);
       setShowDarw(true);
     }
   };
   //提交表单
   const onFinish = (data) => {
+    let country = props?.countryList?.find(f=>f?.id === data?.countryId);
+    if(country){
+      data = {...data,country:country?.name,countryCode: country?.languageCode};
+    }
     if (drawType === 0) {
       props?.translateFunc?.createTranslate(data)
         .then(() => {
@@ -94,14 +110,7 @@ const Index = (props) => {
     name: '修改多语言',
     permission: 'translate.modify',
     click: (data) => {
-      setInitFromValue({
-        id: data?.id,
-        name: data?.name,
-        key: data?.key,
-        languages: data?.languages,
-        tenancyId: data?.tenancyId,
-        value: data?.value
-      });
+      setInitFromValue(data);
       onOpenDarw(1);
     }
   }, {
@@ -197,14 +206,17 @@ Index.propTypes = {
   translateFunc: PropTypes.object,
   userInfo: PropTypes.object,
   translate: PropTypes.object,
-  tenancyList: PropTypes.arrayOf(Object)
+  tenancyList: PropTypes.arrayOf(Object),
+  countryList: PropTypes.arrayOf(Object)
 };
 export default connect(state => ({
   userInfo: state?.common?.data,
   translate: state?.translate,
-  tenancyList: state?.common?.tenancyList
+  tenancyList: state?.common?.tenancyList,
+  countryList: state?.common?.countryList
 }), dispatch => {
   return {
-    translateFunc: bindActionCreators(translateAction, dispatch)
+    translateFunc: bindActionCreators(translateAction, dispatch),
+    commonFunc: bindActionCreators(commonAction, dispatch)
   };
 })(Index);

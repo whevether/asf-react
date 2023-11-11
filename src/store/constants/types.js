@@ -1,5 +1,7 @@
 //获取租户列表集合
 export const FETCH_TENANCY_LIST_DATA = 'FETCH_TENANCY_LIST_DATA';
+//获取国家列表集合
+export const FETCH_COUNTRY_LIST_DATA = 'FETCH_COUNTRY_LIST_DATA';
 // 用户账户数据
 export const FETCH_USER_DATA = 'FETCH_USER_DATA';
 // 加载数据中
