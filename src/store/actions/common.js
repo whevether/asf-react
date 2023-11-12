@@ -40,10 +40,6 @@ export const getTranslatetList = (isAdmin = true) => async(dispatch,getState,api
   const res = await api.get('/asf/translate/getLists',{
     params: {isAdmin:isAdmin}
   });
-  dispatch({
-    type: types.GET_TRANSLATE,
-    payload: res?.result
-  });
   return res?.result;
 };
 // 获取用户信息

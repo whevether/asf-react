@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Menu } from 'antd';
-import { getCookie } from 'utils/storage';
+import { useTranslation } from 'react-i18next';
 import {
   createFromIconfontCN
 } from '@ant-design/icons';
 const NavBar = (props) => {
+  const { t } = useTranslation();
   const IconFont = createFromIconfontCN({
     scriptUrl: [
       'https://at.alicdn.com/t/font_2384333_rsw4qhrwjur.js'
@@ -16,8 +17,8 @@ const NavBar = (props) => {
   const [openKeys, setOpenKeys] = useState(['/' + o[1], '/' + o[o.length - 2]]);
   const [selectKeys, setSelectKeys] = useState([decodeURIComponent(props?.path)]);
   const renderLanguages = (item) => {
-    if (props?.languages.length > 0 && item?.translate) {
-      return props?.languages?.find(f => f?.key === item?.translate && f.languages === getCookie('languages'))?.value;
+    if (item?.translate) {
+      return t(item?.translate);
     } else {
       return item.title;
     }
@@ -112,7 +113,6 @@ const NavBar = (props) => {
 NavBar.propTypes = {
   collapsed: PropTypes.bool.isRequired,
   userinfo: PropTypes.object,
-  languages: PropTypes.arrayOf(Object),
   path: PropTypes.string
 };
 export default NavBar;

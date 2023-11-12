@@ -79,9 +79,9 @@ const DefaultLayout = (props) => {
     } else {
       return (
         <div className="defaultLayout-wrapper" >
-          <Navbar userinfo={props?.common?.data} collapsed={props?.common?.collapsed} path={localtion.pathname + localtion.search} languages={props?.common.languageList} />
+          <Navbar userinfo={props?.common?.data} collapsed={props?.common?.collapsed} path={localtion.pathname + localtion.search} />
           <div className="page-content">
-            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={() => props?.toggleMenu(!props?.common?.collapsed)} languages={props?.common.languageList} />
+            <Tabbar collapsed={props?.common?.collapsed} userinfo={props?.common?.data} toggleMenu={() => props?.toggleMenu(!props?.common?.collapsed)} languages={props?.common.countryList} />
             {
               onRenderNavTag()
             }

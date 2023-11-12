@@ -9,8 +9,10 @@ import { bindActionCreators } from 'redux';
 import { setCookie, getCookie } from 'utils/storage';
 import { head } from 'utils/head';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 const Login = (props) => {
   const [zindex, setZindex] = useState({});
+  const { t } = useTranslation();
   let navigate = useNavigate();
   const [type, setType] = useState('account');
   //跳转路由
@@ -112,7 +114,7 @@ const Login = (props) => {
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" className="login-form-button">
-                登录
+                {t('common.login')}
               </Button>
             </Form.Item>
           </Form>

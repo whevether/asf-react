@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Avatar, Dropdown, message, Tooltip } from 'antd';
-import { removeCookie, getCookie, setCookie } from 'utils/storage';
+import { removeCookie } from 'utils/storage';
 import { useNavigate } from 'react-router-dom';
 import { MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined, GlobalOutlined, FontColorsOutlined, UserOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import screenfull from 'screenfull';
 const Tabbar = (props) => {
   let navigate = useNavigate();
+  const { i18n } = useTranslation();
   const dispatch = useDispatch();
   const [full, setFull] = useState(false);
+  const [languageName,setLanguageName] = useState('中国');
   //跳转路由
   const handleGoNav = (e, params = {}) => {
     navigate(e, params);
@@ -32,6 +35,10 @@ const Tabbar = (props) => {
       setFull(!full);
     });
   };
+  const onChangeLanguage = (lng,name) => {
+    i18n.changeLanguage(lng.toLocaleLowerCase());
+    setLanguageName(name);
+  };
   const menu = [{
     key: '1',
     label: (<span onClick={() => handleGoNav(`/user/center?id=${props?.userinfo?.id}`)}>个人中心</span>),
@@ -43,8 +50,8 @@ const Tabbar = (props) => {
   }];
   const menu1 = props?.languages?.map((item, index) => {
     item.key = index;
-    item.label = (<span onClick={() => { setCookie('languages', item?.languages); }}>{item?.languages}</span>);
-    item.icon = <GlobalOutlined onClick={() => { setCookie('languages', item?.languages); }} />;
+    item.label = (<span onClick={()=>onChangeLanguage(item?.languageCode,item?.name)}>{item?.name}</span>);
+    item.icon = <GlobalOutlined onClick={()=>onChangeLanguage(item?.languageCode,item?.name)} />;
     return item;
   });
   return (
@@ -55,9 +62,9 @@ const Tabbar = (props) => {
       <div className="tabbar-menu">
         {
           props?.languages.length > 0 && <Dropdown menu={{ items: menu1 }}>
-            <span className="tabbar-dropdown">
+            <span className="tabbar-dropdown"  style={{marginRight: '10px'}}>
               <FontColorsOutlined />
-              {getCookie('languages') ?? '中文'}
+              {languageName}
             </span>
           </Dropdown>
         }
@@ -78,7 +85,7 @@ const Tabbar = (props) => {
 };
 Tabbar.propTypes = {
   userinfo: PropTypes.object,
-  languages: PropTypes.arrayOf(Object),
+  languages: PropTypes.objectOf(Array),
   toggleMenu: PropTypes.func.isRequired,
   collapsed: PropTypes.bool.isRequired
 };
