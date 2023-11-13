@@ -49,10 +49,11 @@ const Tabbar = (props) => {
     icon: <LogoutOutlined onClick={() => onLogout()} />
   }];
   const menu1 = props?.languages?.map((item, index) => {
-    item.key = index;
-    item.label = (<span onClick={()=>onChangeLanguage(item?.languageCode,item?.name)}>{item?.name}</span>);
-    item.icon = <GlobalOutlined onClick={()=>onChangeLanguage(item?.languageCode,item?.name)} />;
-    return item;
+    return {
+      label:  (<span onClick={()=>onChangeLanguage(item?.languageCode,item?.name)}>{item?.name}</span>),
+      key: index,
+      icon: (<GlobalOutlined onClick={()=>onChangeLanguage(item?.languageCode,item?.name)} />)
+    };
   });
   return (
     <div className="tabbar">
