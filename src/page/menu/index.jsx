@@ -5,7 +5,7 @@ import { menuSearchFrom, menuFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as menuAction from 'store/actions/menu';
 import * as permissionAction from 'store/actions/permission';
-import * as commonAction from 'store/actions/common';
+import * as translateAction from 'store/actions/translate';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {  Drawer, Switch, notification, Modal, Descriptions, Tag, Badge } from 'antd';
@@ -45,10 +45,12 @@ const Index = (props) => {
   // 打开抽屉
   const onOpenDarw = (type,data) => {
     if (type === 0 || type === 1) {
-      Promise.all([props?.commonFunc?.getTranslatetList(true), props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })])
+      Promise.all([props?.translateFunc?.fetchTranslateList({page:1,pageSize: 500}), props?.permissionFunc?.fetchPermissionList({ pageNo: 0, pageSize: 200 })])
         .then(res=>{
           setDrawType(type);
-          let from = menuFrom(res[1],res[0]);
+          let from = menuFrom(res[1],res[0]?.filter(f=>f?.countryCode?.toLocaleLowerCase()==='zh')?.map(m=>{
+            return {id:m?.key,name:m?.value};
+          }));
           //判断是否为超级管理员。如果为则显示选择租户
           if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
             from.unshift({
@@ -327,7 +329,7 @@ const Index = (props) => {
 Index.propTypes = {
   menuFunc: PropTypes.object,
   permissionFunc: PropTypes.object,
-  commonFunc: PropTypes.object,
+  translateFunc: PropTypes.object,
   userInfo: PropTypes.object,
   menu: PropTypes.object,
   tenancyList: PropTypes.arrayOf(Object)
@@ -339,7 +341,7 @@ export default connect(state => ({
 }), dispatch => {
   return {
     menuFunc: bindActionCreators(menuAction, dispatch),
-    commonFunc: bindActionCreators(commonAction, dispatch),
+    translateFunc: bindActionCreators(translateAction, dispatch),
     permissionFunc: bindActionCreators(permissionAction, dispatch)
   };
 })(Index);

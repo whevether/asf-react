@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import screenfull from 'screenfull';
 const Tabbar = (props) => {
   let navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const { i18n,t } = useTranslation();
   const dispatch = useDispatch();
   const [full, setFull] = useState(false);
   const [languageName,setLanguageName] = useState('中国');
@@ -41,11 +41,11 @@ const Tabbar = (props) => {
   };
   const menu = [{
     key: '1',
-    label: (<span onClick={() => handleGoNav(`/user/center?id=${props?.userinfo?.id}`)}>个人中心</span>),
+    label: (<span onClick={() => handleGoNav(`/user/center?id=${props?.userinfo?.id}`)}>{t('common.user.center')}</span>),
     icon: <UserOutlined onClick={() => handleGoNav(`/user/center?id=${props?.userinfo?.id}`)} />
   }, {
     key: '0',
-    label: (<span onClick={() => onLogout()}>登出</span>),
+    label: (<span onClick={() => onLogout()}>{t('common.logout')}</span>),
     icon: <LogoutOutlined onClick={() => onLogout()} />
   }];
   const menu1 = props?.languages?.map((item, index) => {

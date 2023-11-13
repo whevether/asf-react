@@ -83,7 +83,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.translateFunc?.fetchTranslateList({  pageSize: pageSize });
+            props?.translateFunc?.fetchTranslateList({ pageNo: 1, pageSize: pageSize });
           }, 500);
         });
     } else if (drawType === 1) {
@@ -96,7 +96,7 @@ const Index = (props) => {
           });
           setShowDarw(false);
           setTimeout(() => {
-            props?.translateFunc?.fetchTranslateList({pageSize: pageSize });
+            props?.translateFunc?.fetchTranslateList({pageNo: 1,pageSize: pageSize });
           }, 500);
         });
     }
@@ -155,8 +155,13 @@ const Index = (props) => {
     }
   }, {
     title: '语种',
-    dataIndex: 'languages',
-    key: 'languages',
+    dataIndex: 'country',
+    key: 'country',
+    width: 100
+  },{
+    title: '语种代码',
+    dataIndex: 'countryCode',
+    key: 'countryCode',
     width: 100
   },{
     title: '多语言名',

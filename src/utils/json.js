@@ -314,108 +314,107 @@ export const menuSearchFrom = [{
   placeholder: '请输入菜单地址',
   rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
 }];
-export const menuFrom = (options,selOption) => [{
-  title: '菜单所属权限',
-  fromType: 'cascader',
-  selOption: options,
-  name: 'permissionId',
-  placeholder: '请选择菜单所属权限',
-  rules: [{ required: true, message: '菜单所属权限不能为空' }],
-  options: {
-    allowClear: true//是否显示清除框
-  }
-}, {
-  title: '菜单标题',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'title',
-  placeholder: '请输入菜单标题',
-  rules: [{ required: true, message: '菜单标题不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的菜单名或最多输入50个字符的菜单标题' }]
-}, {
-  title: '菜单地址',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'menuUrl',
-  placeholder: '请输入菜单地址',
-  rules: [{ required: true, message: '菜单地址不能为空' }, { type: 'string', min: 1, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
-}, {
-  title: '菜单图标',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'icon',
-  placeholder: '请输入菜单图标',
-  rules: [{ required: true, message: '菜单图标不能为空' }, { type: 'string', min: 1, max: 50, message: '最少输入1个字符的菜单图标或最多输入50个字符的菜单图标' }]
-}, {
-  title: '菜单多语言',
-  fromType: 'select',
-  name: 'translate',
-  placeholder: '请选择多语言',
-  selOption: selOption?.map(item=>{
-    item.id = item?.key;
-    return item;
-  }),
-  options: {
-    allowClear: true//是否显示清除框
-  }
-}, {
-  title: '菜单副标题',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'subtitle',
-  placeholder: '请输入菜单副标题',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单副标题或最多输入50个字符的菜单副标题' }]
-}, {
-  title: '菜单外部链接',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'externalLink',
-  placeholder: '请输入菜单外部链接',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单外部链接或最多输入50个字符的菜单外部链接' }]
-}, {
-  title: '菜单重定向地址',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'menuRedirect',
-  placeholder: '请输入菜单重定向地址',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单重定向地址或最多输入50个字符的菜单重定向地址' }]
-}, {
-  title: '菜单说明',
-  fromType: 'input',
-  inputType: 'text',
-  name: 'description',
-  placeholder: '请输入菜单说明',
-  rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单说明或最多输入50个字符的菜单说明' }]
-}, {
-  title: '是否隐藏菜单',
-  fromType: 'select',
-  name: 'menuHidden',
-  placeholder: '请选择是否隐藏菜单',
-  selOption: [{
-    name: '否',
-    id: 0
+export const menuFrom = (options,selOption) => {
+  return ([{
+    title: '菜单所属权限',
+    fromType: 'cascader',
+    selOption: options,
+    name: 'permissionId',
+    placeholder: '请选择菜单所属权限',
+    rules: [{ required: true, message: '菜单所属权限不能为空' }],
+    options: {
+      allowClear: true//是否显示清除框
+    }
   }, {
-    name: '是',
-    id: 1
-  }],
-  options: {
-    allowClear: true//是否显示清除框
-  }
-}, {
-  title: '是否为系统菜单',
-  fromType: 'select',
-  name: 'isSystem',
-  placeholder: '请选择是否为系统菜单',
-  selOption: [{
-    name: '否',
-    id: 0
+    title: '菜单标题',
+    fromType: 'input',
+    inputType: 'text',
+    name: 'title',
+    placeholder: '请输入菜单标题',
+    rules: [{ required: true, message: '菜单标题不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的菜单名或最多输入50个字符的菜单标题' }]
   }, {
-    name: '是',
-    id: 1
-  }],
-  options: {
-    allowClear: true//是否显示清除框
-  }
-}];
+    title: '菜单地址',
+    fromType: 'input',
+    inputType: 'text',
+    name: 'menuUrl',
+    placeholder: '请输入菜单地址',
+    rules: [{ required: true, message: '菜单地址不能为空' }, { type: 'string', min: 1, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }]
+  }, {
+    title: '菜单图标',
+    fromType: 'input',
+    inputType: 'text',
+    name: 'icon',
+    placeholder: '请输入菜单图标',
+    rules: [{ required: true, message: '菜单图标不能为空' }, { type: 'string', min: 1, max: 50, message: '最少输入1个字符的菜单图标或最多输入50个字符的菜单图标' }]
+  }, {
+    title: '菜单多语言',
+    fromType: 'select',
+    name: 'translate',
+    placeholder: '请选择多语言',
+    selOption: selOption,
+    options: {
+      allowClear: true//是否显示清除框
+    }
+  }, {
+    title: '菜单副标题',
+    fromType: 'input',
+    inputType: 'text',
+    name: 'subtitle',
+    placeholder: '请输入菜单副标题',
+    rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单副标题或最多输入50个字符的菜单副标题' }]
+  }, {
+    title: '菜单外部链接',
+    fromType: 'input',
+    inputType: 'text',
+    name: 'externalLink',
+    placeholder: '请输入菜单外部链接',
+    rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单外部链接或最多输入50个字符的菜单外部链接' }]
+  }, {
+    title: '菜单重定向地址',
+    fromType: 'input',
+    inputType: 'text',
+    name: 'menuRedirect',
+    placeholder: '请输入菜单重定向地址',
+    rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单重定向地址或最多输入50个字符的菜单重定向地址' }]
+  }, {
+    title: '菜单说明',
+    fromType: 'input',
+    inputType: 'text',
+    name: 'description',
+    placeholder: '请输入菜单说明',
+    rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单说明或最多输入50个字符的菜单说明' }]
+  }, {
+    title: '是否隐藏菜单',
+    fromType: 'select',
+    name: 'menuHidden',
+    placeholder: '请选择是否隐藏菜单',
+    selOption: [{
+      name: '否',
+      id: 0
+    }, {
+      name: '是',
+      id: 1
+    }],
+    options: {
+      allowClear: true//是否显示清除框
+    }
+  }, {
+    title: '是否为系统菜单',
+    fromType: 'select',
+    name: 'isSystem',
+    placeholder: '请选择是否为系统菜单',
+    selOption: [{
+      name: '否',
+      id: 0
+    }, {
+      name: '是',
+      id: 1
+    }],
+    options: {
+      allowClear: true//是否显示清除框
+    }
+  }]);
+};
 //api搜索
 export const apiSearchFrom = [{
   title: 'api名称',

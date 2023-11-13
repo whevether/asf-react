@@ -50,7 +50,7 @@ const Login = (props) => {
         </div>
       </div>
       <div className="content">
-        <Tabs activeKey={type} onChange={setType} centered items={[{ label: '账户密码登录', key: 'account' }, { label: '手机号登录', key: 'mobile' }, { label: '邮箱登录', key: 'email' }]} />
+        <Tabs activeKey={type} onChange={setType} centered items={[{ label: t('common.account.password'), key: 'account' }, { label: '手机号登录', key: 'mobile' }, { label: t('common.email.password'), key: 'email' }]} />
         {
           <Form
             name="login"
