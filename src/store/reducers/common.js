@@ -5,7 +5,8 @@ let initData = {
   tenancyList: null,
   countryList: [],
   collapsed: false,
-  loading: false
+  loading: false,
+  logout: false,
 };
 export default function common(state = initData, action) {
   switch (action.type) {
@@ -19,6 +20,8 @@ export default function common(state = initData, action) {
       return { ...state, tenancyList: action?.payload };
     case types.FETCH_COUNTRY_LIST_DATA:
       return { ...state, countryList: action?.payload };
+    case types.LOGOUT:
+      return {...state,logout: action?.payload};
     default:
       return state;
   }

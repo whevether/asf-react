@@ -10,7 +10,7 @@ export const axiosInstance = axios.create({
 export const setToken = (token) => {
   axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
-export const request = (history, store) => {
+export const request = (store) => {
   axiosInstance.interceptors.request.use((config) => {
     store.dispatch({
       type: types.LOAD,
@@ -59,7 +59,10 @@ export const request = (history, store) => {
         type: 'FETCH_USER_DATA',
         payload: null
       });
-      history.push('/login');
+      store.dispatch({
+        type: 'LOGOUT',
+        payload: true
+      });
     }
     if ([400].indexOf(response?.status) > -1) {
       notification['error']({

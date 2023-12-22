@@ -13,7 +13,7 @@ import translate from './translate';
 import dictionary from './dictionary';
 import post from './post';
 import country from './country';
-const rootReducer = (history) => combineReducers({
+const rootReducer = () => combineReducers({
     common: common,
     account: account,
     audio: audio,
@@ -27,7 +27,6 @@ const rootReducer = (history) => combineReducers({
     editor: editor,
     menu: menu,
     permission: permission,
-    country: country,
-    router: history
+    country: country
 });
 export default rootReducer;

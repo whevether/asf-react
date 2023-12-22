@@ -95,7 +95,14 @@ const DefaultLayout = (props) => {
     }
   };
   return (
-    props?.common?.data && renderProtectedRoute()
+    <>
+    {
+      props?.common?.data && renderProtectedRoute()
+    }
+    {
+      props?.common?.logout && <Navigate to="/login" replace/>
+    }
+    </>
   );
 };
 DefaultLayout.propTypes = {

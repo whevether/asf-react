@@ -36,3 +36,5 @@ export const GET_TRANSLATE_LIST = 'GET_TRANSLATE_LIST';
 export const GET_DICTIONARY_LIST = 'GET_DICTIONARY_LIST';
 // 获取国家列表
 export const GET_COUNTRY_LIST = 'GET_COUNTRY_LIST';
+//退出登录
+export const LOGOUT = 'LOGOUT';

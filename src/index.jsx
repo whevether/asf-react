@@ -7,10 +7,10 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
 import { createBrowserHistory } from 'history';
-import { HistoryRouter as Router } from "redux-first-history/rr6";
+import { BrowserRouter } from "react-router-dom";
 import {configureStore} from 'store/configureStore';
 const history = createBrowserHistory();
-const { store, h } = configureStore(history); //第二个参数是初始状态
+const { store } = configureStore(); //第二个参数是初始状态
 import Routes from 'router/routes';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -36,8 +36,8 @@ const root = createRoot(container);
 root.render(
   <Provider store={store} >
     <ConfigProvider locale={zhCN}>
-      <Router history={h}>
+      <BrowserRouter history={history}>
         <Routes />
-      </Router>
+      </BrowserRouter>
     </ConfigProvider>
   </Provider>);
