@@ -3,6 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //生成html并注入
 const CopyWebpackPlugin = require('copy-webpack-plugin'); //拷贝资源文件
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const AutoImport = require('unplugin-auto-import/webpack');
 const config = {
   resolve: {
     extensions: ['*', '.js', '.jsx', '.json'],
@@ -51,9 +52,11 @@ const config = {
     },
     port: 3005,
     historyApiFallback: true,
-    proxy: {
-      '/api': 'http://localhost:5900'
-    },
+    proxy: [{
+      'context':['/api'],
+      'target':'http://localhost:5900',
+      'changeOrigin': true
+    }],
     // hotOnly: true,
     hot: true,
     open: true,
@@ -63,7 +66,7 @@ const config = {
     allowCollectingMemory: true,
   },
   plugins: [
-    require('unplugin-auto-import/webpack')({
+    AutoImport.default({
       imports: ["react","react-router-dom"],
     }),
     new webpack.DefinePlugin({
