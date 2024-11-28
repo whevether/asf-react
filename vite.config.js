@@ -107,27 +107,27 @@ export default defineConfig({
         chunkFileNames: "js/[name]-[hash].js",
         entryFileNames: "js/[name]-[hash].js", // 主体文件不打hash，避免android环境更新
         assetFileNames: assetInfo => {
-          var extType = 'assets';
+          let extType = 'assets';
           if (
             /\.(css|scss|sass|less)(\?.*)?$/i.test(assetInfo.name)
           ) {
-            extType = 'css'
+            extType = 'css';
           }
-          return `${extType}/[name]-[hash][extname]`
+          return `${extType}/[name]-[hash][extname]`;
         },
         // 静态资源拆分打包
         manualChunks(id) {
-          let _manualChunks = ''
+          let _manualChunks = '';
           switch (true) {
             case id.includes('node_modules'):
-              _manualChunks = 'vendor'
-              break
+              _manualChunks = 'vendor';
+              break;
             case id.includes('svg-icons-register'):
-              _manualChunks = 'svg-icons-register'
-              break
+              _manualChunks = 'svg-icons-register';
+              break;
           }
           if (_manualChunks) {
-            return _manualChunks
+            return _manualChunks;
           }
         }
       },
