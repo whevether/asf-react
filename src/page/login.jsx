@@ -7,9 +7,11 @@ import { UserOutlined, LockOutlined, GithubOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setCookie, getCookie } from 'utils/storage';
+import { setToken } from 'utils/request';
 import { head } from 'utils/head';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import * as commonAction from 'store/actions/common';
 const Login = (props) => {
   const [zindex, setZindex] = useState({});
   const { t } = useTranslation();
@@ -31,11 +33,14 @@ const Login = (props) => {
     }, 1500);
   }, []);
   const onFinish = (values) => {
-    props?.loginUser(Object.assign(values, { loginType: type }))
+    props?.loginFunc?.loginUser(Object.assign(values, { loginType: type }))
       .then(res => {
         setCookie('token', res?.token);
         setCookie('refreshToken', res?.refreshToken);
-        handleGoNav('/');
+        setToken(res?.token);
+        props?.commonFunc?.fetchUserInfo().then(()=>{
+          handleGoNav('/');
+        });
       });
   };
   return (
@@ -46,16 +51,16 @@ const Login = (props) => {
           <a href="https://www.keep-wan.me" target="_blank" />
         </div>
         <div className="title">
-          asf 多租户权限管理系统
+          wchat 社交管理系统
         </div>
       </div>
       <div className="content">
-        <Tabs activeKey={type} onChange={setType} centered items={[{ label: t('common.account.password'), key: 'account' }, { label: '手机号登录', key: 'mobile' }, { label: t('common.email.password'), key: 'email' }]} />
+        <Tabs activeKey={type} onChange={setType} centered items={[{ label: t('common.account.password'), key: 'account' }, { label: t('common.phone.login'), key: 'mobile' }, { label: t('common.email.password'), key: 'email' }]} />
         {
           <Form
             name="login"
             className="login-form"
-            initialValues={{ remember: true,tenancyId: '1' }}
+            initialValues={{ remember: true, tenancyId: '1' }}
             onFinish={onFinish}
           >
             <Form.Item name="tenancyId" rules={[{ required: true, message: '请选择需要登录的租户' }]}>
@@ -130,7 +135,8 @@ const Login = (props) => {
 };
 Login.propTypes = {
   tenancyList: PropTypes.arrayOf(Object),
-  loginUser: PropTypes.func.isRequired
+  loginUser: PropTypes.func,
+  fetchUserInfo: PropTypes.func
 };
 const mapStateToProps = (state) => {
   return {
@@ -138,6 +144,9 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(loginAction, dispatch);
+  return {
+    loginFunc: bindActionCreators(loginAction, dispatch),
+    commonFunc: bindActionCreators(commonAction,dispatch)
+  };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
