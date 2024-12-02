@@ -11,7 +11,7 @@ let initData = {
 export default function common(state = initData, action) {
   switch (action.type) {
     case types.FETCH_USER_DATA:
-      return { ...state, data: action.payload };
+      return { ...state, data: action.payload,logout: false };
     case types.TOGGLE_MENU:
       return { ...state, collapsed: action.payload };
     case types.LOAD:
