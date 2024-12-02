@@ -2,11 +2,8 @@ import React, { useEffect } from 'react';
 import { Outlet, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import PageHeader from 'components/pageHeader';
 import * as commonAction from 'store/actions/common';
 import { bindActionCreators } from 'redux';
-import { getCookie } from 'utils/storage';
-import { setToken } from 'utils/request';
 import { Tabbar, Navbar, BreadcrumbItems } from 'components/index';
 import { Tag } from 'antd';
 import { BellOutlined, BookOutlined } from '@ant-design/icons';
@@ -24,16 +21,6 @@ const DefaultLayout = (props) => {
   };
   useEffect(() => {
     window.addEventListener('resize', resize);
-    if (getCookie('token')) {
-      document.getElementsByTagName('body')[0].className = 'login-svg-none';
-      setToken(getCookie('token'));
-      // 当数据存在于 store中就不请求加载
-      if (!props?.common?.data) {
-        props?.fetchUserInfo();
-      }
-    } else {
-      navigate('/login');
-    }
     return () => {
       window.removeEventListener('resize', resize);
     };
@@ -96,12 +83,12 @@ const DefaultLayout = (props) => {
   };
   return (
     <>
-    {
-      props?.common?.data && renderProtectedRoute()
-    }
-    {
-      props?.common?.logout && <Navigate to="/login" replace/>
-    }
+      {
+        !props?.common?.logout && props?.common?.data && renderProtectedRoute()
+      }
+      {
+        props?.common?.logout && <Navigate to="/login" replace />
+      }
     </>
   );
 };
