@@ -6,10 +6,8 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
-import { createBrowserHistory } from 'history';
 import { BrowserRouter } from "react-router-dom";
 import {configureStore} from 'store/configureStore';
-const history = createBrowserHistory();
 const { store } = configureStore(); //第二个参数是初始状态
 import Routes from 'router/routes';
 import dayjs from 'dayjs';
@@ -36,7 +34,7 @@ const root = createRoot(container);
 root.render(
   <Provider store={store} >
     <ConfigProvider locale={zhCN}>
-      <BrowserRouter history={history}>
+      <BrowserRouter>
         <Routes />
       </BrowserRouter>
     </ConfigProvider>
