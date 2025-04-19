@@ -1,33 +1,32 @@
-import React,{Fragment} from 'react';
-import LoadableComponent from './LoadableComponent';
+import React,{Fragment,lazy} from 'react';
 //布局
 import RootLayout from './rootLayout';
 import DefaultLayout from './defaultLayout';
 import LoginLayout  from './loginLayout';
 import { useRoutes } from 'react-router';
 //页面
-const DashPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/dash'));
-const LoginPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/login'));
-const Error404 = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/404'));
-const Error403 = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/403'));
-const AccountPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/account/index'));
-const AccountDetailsPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/account/details'));
-const LogsPage =  LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/logsList'));
-const EditorPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/demo/index'));
-const PermissionPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/permission/index'));
-const PermissionDetailsPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/permission/details'));
-const MenuPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/menu/index'));
-const AuthApiPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/authApi/index'));
-const RolePage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/role/index'));
-const RoleDetailsPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/role/details'));
-const TenancyPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/tenancy/index'));
-const DepartmentPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/department/index'));
-const DepartmentDetailsPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/department/details'));
-const PostPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/post/index'));
-const TranslatePage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/translate/index'));
-const DictionaryPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/dictionary/index'));
-const CountryPage = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/country/index'));
-const UserCenter = LoadableComponent(() => import(/* webpackPrefetch: true */ '../page/account/details'));
+const DashPage = lazy(() => import(/* webpackPrefetch: true */ '../page/dash'));
+const LoginPage = lazy(() => import(/* webpackPrefetch: true */ '../page/login'));
+const Error404 = lazy(() => import(/* webpackPrefetch: true */ '../page/404'));
+const Error403 = lazy(() => import(/* webpackPrefetch: true */ '../page/403'));
+const AccountPage = lazy(() => import(/* webpackPrefetch: true */ '../page/account/index'));
+const AccountDetailsPage = lazy(() => import(/* webpackPrefetch: true */ '../page/account/details'));
+const LogsPage =  lazy(() => import(/* webpackPrefetch: true */ '../page/logsList'));
+const EditorPage = lazy(() => import(/* webpackPrefetch: true */ '../page/demo/index'));
+const PermissionPage = lazy(() => import(/* webpackPrefetch: true */ '../page/permission/index'));
+const PermissionDetailsPage = lazy(() => import(/* webpackPrefetch: true */ '../page/permission/details'));
+const MenuPage = lazy(() => import(/* webpackPrefetch: true */ '../page/menu/index'));
+const AuthApiPage = lazy(() => import(/* webpackPrefetch: true */ '../page/authApi/index'));
+const RolePage = lazy(() => import(/* webpackPrefetch: true */ '../page/role/index'));
+const RoleDetailsPage = lazy(() => import(/* webpackPrefetch: true */ '../page/role/details'));
+const TenancyPage = lazy(() => import(/* webpackPrefetch: true */ '../page/tenancy/index'));
+const DepartmentPage = lazy(() => import(/* webpackPrefetch: true */ '../page/department/index'));
+const DepartmentDetailsPage = lazy(() => import(/* webpackPrefetch: true */ '../page/department/details'));
+const PostPage = lazy(() => import(/* webpackPrefetch: true */ '../page/post/index'));
+const TranslatePage = lazy(() => import(/* webpackPrefetch: true */ '../page/translate/index'));
+const DictionaryPage = lazy(() => import(/* webpackPrefetch: true */ '../page/dictionary/index'));
+const CountryPage = lazy(() => import(/* webpackPrefetch: true */ '../page/country/index'));
+const UserCenter = lazy(() => import(/* webpackPrefetch: true */ '../page/account/details'));
 const routes = [{
   path: "/",
   element: <RootLayout />,
