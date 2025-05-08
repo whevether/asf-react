@@ -215,7 +215,7 @@ const Details = (props) => {
     key: 'action',
     width: 150,
     fixed: 'right',
-    // eslint-disable-next-line
+     
     render: (record) => {
       return ( <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }

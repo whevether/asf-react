@@ -146,7 +146,7 @@ const Index = (props) => {
     dataIndex: 'status',
     key: 'status',
     width: 100,
-    // eslint-disable-next-line
+     
     render: (text) => {
       let statusMap = {
         0: '禁用',
@@ -179,7 +179,7 @@ const Index = (props) => {
     key: 'action',
     fixed: 'right',
     width: 150,
-    // eslint-disable-next-line
+     
     render: (record) => {
       return (<AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }

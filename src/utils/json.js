@@ -18,7 +18,7 @@ export const accountSearchFrom = [{
   inputType: 'text',
   placeholder: '请输入邮箱地址',
   name: 'email',
-  // eslint-disable-next-line  no-useless-escape
+   
   rules: [{ type: 'string', pattern: /^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/, message: '输入的邮箱地址不正确不正确' }]
 },{
   title: '用户性别',
@@ -158,7 +158,7 @@ export const accountFrom = [{
   inputType: 'text',
   name: 'email',
   placeholder: '请输入邮箱地址',
-  // eslint-disable-next-line  no-useless-escape
+   
   rules: [{ type: 'string', pattern: /^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/, message: '输入的邮箱地址不正确不正确' }],
   options: { //扩展配置
     allowClear: true//是否显示清除框
@@ -184,7 +184,7 @@ export const inputFrom = (title,name,fromType='input',type = 'text')=> [{
   inputType: type,
   name: name,
   placeholder: `请输入${title}`,
-  // eslint-disable-next-line  no-useless-escape
+   
   rules: [{ type: 'string', min: 1, max: 50, message: `最少输入1个字符的${title}或最多输入50个字符的${title}` }],
   options: { //扩展配置
     allowClear: true//是否显示清除框
@@ -207,7 +207,7 @@ export const emailFrom = () => [{
   inputType: 'text',
   name: 'email',
   placeholder: '请输入邮箱地址',
-  // eslint-disable-next-line  no-useless-escape
+   
   rules: [{ type: 'string', pattern: /^[-\w\+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/, message: '输入的邮箱地址不正确不正确' }],
   options: { //扩展配置
     allowClear: true//是否显示清除框

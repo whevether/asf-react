@@ -56,11 +56,11 @@ export const request = (store) => {
       removeCookie(['token', 'refreshToken']);
       setToken('');
       store.dispatch({
-        type: 'FETCH_USER_DATA',
+        type: types.FETCH_USER_DATA,
         payload: null
       });
       store.dispatch({
-        type: 'LOGOUT',
+        type: types.LOGOUT,
         payload: true
       });
     }

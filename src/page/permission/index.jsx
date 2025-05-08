@@ -12,7 +12,7 @@ import { CloudSyncOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from
 import { BaseFrom, BaseTable, AuthControl } from 'components/index';
 import { findParentIds } from 'utils/help';
 import { useNavigate } from 'react-router-dom';
-/* eslint-disable no-extra-semi */
+ 
 const Index = (props) => {
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
@@ -255,7 +255,7 @@ const Index = (props) => {
     dataIndex: 'enable',
     width: 80,
     key: 'enable',
-    // eslint-disable-next-line
+     
     render: (text, record) => {
       let statusMap = {
         0: '禁用',
@@ -290,7 +290,7 @@ const Index = (props) => {
     width: 150,
     key: 'action',
     fixed: 'right',
-    // eslint-disable-next-line
+     
     render: (record) => {
       return (<AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }

@@ -60,12 +60,21 @@ export default defineConfig({
       include: /^(?!.*min\.js$).*\.(js|json|css|scss)$/i,
       threshold: 10240,
       algorithm: "gzip",
-      deleteOriginFile: true,
+      deleteOriginalAssets: true,
       // ext: ".gz",
     })],
   define: {
     'process.env': {
     }
+  },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:5900",
+        changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
   build: {
     target: 'es2015',

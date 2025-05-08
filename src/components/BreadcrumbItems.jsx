@@ -2,7 +2,7 @@ import { Breadcrumb } from 'antd';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-const Index = (props)=>{
+const BreadcrumbItems = (props)=>{
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter(f=>f);
   const extraBreadcrumbItems = pathSnippets.map((item,index)=>{
@@ -24,7 +24,7 @@ const Index = (props)=>{
     </div>
   );
 };
-Index.propTypes = {
+BreadcrumbItems.propTypes = {
   mapBreadcrumbItems: PropTypes.object.isRequired
 };
-export default Index;
+export default BreadcrumbItems;

@@ -1,5 +1,5 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-useless-escape */
+ 
+ 
 tinymce.addI18n('zh_CN',{
 "Redo": "\u91cd\u505a",
 "Undo": "\u64a4\u9500",

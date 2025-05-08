@@ -1,4 +1,3 @@
-import 'assets/snap.svg-cjs';
 const Snap = window.Snap;
 let animate = {
     'stroke-dasharray': function(options) {

@@ -123,7 +123,7 @@ const Details = (props)=>{
     dataIndex: 'enable',
     width: 80,
     key: 'enable',
-    // eslint-disable-next-line
+     
     render: (text, record) => {
       let statusMap = {
         0: '禁用',

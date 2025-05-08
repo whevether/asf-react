@@ -4,7 +4,7 @@ import {Chart} from 'components/index';
 import geoMap from 'assets/geo.json';
 // import PropTypes from 'prop-types';
 const renderChart = () => {
-    /* eslint-disable  no-dupe-keys */
+     
     //geoCoordMap把所有可能出现的城市加到数组里面
     let geoCoordMap = {
         "杭州": [119.5313, 29.8773],

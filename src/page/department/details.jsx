@@ -28,7 +28,7 @@ const Details = (props)=>{
     dataIndex: 'avatar',
     key: 'avatar',
     width: 150,
-    // eslint-disable-next-line
+     
     render: (text) => {
       return <img name="avatar" src={text} style={{ width: '50px', height: '50px', borderRadius: '50%', lineHeight: '50px' }} crossOrigin={text} />;
     }
@@ -70,7 +70,7 @@ const Details = (props)=>{
     dataIndex: 'status',
     width: 80,
     key: 'status',
-    // eslint-disable-next-line
+     
     render: (text) => {
       let statusMap = {
         0: '禁用',

@@ -136,7 +136,9 @@ const Login = (props) => {
 Login.propTypes = {
   tenancyList: PropTypes.arrayOf(Object),
   loginUser: PropTypes.func,
-  fetchUserInfo: PropTypes.func
+  fetchUserInfo: PropTypes.func,
+  loginFunc: PropTypes.object,
+  commonFunc: PropTypes.object
 };
 const mapStateToProps = (state) => {
   return {

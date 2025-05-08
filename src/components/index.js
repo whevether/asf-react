@@ -1,10 +1,10 @@
-import AuthControl from './authControl';
-import BaseFrom from './baseFrom';
-import BaseTable from './baseTable';
-import Tabbar from './tabbar';
-import Navbar from './navbar';
-import Chart from './chart';
-import BreadcrumbItems from './BreadcrumbItems';
+import AuthControl from './authControl.jsx';
+import BaseFrom from './baseFrom.jsx';
+import BaseTable from './baseTable.jsx';
+import Tabbar from './tabbar.jsx';
+import Navbar from './navbar.jsx';
+import Chart from './chart.jsx';
+import BreadcrumbItems from './BreadcrumbItems.jsx';
 export {
   AuthControl,
   BaseFrom,

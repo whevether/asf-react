@@ -154,7 +154,7 @@ const LogsList = (props) => {
     width: 150,
     key: 'action',
     fixed: 'right',
-    // eslint-disable-next-line
+     
     render: (record) => {
       return ( <AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }

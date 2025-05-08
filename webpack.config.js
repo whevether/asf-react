@@ -1,43 +1,46 @@
-const webpack = require('webpack');
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin'); //生成html并注入
-const CopyWebpackPlugin = require('copy-webpack-plugin'); //拷贝资源文件
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const AutoImport = require('unplugin-auto-import/webpack');
+import webpack from "webpack";
+import HtmlWebpackPlugin from "html-webpack-plugin"; //生成html并注入
+import CopyWebpackPlugin from "copy-webpack-plugin"; //拷贝资源文件
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+import AutoImport from "unplugin-auto-import/webpack";
+import postcssPxtorem from 'postcss-pxtorem';
+import { dirname, join,resolve } from 'node:path'; 
+import { fileURLToPath } from 'node:url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const config = {
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.json'],
+    extensions: [".*", ".js", ".jsx", ".json",],
     alias: {
-      components: path.resolve(__dirname, 'src/components/'),
-      constants: path.resolve(__dirname, 'src/store/constants/'),
-      actions: path.resolve(__dirname, 'src/store/actions/'),
-      reducers: path.resolve(__dirname, 'src/store/reducers/'),
-      router: path.resolve(__dirname, 'src/router/'),
-      style: path.resolve(__dirname, 'src/style/'),
-      store: path.resolve(__dirname, 'src/store/'),
-      utils: path.resolve(__dirname, 'src/utils/'),
-      assets: path.resolve(__dirname, 'src/public/assets/')
+      components: resolve(__dirname, "src/components/"),
+      constants: resolve(__dirname, "src/store/constants/"),
+      actions: resolve(__dirname, "src/store/actions/"),
+      reducers: resolve(__dirname, "src/store/reducers/"),
+      router: resolve(__dirname, "src/router/"),
+      style: resolve(__dirname, "src/style/"),
+      store: resolve(__dirname, "src/store/"),
+      utils: resolve(__dirname, "src/utils/"),
+      assets: resolve(__dirname, "src/public/assets/")
     }
   },
 
-  devtool: 'eval', // 调试工具
+  devtool: "eval", // 调试工具
   mode: "development",
   entry: {
     app: [
-      path.resolve(__dirname, 'src/index.jsx') // 定位客户端目标
+      resolve(__dirname, "src/index.jsx") // 定位客户端目标
     ]
   },
-  target: 'web', // 目标是web 服务器
+  target: "web", // 目标是web 服务器
   output: {
-    path: path.resolve(__dirname, 'dist'), // 输出编译文件目录
-    publicPath: '/', //根目录
-    filename: 'js/[name]-[hash].js?v=[chunkhash]',
-    chunkFilename: 'js/[name]-[hash].js?v=[chunkhash]',
+    path: resolve(__dirname, "dist"), // 输出编译文件目录
+    publicPath: "/", //根目录
+    filename: "js/[name]-[hash].js?v=[chunkhash]",
+    chunkFilename: "js/[name]-[hash].js?v=[chunkhash]",
   },
   devServer: {
     client: { overlay: false },
     static: {
-      directory: path.join(__dirname, "public/"),
+      directory: join(__dirname, "public/"),
       staticOptions: {},
       // Don't be confused with `devMiddleware.publicPath`, it is `publicPath` for static directory
       // Can be:
@@ -62,36 +65,34 @@ const config = {
     open: true,
   },
   cache: {
-    type: 'filesystem',
+    type: "filesystem",
     allowCollectingMemory: true,
   },
   plugins: [
-    AutoImport.default({
+    AutoImport({
       imports: ["react","react-router-dom"],
     }),
+    new ReactRefreshWebpackPlugin({overlay: false}),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
-      'process.env.BUILD_TYPE': JSON.stringify('webpack'),
+      "process.env.NODE_ENV": JSON.stringify("development"), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
+      "process.env.BUILD_TYPE": JSON.stringify("webpack"),
       __DEV__: true
     }),
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'src/public/assets'),
-          to: path.resolve(__dirname, 'dist/assets'),
+          from: resolve(__dirname, "src/public/assets"),
+          to: resolve(__dirname, "dist/assets"),
           // ignore: ['.*']
         }
       ]
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new ReactRefreshWebpackPlugin({
-      overlay: false
-    }),
     new HtmlWebpackPlugin({     // Create HTML file that includes references to bundled CSS and JS.
-      template: 'src/index.html',
-      filename: 'index.html',
-      favicon: 'src/favicon.ico',
+      template: "src/index_webpack.html",
+      filename: "index.html",
+      favicon: "src/favicon.ico",
       minify: {
         removeComments: true,
         collapseWhitespace: true
@@ -106,31 +107,31 @@ const config = {
         test: /\.(jsx|js)?$/,
         exclude: /node_modules/,
         use: [{
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            plugins: [require.resolve('react-refresh/babel')].filter(Boolean),
+            plugins: [import.meta.resolve("react-refresh/babel")].filter(Boolean),
           },
         }]
       },
       {
         test: /\.eot(\?v=\d+.\d+.\d+)?$/,
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: '[name].[ext]'
+          filename: "[name].[ext]"
         }
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: '[name].[ext]'
+          filename: "[name].[ext]"
         }
       },
       {
         test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/,
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: '[name].[ext]'
+          filename: "[name].[ext]"
         }
         // use: [
         //   {
@@ -144,9 +145,9 @@ const config = {
       },
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        type: 'javascript/auto',
+        type: "asset/inline",
         generator: {
-          filename: '[name].[ext]'
+          filename: "[name].[ext]"
         }
         // use: [
         //   {
@@ -160,9 +161,9 @@ const config = {
       },
       {
         test: /\.(jpe?g|png|gif|ico)$/i,
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: '[name].[ext]'
+          filename: "[name].[ext]"
         }
         // use: [
         //   {
@@ -177,9 +178,9 @@ const config = {
         test: /\.css|\.scss$/,
         // exclude: /node_modules/, //排除这个文件夹
         use: [
-          'style-loader',
+          "style-loader",
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               // importLoaders: 2,
               // modules: true,
@@ -190,15 +191,15 @@ const config = {
               url: false
             }
           }, {
-            loader: 'postcss-loader',
+            loader: "postcss-loader",
             options: {
               postcssOptions: {
                 plugins: [
-                  ['autoprefixer',{/*options*/}],
-                  require('postcss-pxtorem')({
+                  ["autoprefixer",{/*options*/}],
+                  postcssPxtorem({
                     rootValue: 16,
                     unitPrecision: 5,
-                    propList: ['*'],
+                    propList: ["*"],
                     selectorBlackList: [],
                     replace: true,
                     mediaQuery: false,
@@ -214,7 +215,7 @@ const config = {
               sassOptions: {
                 webpackImporter: false,
                 indentWidth: 4,
-                includePaths: [path.resolve(__dirname, 'src', 'scss'),'node_modules'],
+                includePaths: [resolve(__dirname, "src", "scss"),"node_modules"],
               },
             }
             // loader: 'less-loader',
@@ -231,4 +232,4 @@ const config = {
     ]
   }
 };
-module.exports = config;
+export default config;

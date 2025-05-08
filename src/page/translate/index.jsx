@@ -183,7 +183,7 @@ const Index = (props) => {
     key: 'action',
     fixed: 'right',
     width: 150,
-    // eslint-disable-next-line
+     
     render: (record) => {
       return (<AuthControl userInfo={props?.userInfo} list={list} record={record} type="menu" />);
     }

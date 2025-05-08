@@ -1,18 +1,18 @@
 import {combineReducers} from 'redux';
-import common from './common';
-import account from './account';
-import audio from './audio';
-import permission from './permission';
-import menu from './menu';
-import role from './role';
-import authApi from './authApi';
-import editor from './editor';
-import tenancy from './tenancy';
-import department from './department';
-import translate from './translate';
-import dictionary from './dictionary';
-import post from './post';
-import country from './country';
+import common from './common.js';
+import account from './account.js';
+import audio from './audio.js';
+import permission from './permission.js';
+import menu from './menu.js';
+import role from './role.js';
+import authApi from './authApi.js';
+import editor from './editor.js';
+import tenancy from './tenancy.js';
+import department from './department.js';
+import translate from './translate.js';
+import dictionary from './dictionary.js';
+import post from './post.js';
+import country from './country.js';
 const rootReducer = () => combineReducers({
     common: common,
     account: account,
