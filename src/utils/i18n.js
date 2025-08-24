@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 export const useI18n = (data) => {
   return i18n.use(initReactI18next)
     .init({
-      lng: 'zh',
+      lng: 'cn',
       debug: true,
       resources: data
     });

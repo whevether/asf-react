@@ -56,7 +56,7 @@ const Index = (props) => {
       from.unshift({
         title: '国家',
         fromType: 'select',
-        name: 'countryId',
+        name: 'countryCode',
         selOption: props?.countryList,
         placeholder: '请选择国家',
         rules: [{ required: true, message: '国家不能为空' }],
@@ -70,9 +70,9 @@ const Index = (props) => {
   };
   //提交表单
   const onFinish = (data) => {
-    let country = props?.countryList?.find(f=>f?.id === data?.countryId);
+    let country = props?.countryList?.find(f=>f?.language_code === data?.countryCode);
     if(country){
-      data = {...data,country:country?.name,countryCode: country?.languageCode};
+      data = {...data,countryCode: country?.languageCode};
     }
     if (drawType === 0) {
       props?.translateFunc?.createTranslate(data)
@@ -154,11 +154,6 @@ const Index = (props) => {
       return <span>{data?.name}</span>;
     }
   }, {
-    title: '语种',
-    dataIndex: 'country',
-    key: 'country',
-    width: 100
-  },{
     title: '语种代码',
     dataIndex: 'countryCode',
     key: 'countryCode',
