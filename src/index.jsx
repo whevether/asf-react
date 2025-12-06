@@ -1,5 +1,4 @@
 import "core-js/stable";
-import '@ant-design/v5-patch-for-react-19';
 // 路由句柄
 import React from 'react';
 import { createRoot } from 'react-dom/client';
