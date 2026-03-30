@@ -7,6 +7,7 @@ export const fetchDictionaryList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_DICTIONARY_LIST,
     payload: res
   });
+  return res;
 };
 // 添加岗位
 export const createDictionary = (params) => async(dispatch,getState,api) => {

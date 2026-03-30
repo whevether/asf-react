@@ -7,6 +7,7 @@ export const fetchDepartmentList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_DEPARTMENT_LIST,
     payload: res
   });
+  return res;
 };
 // 添加部门
 export const createDepartment = (params) => async(dispatch,getState,api) => {

@@ -7,6 +7,7 @@ export const fetchMenuList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_MENU_LIST,
     payload: res
   });
+  return res;
 };
 // 修改是否显示菜单
 export const modifyHidden = (params) => async(dispatch,getState,api) => {

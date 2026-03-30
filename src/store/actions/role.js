@@ -7,6 +7,7 @@ export const fetchRoleList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_ROLE_LIST,
     payload: res
   });
+  return res;
 };
 // 添加角色
 export const createRole = (params) => async(dispatch,getState,api) => {

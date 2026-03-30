@@ -7,7 +7,7 @@ import { timeToDate } from 'utils/storage';
 import { head } from 'utils/head';
 import { useSearchParams } from 'react-router-dom';
 import { Descriptions, Tag } from 'antd';
-import { BaseTable } from 'components/index';
+import { ProTableCompat } from 'components/index';
 const Details = (props)=>{
   let [searchParams] = useSearchParams();
   const [details, setDetails] = useState(null);
@@ -152,10 +152,10 @@ const Details = (props)=>{
           </Descriptions>
 
           <h3 style={{ fontWeight: 600 }}>部门下属账户</h3>
-          <BaseTable dataSource={details?.accounts} columns={accountColumns} />
+          <ProTableCompat dataSource={details?.accounts} columns={accountColumns} />
 
           <h3 style={{ fontWeight: 600 }}>所拥有角色</h3>
-          <BaseTable dataSource={details?.roles} columns={roleColumns} />
+          <ProTableCompat dataSource={details?.roles} columns={roleColumns} />
         </Fragment>
       }
     </div>

@@ -8,7 +8,7 @@ import { apiFrom } from 'utils/json';
 import { useSearchParams } from 'react-router-dom';
 import { head } from 'utils/head';
 import { Badge, Descriptions, Drawer, Modal, notification, Switch, Tag } from 'antd';
-import { BaseFrom, BaseTable, AuthControl } from 'components/index';
+import { BaseFrom, ProTableCompat, AuthControl } from 'components/index';
 import * as apiAuthAction from 'store/actions/authApi';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 const Details = (props) => {
@@ -277,7 +277,7 @@ const Details = (props) => {
           }
 
           <h3 style={{ fontWeight: 600 }}>权限api</h3>
-          <BaseTable dataSource={details?.apis} columns={columns} />
+          <ProTableCompat dataSource={details?.apis} columns={columns} />
           <Drawer
             title="修改api"
             width={720}

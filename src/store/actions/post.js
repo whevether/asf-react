@@ -7,6 +7,7 @@ export const fetchPostList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_POST_LIST,
     payload: res
   });
+  return res;
 };
 // 添加岗位
 export const createPost = (params) => async(dispatch,getState,api) => {

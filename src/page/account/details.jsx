@@ -9,7 +9,7 @@ import { useSearchParams } from 'react-router-dom';
 import { AppstoreAddOutlined, AimOutlined, FieldTimeOutlined, PhoneOutlined, AlignCenterOutlined, UsergroupDeleteOutlined, UserOutlined, UserSwitchOutlined, BankOutlined, InboxOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { timeToDate } from 'utils/storage';
-import { BaseTable } from 'components/index';
+import { ProTableCompat } from 'components/index';
 const Details = (props) => {
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState(null);
@@ -194,11 +194,11 @@ const Details = (props) => {
               details && <Fragment>
                 <div className="userinfo-wrapper">
                   <h3 style={{ fontWeight: 600 }}>用户角色</h3>
-                  <BaseTable dataSource={details?.roles} columns={roleColumns} />
+                  <ProTableCompat dataSource={details?.roles} columns={roleColumns} />
                 </div>
                 <div className="userinfo-wrapper">
                   <h3 style={{ fontWeight: 600 }}>用户岗位</h3>
-                  <BaseTable dataSource={details?.posts} columns={postColumns} />
+                  <ProTableCompat dataSource={details?.posts} columns={postColumns} />
                 </div>
               </Fragment>
             }

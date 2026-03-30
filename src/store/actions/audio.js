@@ -8,6 +8,7 @@ export const fetchAudioList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_AUDIO_LIST,
     payload: res
   });
+  return res;
 };
 // 删除日志
 export const deleteAudio = (data) => async (dispatch,getState,api)=> {

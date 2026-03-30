@@ -36,9 +36,9 @@ export const getCountryList = ()=> async (dispatch,getState,api)=>{
   });
 };
 // 获取多语言列表
-export const getTranslatetList = (isAdmin = true) => async(dispatch,getState,api) => {
+export const getTranslatetList = (params = {isAdmin : true}) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/translate/getLists',{
-    params: {isAdmin:isAdmin}
+    params: params
   });
   return res?.result;
 };
@@ -57,8 +57,25 @@ export const toggleMenu = (collapsed = false) => (dispatch)=>{
     payload: collapsed
   });
 };
+// 设置主题（明亮 / 暗黑）
+export const setTheme = (theme) => (dispatch) => {
+  if (theme !== 'light' && theme !== 'dark') return;
+  try {
+    localStorage.setItem('app_theme', theme);
+  } catch {}
+  dispatch({ type: types.SET_THEME, payload: theme });
+};
 //上传文件
 export const upload = (data)=> async (dispatch,getState,api)=>{
   const res = await api.post('/asf/upload/index',data);
+  return res?.result;
+};
+
+
+//获取关于我们详情
+export const getAbout = (data)=> async (dispatch,getState,api)=>{
+  const res = await api.get('/asf/member/getAbout',{
+    params: data
+  });
   return res?.result;
 };

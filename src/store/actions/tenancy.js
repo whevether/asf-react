@@ -7,6 +7,7 @@ export const fetchTenancyList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_TENANCY_LIST,
     payload: res
   });
+  return res;
 };
 // 添加租户
 export const createTenancy = (params) => async(dispatch,getState,api) => {

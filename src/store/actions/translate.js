@@ -7,7 +7,7 @@ export const fetchTranslateList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_TRANSLATE_LIST,
     payload: res
   });
-  return res?.result;
+  return res;
 };
 // 添加多语言
 export const createTranslate = (params) => async(dispatch,getState,api) => {

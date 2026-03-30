@@ -89,5 +89,6 @@ export default [{
         "import/extensions": 0,
         "react/self-closing-comp": 1,
         "react/sort-comp": 1,
+        "no-unused-vars": [1, { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_", "ignoreRestSiblings": true }],
     },
 }];

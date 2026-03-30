@@ -8,7 +8,7 @@ export const fetchPermissionList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_PEERMISSION_LIST,
     payload: res
   });
-  return res?.result;
+  return res;
 };
 // 创建权限
 export const createPermission = (data) => async (dispatch,getState,api)=> {

@@ -13,6 +13,7 @@ import translate from './translate.js';
 import dictionary from './dictionary.js';
 import post from './post.js';
 import country from './country.js';
+import member from './member.js';
 const rootReducer = () => combineReducers({
     common: common,
     account: account,
@@ -27,6 +28,7 @@ const rootReducer = () => combineReducers({
     editor: editor,
     menu: menu,
     permission: permission,
-    country: country
+    country: country,
+    member: member
 });
 export default rootReducer;

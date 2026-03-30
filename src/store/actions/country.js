@@ -7,6 +7,7 @@ export const fetchCountryList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_COUNTRY_LIST,
     payload: res
   });
+  return res;
 };
 // 添加国家
 export const createCountry = (params) => async(dispatch,getState,api) => {

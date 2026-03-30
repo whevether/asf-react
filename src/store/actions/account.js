@@ -8,6 +8,7 @@ export const fetchAccountList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_ACCOUNT_LIST,
     payload: res
   });
+  return res;
 };
 // 创建账户
 export const createAccount = (params) => async(dispatch,getState,api) => {
