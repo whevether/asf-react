@@ -8,7 +8,7 @@ import {
 const AuthControl = (props) => {
     const IconFont = createFromIconfontCN({
         scriptUrl: [
-            'https://at.alicdn.com/t/font_2384333_rsw4qhrwjur.js'
+            'https://at.alicdn.com/t/c/font_2384333_l1re7fqml8.js'
         ],
     });
     const renderAuthMenu = () => {
@@ -24,7 +24,7 @@ const AuthControl = (props) => {
                     const icon = item.icon && <IconFont type={item.icon} />;
                     if (props?.userInfo?.actions?.includes(item.permission)) {
                         menu.key = i;
-                        menu.disabled = (props?.record?.isSystem === 1 && !(props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === props?.record?.tenancyId));
+                        menu.disabled = (props?.record?.isSystem === 1 && !(props?.userInfo?.roleName?.indexOf('superadmin') > -1 && (props?.record?.tenancyId ? props?.userInfo?.tenancyId === props?.record?.tenancyId : true)));
                         menu.icon = icon;
                         menu.label = <span onClick={() => item?.click(props?.record)} >{item?.name}</span>;
                     }

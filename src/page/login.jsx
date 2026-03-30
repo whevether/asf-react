@@ -26,7 +26,6 @@ const Login = (props) => {
       handleGoNav('/');
     }
     setTimeout(() => {
-      document.getElementsByTagName('body')[0].className = '';
       setZindex({
         zIndex: '9999'
       });
@@ -135,8 +134,6 @@ const Login = (props) => {
 };
 Login.propTypes = {
   tenancyList: PropTypes.arrayOf(Object),
-  loginUser: PropTypes.func,
-  fetchUserInfo: PropTypes.func,
   loginFunc: PropTypes.object,
   commonFunc: PropTypes.object
 };

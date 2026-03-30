@@ -11,9 +11,9 @@ export const getCookie = (name)=>{
     }
   }catch(err){
     notification.open({
-      message: 'cookie错误',
+      message: '获取cookie错误',
       description:
-        '获取cookie失败'
+        err
     });
   }
 };
@@ -25,9 +25,9 @@ export const setCookie = (name, value, domain)=>{
     }
   }catch(err){
     notification.open({
-      message: 'cookie错误',
+      message: '设置cookie错误',
       description:
-        '设置cookie失败'
+        err
     });
   }
 };
@@ -41,9 +41,9 @@ export const removeCookie = (arr, domain)=>{
     }
   }catch(err){
     notification.open({
-      message: 'cookie错误',
+      message: '删除cookie错误',
       description:
-        '删除cookie失败'
+        err
     });
   }
 };

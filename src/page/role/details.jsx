@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { useSearchParams } from 'react-router-dom';
 import { head } from 'utils/head';
 import { Descriptions, Tag } from 'antd';
-import { BaseTable } from 'components/index';
+import { ProTableCompat } from 'components/index';
 const Details = (props)=>{
   let [searchParams] = useSearchParams();
   const [details, setDetails] = useState(null);
@@ -124,7 +124,7 @@ const Details = (props)=>{
     width: 80,
     key: 'enable',
      
-    render: (text, record) => {
+    render: (text) => {
       let statusMap = {
         0: '禁用',
         1: '启用'
@@ -163,10 +163,10 @@ const Details = (props)=>{
           </Descriptions>
 
           <h3 style={{ fontWeight: 600 }}>所属部门</h3>
-          <BaseTable dataSource={details?.department} columns={departementColumns} />
+          <ProTableCompat dataSource={details?.department} columns={departementColumns} />
 
           <h3 style={{ fontWeight: 600 }}>拥有权限</h3>
-          <BaseTable dataSource={details?.permission} columns={permissionColumns} />
+          <ProTableCompat dataSource={details?.permission} columns={permissionColumns} />
         </Fragment>
       }
     </div>

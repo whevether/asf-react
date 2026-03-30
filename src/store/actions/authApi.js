@@ -7,6 +7,7 @@ export const fetchApiList = (params) => async (dispatch,getState,api)=> {
     type: types.GET_API_LIST,
     payload: res
   });
+  return res;
 };
 // 添加api
 export const createApi = (params) => async(dispatch,getState,api) => {

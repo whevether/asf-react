@@ -7,21 +7,28 @@ import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import AutoImport from "unplugin-auto-import/webpack";
 import postcssPxtorem from 'postcss-pxtorem';
 import atImport from "postcss-import";
-import { dirname,resolve,join } from 'node:path'; 
+import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import autoprefixer from "autoprefixer";
+import { loadEnv } from "./tools/loadEnv.js";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
-// 设置node.js生产环境变量
+const env = loadEnv(process.env.APP_ENV || "production");
+
 const GLOBALS = {
   "process.env.NODE_ENV": JSON.stringify("production"),
-  "process.env.BUILD_TYPE": JSON.stringify("webpack"),
+  __BUILD_TYPE__: JSON.stringify("webpack"),
+  __APP_ENV__: JSON.stringify(env.VITE_APP_ENV),
+  __VITE_AES_KEY__: JSON.stringify(env.VITE_AES_KEY),
+  __VITE_APP_API_BASE_URL__: JSON.stringify(env.VITE_APP_API_BASE_URL),
+  __VITE_APP_WATERMARK_TEXT__: JSON.stringify(env.VITE_APP_WATERMARK_TEXT),
   __DEV__: false
 };
 
 const config = {
   resolve: {
-    //识别扩展文件名
     extensions: [".*", ".js", ".jsx", ".json"],
+    fullySpecified: false,
     alias: {
       components: resolve(__dirname, "src/components/"),
       constants: resolve(__dirname, "src/store/constants/"),
@@ -162,6 +169,14 @@ const config = {
   ],
   module: {
     rules: [
+      {
+        test: /\.m?js$/,
+        include: /node_modules/,
+        resolve: {
+          fullySpecified: false,
+        },
+        type: 'javascript/auto',
+      },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,

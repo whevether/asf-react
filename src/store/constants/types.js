@@ -6,6 +6,8 @@ export const FETCH_COUNTRY_LIST_DATA = 'FETCH_COUNTRY_LIST_DATA';
 export const FETCH_USER_DATA = 'FETCH_USER_DATA';
 // 加载数据中
 export const LOAD = 'LOAD';
+// 主题：明亮 / 暗黑
+export const SET_THEME = 'SET_THEME';
 // 切换菜单
 export const TOGGLE_MENU = 'TOGGLE_MENU';
 // 获取账户列表
@@ -36,5 +38,13 @@ export const GET_TRANSLATE_LIST = 'GET_TRANSLATE_LIST';
 export const GET_DICTIONARY_LIST = 'GET_DICTIONARY_LIST';
 // 获取国家列表
 export const GET_COUNTRY_LIST = 'GET_COUNTRY_LIST';
-//退出登录
-export const LOGOUT = 'LOGOUT';
+//获取会员列表
+export const GEI_MEMBER_LIST = 'GEI_MEMBER_LIST';
+//获取会员相册列表
+export const GEI_MEMBER_ALBUM_LIST = 'GEI_MEMBER_ALBUM_LIST';
+//获取会员动态列表
+export const GEI_MEMBER_TRENDS_LIST = 'GEI_MEMBER_TRENDS_LIST';
+//获取会员社交账号列表
+export const GEI_MEMBER_SOCIALIZE_LIST = 'GEI_MEMBER_SOCIALIZE_LIST';
+//获取会员标签列表
+export const GEI_MEMBER_TAGS_LIST = 'GEI_MEMBER_TAGS_LIST';

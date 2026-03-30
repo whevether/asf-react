@@ -1,7 +1,7 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import reactRefresh from "@vitejs/plugin-react";
 import { fileURLToPath, URL } from "url";
-import { join } from 'node:path'; 
+import { join } from 'node:path';
 import AutoImport from "unplugin-auto-import/vite";
 import { compression, defineAlgorithm } from "vite-plugin-compression2";
 import atImport from "postcss-import";
@@ -9,14 +9,14 @@ import postcssPxtorem from 'postcss-pxtorem';
 // import { cdn } from 'vite-plugin-cdn2';
 import autoprefixer from "autoprefixer";
 const pathResolve = (dir) => fileURLToPath(new URL(dir, import.meta.url));
-// const env = loadEnv(mode, process.cwd())
-// 打包模式
-const modeEnv = process.env.NODE_ENV;
-// console.log(modeEnv)
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, pathResolve("."), "");
+  const modeEnv = mode;
+  return {
   root: "./src/",
   base: "/",
+  envDir: pathResolve("."),
   publicDir: "public",
   resolve: {
     alias: [{ find: "components", replacement: pathResolve("src/components/") },
@@ -71,16 +71,17 @@ export default defineConfig({
     })],
   define: {
     "process.env": {
-    },
-    server: {
-    proxy: {
+    }
+  },
+  server: {
+    // test 环境不使用反向代理，直接请求 VITE_APP_API_BASE_URL
+    proxy: mode === "test" ? {} : {
       "/api": {
-        target: "http://localhost:5900",
+        target: env.VITE_APP_PROXY_TARGET || "http://localhost:5900",
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
-  },
   },
   build: {
     target: "es2015",
@@ -140,4 +141,5 @@ export default defineConfig({
       },
     },
   },
+};
 });
