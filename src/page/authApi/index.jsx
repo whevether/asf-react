@@ -15,6 +15,8 @@ import { findParentIds } from 'utils/help';
 
 const Index = (props) => {
   const actionRef = useRef();
+  const formRef = useRef(null);
+  const allPermissionsRef = useRef([]);
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
@@ -22,12 +24,52 @@ const Index = (props) => {
 
   head('api列表');
 
+  const setFromOptions = (list, name, selOption) => (list || []).map((f) => (f?.name === name ? { ...f, selOption } : f));
+
+  const ensureTopPermission = (nodes) => {
+    const list = Array.isArray(nodes) ? nodes : [];
+    if (list.some((f) => String(f?.value) === '0')) return list;
+    return [{ label: '顶级权限', value: '0', children: [] }, ...list];
+  };
+
+  const filterPermissionTreeByTenancy = (nodes, tenancyId) => {
+    const list = ensureTopPermission(nodes);
+    if (!tenancyId) return list;
+    const t = String(tenancyId);
+    const walk = (arr) =>
+      (arr ?? [])
+        .map((n) => {
+          if (String(n?.value) === '0') return { ...n, children: [] }; // 顶级权限永远保留
+          const children = walk(n?.children);
+          const nodeTenancyId = n?.tenancyId ?? n?.tenantId ?? n?.tenancy_id;
+          const matchSelf = nodeTenancyId == null ? true : String(nodeTenancyId) === t;
+          if (matchSelf || children.length) return { ...n, children };
+          return null;
+        })
+        .filter(Boolean);
+    return walk(list);
+  };
+
+  const updatePermissionByTenancy = (tenancyId) => {
+    const filtered = filterPermissionTreeByTenancy(allPermissionsRef.current, tenancyId);
+    setFromData((prev) => setFromOptions(prev, 'permissionId', filtered));
+    formRef.current?.setFieldsValue({ permissionId: undefined });
+  };
+
   const onOpenDarw = (type, data) => {
     if (type === 0 || type === 1) {
       props?.permissionFunc?.fetchPermissionList({ pageSize: 9999 })
         .then(res => {
           setDrawType(type);
-          let from = apiFrom(res.result);
+          allPermissionsRef.current = ensureTopPermission(res?.result ?? []);
+
+          const currentTenancyId =
+            props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1'
+              ? data?.tenancyId
+              : props?.userInfo?.tenancyId;
+
+          const filteredPerm = filterPermissionTreeByTenancy(allPermissionsRef.current, currentTenancyId);
+          let from = apiFrom(filteredPerm);
           if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
             from.unshift({
               title: '租户',
@@ -41,7 +83,7 @@ const Index = (props) => {
           }
           setFromData(from);
           if (data) {
-            let initArr = findParentIds(res.result, data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
+            let initArr = findParentIds(allPermissionsRef.current, data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
             if (data?.permission?.parentId !== '0') initArr.push(data?.permission?.parentId);
             initArr.push(data?.permission?.id);
             setInitFromValue({
@@ -257,7 +299,18 @@ const Index = (props) => {
         ]}
       />
       <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+        <ProForm
+          formRef={formRef}
+          list={fromData}
+          onFinish={onFinish}
+          initialValues={initFromValue}
+          onClose={() => setShowDarw(false)}
+          onValuesChange={(changed) => {
+            if (Object.prototype.hasOwnProperty.call(changed ?? {}, 'tenancyId')) {
+              updatePermissionByTenancy(changed?.tenancyId);
+            }
+          }}
+        />
       </Drawer>
     </div>
   );

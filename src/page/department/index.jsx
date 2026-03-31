@@ -15,6 +15,8 @@ import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
   const actionRef = useRef();
+  const formRef = useRef(null);
+  const allDepartmentsRef = useRef([]);
   const navigate = useNavigate();
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
@@ -23,12 +25,56 @@ const Index = (props) => {
 
   head('部门列表');
 
+  const setFromOptions = (list, name, selOption) =>
+    (list || []).map((f) => (f?.name === name ? { ...f, selOption } : f));
+
+  const ensureTopDepartment = (deps) => {
+    const list = Array.isArray(deps) ? deps : [];
+    if (list?.some((f) => String(f?.value) === '0')) return list;
+    return [{ label: '顶级部门', value: '0', children: [] }, ...list];
+  };
+
+  const filterDepartmentTreeByTenancy = (nodes, tenancyId) => {
+    const list = ensureTopDepartment(nodes);
+    if (!tenancyId) return list;
+    const t = String(tenancyId);
+
+    const walk = (arr) =>
+      (arr ?? [])
+        .map((n) => {
+          // 顶级部门永远保留
+          if (String(n?.value) === '0') return { ...n, children: [] };
+
+          const children = walk(n?.children);
+          const nodeTenancyId = n?.tenancyId ?? n?.tenantId ?? n?.tenancy_id;
+          const matchSelf = nodeTenancyId == null ? true : String(nodeTenancyId) === t;
+          if (matchSelf || children.length) return { ...n, children };
+          return null;
+        })
+        .filter(Boolean);
+
+    return walk(list);
+  };
+
+  const updateParentDepartmentByTenancy = (tenancyId) => {
+    const filtered = filterDepartmentTreeByTenancy(allDepartmentsRef.current, tenancyId);
+    setFromData((prev) => setFromOptions(prev, 'departmentId', filtered));
+    formRef.current?.setFieldsValue({ departmentId: undefined });
+  };
+
   const onOpenDarw = (type) => {
     if (type === 0) {
       props?.commonFunc?.getDepartmentList().then((res) => {
         setDrawType(0);
-        if (!res?.some((f) => f.value === 0)) res?.unshift({ label: '顶级部门', value: '0', children: [] });
-        let from = departmentFrom(res ?? []);
+        allDepartmentsRef.current = ensureTopDepartment(res ?? []);
+
+        const currentTenancyId =
+          props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1'
+            ? initFromValue?.tenancyId
+            : props?.userInfo?.tenancyId;
+
+        const filtered = filterDepartmentTreeByTenancy(allDepartmentsRef.current, currentTenancyId);
+        let from = departmentFrom(filtered ?? []);
         if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
           from.unshift({
             title: '租户',
@@ -46,8 +92,15 @@ const Index = (props) => {
     } else if (type === 1) {
       Promise.all([props?.commonFunc?.getRoleList(), props?.commonFunc?.getDepartmentList()]).then(([roles, deps]) => {
         setDrawType(1);
-        if (!deps?.some((f) => f.value === 0)) deps?.unshift({ label: '顶级部门', value: '0', children: [] });
-        let from = departmentFrom(deps ?? [], roles ?? []);
+        allDepartmentsRef.current = ensureTopDepartment(deps ?? []);
+
+        const currentTenancyId =
+          props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1'
+            ? initFromValue?.tenancyId
+            : props?.userInfo?.tenancyId;
+
+        const filtered = filterDepartmentTreeByTenancy(allDepartmentsRef.current, currentTenancyId);
+        let from = departmentFrom(filtered ?? [], roles ?? []);
         if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
           from.unshift({
             title: '租户',
@@ -226,7 +279,18 @@ const Index = (props) => {
         ]}
       />
       <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+        <ProForm
+          formRef={formRef}
+          list={fromData}
+          onFinish={onFinish}
+          initialValues={initFromValue}
+          onClose={() => setShowDarw(false)}
+          onValuesChange={(changed) => {
+            if (Object.prototype.hasOwnProperty.call(changed ?? {}, 'tenancyId')) {
+              updateParentDepartmentByTenancy(changed?.tenancyId);
+            }
+          }}
+        />
       </Drawer>
     </div>
   );
