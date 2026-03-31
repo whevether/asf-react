@@ -42,11 +42,11 @@ function ProLayoutWrapper(props) {
   const languages = common?.countryList || [];
 
   const route = useMemo(() => {
-    const children = convertBackendMenuToPro(permissionMenu, t);
-    return { path: '/', children };
+    const routes = convertBackendMenuToPro(permissionMenu, t);
+    return { path: '/', routes };
   }, [permissionMenu, t]);
 
-  const menuDataFlat = useMemo(() => flattenMenuItems(route?.children || []), [route?.children]);
+  const menuDataFlat = useMemo(() => flattenMenuItems(route?.routes || []), [route?.routes]);
 
   const { tabList, activeKey, onEdit, onTabClick } = useMultiTab(menuDataFlat, t);
 
@@ -93,13 +93,12 @@ function ProLayoutWrapper(props) {
   if (!grantedPermission(permissionMenu, pathname)) {
     return <Navigate to="/403" replace />;
   }
-
   const layoutContent = (
     <ProLayout
       locale="zh-CN"
       location={location}
       route={route}
-      menuDataRender={() => route?.children || []}
+      menuDataRender={() => route?.routes || []}
       menuItemRender={menuItemRender}
       collapsed={collapsed}
       onCollapse={onCollapse}

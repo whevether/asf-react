@@ -32,10 +32,10 @@
   "license": "MIT",
   "dependencies": {
     "@ant-design/icons": "^6.1.1",
-    "@ant-design/pro-components": "^3.1.4-0",
+    "@ant-design/pro-components": "^3.1.12-0",
     "@p5-wrapper/react": "5.0.2",
     "antd": "^6.3.5",
-    "axios": "^1.14.1",
+    "axios": "^1.14.0",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.20",
     "echarts": "^6.0.0",

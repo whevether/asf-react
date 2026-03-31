@@ -8,7 +8,7 @@ import { apiFrom } from 'utils/json';
 import { useSearchParams } from 'react-router-dom';
 import { head } from 'utils/head';
 import { Badge, Descriptions, Drawer, Modal, notification, Switch, Tag } from 'antd';
-import { BaseFrom, ProTableCompat, AuthControl } from 'components/index';
+import { ProForm, ProTableCompat, AuthControl } from 'components/index';
 import * as apiAuthAction from 'store/actions/authApi';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 const Details = (props) => {
@@ -284,7 +284,7 @@ const Details = (props) => {
             open={showDarw}
             onClose={() => setShowDarw(false)}
           >
-            <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+            <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
           </Drawer>
         </Fragment>
       }

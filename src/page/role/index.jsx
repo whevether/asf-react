@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { ProTable } from '@ant-design/pro-components';
 import { Drawer, Switch, notification, Modal } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { BaseFrom, AuthControl } from 'components/index';
+import { ProForm, AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
@@ -222,7 +222,7 @@ const Index = (props) => {
         ]}
       />
       <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
   );

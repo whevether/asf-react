@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux';
 import { Drawer, Switch, notification, Modal, Descriptions, Tag } from 'antd';
 import { createFromIconfontCN, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { BaseFrom, AuthControl } from 'components/index';
+import { ProForm, AuthControl } from 'components/index';
 import { findParentIds } from 'utils/help';
 
 const IconFont = createFromIconfontCN({
@@ -34,7 +34,7 @@ const Index = (props) => {
         props?.permissionFunc?.fetchPermissionList({ pageNo: 1, pageSize: 200 })
       ]).then(res => {
         setDrawType(type);
-        let from = menuFrom(res[1], res[0]?.filter(f => f?.countryCode?.toLocaleLowerCase() === 'cn')?.map(m => ({ id: m?.keys, name: m?.value })));
+        let from = menuFrom(res[1].result, res[0]?.result?.filter(f => f?.countryCode?.toLocaleLowerCase() === 'cn')?.map(m => ({ id: m?.keys, name: m?.value })));
         if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
           from.unshift({
             title: '租户',
@@ -48,7 +48,7 @@ const Index = (props) => {
         }
         setFromData(from);
         if (data) {
-          let permList = res[1];
+          let permList = res[1].result;
           let initArr = findParentIds(permList, data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
           if (data?.permission?.parentId !== '0') initArr.push(data?.permission?.parentId);
           initArr.push(data?.permission?.id);
@@ -250,7 +250,7 @@ const Index = (props) => {
         ]}
       />
       <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
   );

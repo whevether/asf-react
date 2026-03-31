@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { Drawer, Switch, notification, Modal, Descriptions, Tag } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { BaseFrom, AuthControl } from 'components/index';
+import { ProForm, AuthControl } from 'components/index';
 import { findParentIds } from 'utils/help';
 
 const Index = (props) => {
@@ -27,7 +27,7 @@ const Index = (props) => {
       props?.permissionFunc?.fetchPermissionList({ pageSize: 9999 })
         .then(res => {
           setDrawType(type);
-          let from = apiFrom(res);
+          let from = apiFrom(res.result);
           if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
             from.unshift({
               title: '租户',
@@ -257,7 +257,7 @@ const Index = (props) => {
         ]}
       />
       <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
   );

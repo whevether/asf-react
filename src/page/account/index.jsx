@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { Drawer, notification, Switch, Modal, Upload, Image, Tooltip } from 'antd';
 import { ExclamationCircleOutlined, InboxOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { BaseFrom, AuthControl } from 'components/index';
+import { ProForm, AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
@@ -339,7 +339,7 @@ const Index = (props) => {
         ]}
       />
       <Drawer title={mapDrawTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
       <Modal title="修改头像" open={!!account} closable onCancel={() => setAccount(null)} onOk={() => setAccount(null)} footer={null}>
         {account?.avatar && (

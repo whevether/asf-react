@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { Drawer, Switch, notification, Modal } from 'antd';
 import { CloudSyncOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { BaseFrom, AuthControl } from 'components/index';
+import { ProForm, AuthControl } from 'components/index';
 import { findParentIds } from 'utils/help';
 import { useNavigate } from 'react-router-dom';
 
@@ -284,7 +284,7 @@ const Index = (props) => {
         ]}
       />
       <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
   );
