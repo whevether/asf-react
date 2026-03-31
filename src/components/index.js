@@ -1,10 +1,10 @@
 import AuthControl from './authControl.jsx';
-import BaseFrom from './baseFrom.jsx';
+import ProForm from './ProForm.jsx';
 import Chart from './chart.jsx';
 import ProTableCompat from './ProTableCompat.jsx';
 export {
   AuthControl,
-  BaseFrom,
+  ProForm,
   Chart,
   ProTableCompat,
 };

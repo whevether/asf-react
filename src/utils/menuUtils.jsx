@@ -1,5 +1,5 @@
 import React from 'react';
-import { createFromIconfontCN } from '@ant-design/icons';
+import { AppstoreOutlined, createFromIconfontCN } from '@ant-design/icons';
 
 const IconFont = createFromIconfontCN({
   scriptUrl: ['https://at.alicdn.com/t/c/font_2384333_l1re7fqml8.js'],
@@ -25,7 +25,8 @@ export function convertBackendMenuToPro(menus, t) {
         path: isExternal ? undefined : path,
         name: renderName(item),
         locale: item.translate || false,
-        icon: item.icon ? <IconFont type={item.icon} /> : undefined,
+        // 在 mix 布局下，侧边栏常展示二级菜单；若后端未给二级菜单配置 icon，收缩后会出现“只剩空白”的问题
+        icon: item.icon ? <IconFont type={item.icon} /> : <AppstoreOutlined />,
         disabled: !item.enable,
         hideInMenu: item?.menuHidden === 1,
         target: isExternal ? '_blank' : undefined,
@@ -50,7 +51,8 @@ export function flattenMenuItems(menus) {
     for (const item of list) {
       const path = item.path || item.key;
       if (path && item.name) result.push({ path, name: item.name, key: item.key });
-      if (item.children?.length) walk(item.children);
+      if (item.routes?.length) walk(item.routes);
+      else if (item.children?.length) walk(item.children);
     }
   }
   walk(menus);

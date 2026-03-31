@@ -10,12 +10,14 @@ import { bindActionCreators } from 'redux';
 import { Drawer, Switch, notification, Modal } from 'antd';
 import { CloudSyncOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { BaseFrom, AuthControl } from 'components/index';
+import { ProForm, AuthControl } from 'components/index';
 import { findParentIds } from 'utils/help';
 import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
   const actionRef = useRef();
+  const formRef = useRef(null);
+  const allPermissionsRef = useRef([]);
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
@@ -37,9 +39,54 @@ const Index = (props) => {
     return list;
   };
 
+  const setFromOptions = (list, name, selOption) =>
+    (list || []).map((f) => (f?.name === name ? { ...f, selOption } : f));
+
+  const ensureTopPermission = (nodes) => {
+    const list = Array.isArray(nodes) ? nodes : [];
+    if (list.some((f) => String(f?.value) === '0')) return list;
+    return [{ label: '顶级权限', value: '0', children: [] }, ...list];
+  };
+
+  const filterPermissionTreeByTenancy = (nodes, tenancyId) => {
+    const list = ensureTopPermission(nodes);
+    if (!tenancyId) return list;
+    const t = String(tenancyId);
+
+    const walk = (arr) =>
+      (arr ?? [])
+        .map((n) => {
+          // 顶级权限永远保留
+          if (String(n?.value) === '0') return { ...n, children: [] };
+
+          const children = walk(n?.children);
+          const nodeTenancyId = n?.tenancyId ?? n?.tenantId ?? n?.tenancy_id;
+          const matchSelf = nodeTenancyId == null ? true : String(nodeTenancyId) === t;
+          if (matchSelf || children.length) return { ...n, children };
+          return null;
+        })
+        .filter(Boolean);
+
+    return walk(list);
+  };
+
+  const updateParentPermissionByTenancy = (tenancyId) => {
+    const filtered = filterPermissionTreeByTenancy(allPermissionsRef.current, tenancyId);
+    setFromData((prev) => setFromOptions(prev, 'parentId', filtered));
+    formRef.current?.setFieldsValue({ parentId: undefined });
+  };
+
   const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
-      let from = permissionFrom(onAddTree());
+      allPermissionsRef.current = ensureTopPermission(onAddTree());
+
+      const currentTenancyId =
+        props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1'
+          ? initFromValue?.tenancyId
+          : props?.userInfo?.tenancyId;
+
+      const filtered = filterPermissionTreeByTenancy(allPermissionsRef.current, currentTenancyId);
+      let from = permissionFrom(filtered);
       if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
         from.unshift({
           title: '租户',
@@ -284,7 +331,18 @@ const Index = (props) => {
         ]}
       />
       <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+        <ProForm
+          formRef={formRef}
+          list={fromData}
+          onFinish={onFinish}
+          initialValues={initFromValue}
+          onClose={() => setShowDarw(false)}
+          onValuesChange={(changed) => {
+            if (Object.prototype.hasOwnProperty.call(changed ?? {}, 'tenancyId')) {
+              updateParentPermissionByTenancy(changed?.tenancyId);
+            }
+          }}
+        />
       </Drawer>
     </div>
   );

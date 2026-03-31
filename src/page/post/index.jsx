@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import { ProTable } from '@ant-design/pro-components';
 import { Descriptions, Drawer, Modal, notification, Tag } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { AuthControl, BaseFrom } from 'components/index';
+import { AuthControl, ProForm } from 'components/index';
 
 const Index = (props) => {
   const actionRef = useRef();
@@ -164,7 +164,7 @@ const Index = (props) => {
         ]}
       />
       <Drawer title={drawType === 0 ? '添加岗位' : '修改岗位'} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
   );
