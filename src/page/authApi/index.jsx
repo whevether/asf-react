@@ -41,7 +41,7 @@ const Index = (props) => {
           }
           setFromData(from);
           if (data) {
-            let initArr = findParentIds(res, data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
+            let initArr = findParentIds(res.result, data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
             if (data?.permission?.parentId !== '0') initArr.push(data?.permission?.parentId);
             initArr.push(data?.permission?.id);
             setInitFromValue({

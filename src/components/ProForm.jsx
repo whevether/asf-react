@@ -10,6 +10,13 @@ const ProForm = (props) => {
   const { RangePicker } = DatePicker;
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    if (props?.formRef) props.formRef.current = form;
+    return () => {
+      if (props?.formRef && props.formRef.current === form) props.formRef.current = null;
+    };
+  }, [form, props?.formRef]);
+
   const onReset = () => {
     form?.resetFields();
     props?.onClose?.();
@@ -26,7 +33,7 @@ const ProForm = (props) => {
     } else {
       form.resetFields();
     }
-  }, [form, props.initialValues, props?.list]);
+  }, [form, props.initialValues]);
 
   const renderFromItem = (item, i) => {
     if (item?.fromType === 'select') {
@@ -162,6 +169,7 @@ const ProForm = (props) => {
       form={form}
       name="proform"
       onFinish={onFinish}
+      onValuesChange={props?.onValuesChange}
       submitter={{
         render: () => (
           <div>
@@ -189,8 +197,10 @@ ProForm.propTypes = {
   hiddenCalcel: PropTypes.bool,
   layout: PropTypes.string,
   onFinish: PropTypes.func,
+  onValuesChange: PropTypes.func,
   initialValues: PropTypes.object,
   calcelText: PropTypes.string,
+  formRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
 
 export default ProForm;
