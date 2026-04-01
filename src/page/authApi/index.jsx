@@ -142,6 +142,8 @@ const Index = (props) => {
       const mapType = { 1: '菜单目录', 2: '菜单条目', 3: '功能' };
       Modal.confirm({
         width: '100%',
+        okText: '确认',
+        cancelText: '取消',
         content: (
           <Fragment>
             <Descriptions title="授权api详情" bordered style={{ marginBottom: '10px' }} column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}>
@@ -298,7 +300,7 @@ const Index = (props) => {
           />
         ]}
       />
-      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+      <Drawer title={mapTitle[drawType]} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
         <ProForm
           formRef={formRef}
           list={fromData}

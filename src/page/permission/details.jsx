@@ -280,7 +280,7 @@ const Details = (props) => {
           <ProTableCompat dataSource={details?.apis} columns={columns} />
           <Drawer
             title="修改api"
-            width={720}
+            size={720}
             open={showDarw}
             onClose={() => setShowDarw(false)}
           >

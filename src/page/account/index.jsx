@@ -393,7 +393,7 @@ const Index = (props) => {
           />
         ]}
       />
-      <Drawer title={mapDrawTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+      <Drawer title={mapDrawTitle[drawType]} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
         <ProForm
           formRef={formRef}
           list={fromData}

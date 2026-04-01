@@ -187,7 +187,7 @@ const Index = (props) => {
           <AuthControl key="add" userInfo={props?.userInfo} list={[{ name: '添加租户', permission: 'tenancy.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} type="button" />,
         ]}
       />
-      <Drawer title={drawType === 0 ? '添加租户' : '修改租户'} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+      <Drawer title={drawType === 0 ? '添加租户' : '修改租户'} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
         <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
