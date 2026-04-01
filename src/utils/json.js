@@ -873,7 +873,7 @@ export const translateFrom = () => [{
 }];
 //字典表单
 export const dictionaryFrom = (options) => [{
-  title: '会员所属国家',
+  title: '国家',
   fromType: 'select',
   name: 'countryCode',
   placeholder: '请选择会员所属国家',
@@ -1040,91 +1040,3 @@ export const countryFrom = () => [{
     allowClear: true//是否显示清除框
   }
 }];
-/* 社交模块 */
-export const memberSearch = (options)=>{
-  let newArr = options.map(m=>{
-    m.id = m.languageCode;
-    return m;
-  });
-  const arr = [{
-    title: '会员id',
-    fromType: 'input',
-    inputType: 'id',
-    name: 'title',
-    placeholder: '请输入会员id',
-    rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的会员id或最多输入50个字符的会员id' }]
-  }, {
-    title: '会员昵称',
-    fromType: 'input',
-    inputType: 'text',
-    name: 'nickName',
-    placeholder: '请输入会员昵称',
-    rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的会员昵称或最多输入50个字符的会员昵称' }]
-  }, {
-    title: '会员年龄',
-    fromType: 'inputnumber',
-    name: 'age',
-    placeholder: '请输入会员年龄'
-  }, {
-    title: '会员性别',
-    fromType: 'select',
-    name: 'sex',
-    placeholder: '请选择会员性别',
-    selOption: [{
-      name: '未知',
-      id: 0
-    }, {
-      name: '男',
-      id: 1
-    }, {
-      name: '女',
-      id: 2
-    }],
-    options: {
-      allowClear: true//是否显示清除框
-    }
-  }, {
-    title: '会员状态',
-    fromType: 'select',
-    name: 'status',
-    placeholder: '请选择会员状态',
-    selOption: [{
-      name: '正常',
-      id: 1
-    }, {
-      name: '冻结',
-      id: 2
-    }, {
-      name: '注销',
-      id: 3
-    }],
-    options: {
-      allowClear: true//是否显示清除框
-    }
-  }, {
-    title: '是否VIP',
-    fromType: 'select',
-    name: 'vipStatus',
-    placeholder: '请选择是否VIP',
-    selOption: [{
-      name: '否',
-      id: 0
-    }, {
-      name: '是',
-      id: 2
-    }],
-    options: {
-      allowClear: true//是否显示清除框
-    }
-  }, {
-    title: '会员所属国家',
-    fromType: 'select',
-    name: 'countryCode',
-    placeholder: '请选择会员所属国家',
-    selOption: newArr,
-    options: {
-      allowClear: true//是否显示清除框
-    }
-  }];
-  return arr;
-};
