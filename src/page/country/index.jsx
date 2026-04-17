@@ -157,7 +157,7 @@ const Index = (props) => {
       />
       <Drawer
         title={drawType === 0 ? '添加国家' : '修改国家'}
-        width={720}
+        size={720}
         open={showDarw}
         onClose={() => setShowDarw(false)}
       >

@@ -155,7 +155,7 @@ const Index = (props) => {
           />,
         ]}
       />
-      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+      <Drawer title={mapTitle[drawType]} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
         <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>

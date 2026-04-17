@@ -151,6 +151,8 @@ const Index = (props) => {
       Modal.confirm({
         title: '菜单详情',
         width: '100%',
+        okText: '确认',
+        cancelText: '取消',
         content: (
           <Fragment>
             <Descriptions title="菜单详情" bordered style={{ marginBottom: '10px' }} column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}>
@@ -291,7 +293,7 @@ const Index = (props) => {
           />
         ]}
       />
-      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+      <Drawer title={mapTitle[drawType]} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
         <ProForm
           formRef={formRef}
           list={fromData}

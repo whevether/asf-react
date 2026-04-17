@@ -221,7 +221,7 @@ const Index = (props) => {
           <AuthControl key="add" userInfo={props?.userInfo} list={[{ name: '添加角色', permission: 'role.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} type="button" />,
         ]}
       />
-      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+      <Drawer title={mapTitle[drawType]} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
         <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>

@@ -147,7 +147,7 @@ const Index = (props) => {
           <AuthControl key="add" userInfo={props?.userInfo} list={[{ name: '添加多语言', permission: 'translate.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} type="button" />,
         ]}
       />
-      <Drawer title={drawType === 0 ? '添加多语言' : '修改多语言'} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+      <Drawer title={drawType === 0 ? '添加多语言' : '修改多语言'} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
         <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
