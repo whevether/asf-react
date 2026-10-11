@@ -1,61 +1,88 @@
 import React, { useState, useRef } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { postFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as postAction from 'store/actions/post';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ProTable } from '@ant-design/pro-components';
-import { Descriptions, Drawer, Modal, notification, Tag } from 'antd';
+import { BetaSchemaForm, DrawerForm, ProTable } from '@ant-design/pro-components';
+import { Descriptions, Modal, notification, Tag } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { AuthControl, BaseFrom } from 'components/index';
+import { AuthControl } from 'components/index';
 
 const Index = (props) => {
   const actionRef = useRef();
   const [showDarw, setShowDarw] = useState(false);
-  const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
   const [initFromValue, setInitFromValue] = useState(null);
 
   head('岗位列表');
 
+  const isSuperAdmin = props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1';
+
   const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
       setDrawType(type);
-      let from = postFrom();
-      if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
-        from.unshift({
-          title: '租户',
-          fromType: 'select',
-          name: 'tenancyId',
-          selOption: props?.tenancyList,
-          placeholder: '请选择租户',
-          rules: [{ required: true, message: '租户不能为空' }],
-          options: { allowClear: true },
-        });
-      }
-      setFromData(from);
       setShowDarw(true);
     }
   };
 
-  const onFinish = (data) => {
+  const onFinish = async (data) => {
     if (drawType === 0) {
-      props?.postFunc?.createPost(data).then(() => {
-        notification.success({ message: '添加成功', description: '添加岗位成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.postFunc?.createPost(data);
+      notification.success({ message: '添加成功', description: '添加岗位成功' });
+      actionRef.current?.reload();
     } else if (drawType === 1) {
       data.id = initFromValue.id;
-      props?.postFunc?.modifyPost(data).then(() => {
-        notification.success({ message: '修改成功', description: '修改岗位成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.postFunc?.modifyPost(data);
+      notification.success({ message: '修改成功', description: '修改岗位成功' });
+      actionRef.current?.reload();
     }
   };
+
+  const formColumns = [
+    ...(isSuperAdmin ? [{
+      title: '租户',
+      dataIndex: 'tenancyId',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择租户',
+        allowClear: true,
+        options: (props?.tenancyList || []).map((item) => ({ label: item.name, value: item.id })),
+      },
+      formItemProps: { rules: [{ required: true, message: '租户不能为空' }] },
+    }] : []),
+    {
+      title: '岗位名称',
+      dataIndex: 'name',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入岗位名称', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '岗位名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的岗位名称或最多输入50个字符的岗位名称' }] },
+    },
+    {
+      title: '排序',
+      dataIndex: 'sort',
+      valueType: 'digit',
+      fieldProps: { placeholder: '请输入租户排序', stringMode: true, style: { width: '100%' } },
+    },
+    {
+      title: '岗位状态',
+      dataIndex: 'enable',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择岗位状态',
+        allowClear: true,
+        options: [{ label: '禁用', value: 0 }, { label: '启用', value: 1 }],
+      },
+    },
+    {
+      title: '岗位说明',
+      dataIndex: 'description',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入岗位说明', allowClear: true },
+      formItemProps: { rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的岗位说明或最多输入50个字符的岗位说明' }] },
+    },
+  ];
 
   const list = [
     {
@@ -163,9 +190,22 @@ const Index = (props) => {
           <AuthControl key="add" userInfo={props?.userInfo} list={[{ name: '添加岗位', permission: 'post.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} type="button" />,
         ]}
       />
-      <Drawer title={drawType === 0 ? '添加岗位' : '修改岗位'} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
-      </Drawer>
+      <DrawerForm
+        title={drawType === 0 ? '添加岗位' : '修改岗位'}
+        open={showDarw}
+        layout="vertical"
+        initialValues={initFromValue || {}}
+        drawerProps={{ width: 720, destroyOnHidden: true }}
+        onOpenChange={setShowDarw}
+        onFinish={async (values) => {
+          await onFinish(values);
+          return true;
+        }}
+        onReset={() => setShowDarw(false)}
+        submitter={{ searchConfig: { submitText: '确定', resetText: '取消' } }}
+      >
+        <BetaSchemaForm layoutType="Embed" submitter={false} columns={formColumns} />
+      </DrawerForm>
     </div>
   );
 };

@@ -1,95 +1,117 @@
 import React, { useState, useRef } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { roleFrom, assignFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as roleAuthAction from 'store/actions/role';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ProTable } from '@ant-design/pro-components';
-import { Drawer, Switch, notification, Modal } from 'antd';
+import { BetaSchemaForm, DrawerForm, ProTable } from '@ant-design/pro-components';
+import { Switch, notification, Modal } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { BaseFrom, AuthControl } from 'components/index';
+import { AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
   const actionRef = useRef();
   const navigate = useNavigate();
   const [showDarw, setShowDarw] = useState(false);
-  const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
   const [initFromValue, setInitFromValue] = useState(null);
+  const [permissionOptions, setPermissionOptions] = useState([]);
 
   head('角色列表');
+
+  const isSuperAdmin = props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1';
 
   const onOpenDarw = (type) => {
     if (type === 0) {
       setDrawType(0);
-      let from = roleFrom();
-      if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
-        from.unshift({
-          title: '租户',
-          fromType: 'select',
-          name: 'tenancyId',
-          selOption: props?.tenancyList,
-          placeholder: '请选择租户',
-          rules: [{ required: true, message: '租户不能为空' }],
-          options: { allowClear: true },
-        });
-      }
-      setFromData(from);
+      setPermissionOptions([]);
       setShowDarw(true);
-    } else if (type === 1) {
+    } else if (type === 1 || type === 2) {
       props?.commonFunc?.getPermissionList().then((res) => {
-        setDrawType(1);
-        let from = roleFrom(res ?? []);
-        if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
-          from.unshift({
-            title: '租户',
-            fromType: 'select',
-            name: 'tenancyId',
-            selOption: props?.tenancyList,
-            placeholder: '请选择租户',
-            rules: [{ required: true, message: '租户不能为空' }],
-            options: { allowClear: true },
-          });
-        }
-        setFromData(from);
-        setShowDarw(true);
-      });
-    } else if (type === 2) {
-      props?.commonFunc?.getPermissionList().then((res) => {
-        setDrawType(2);
-        setFromData(assignFrom('分配权限', '权限', res ?? []));
+        setDrawType(type);
+        setPermissionOptions((res ?? []).map((item) => ({ label: item.name, value: item.id })));
         setShowDarw(true);
       });
     }
   };
 
-  const onFinish = (data) => {
+  const onFinish = async (data) => {
     if (drawType === 0) {
-      props?.roleFunc?.createRole(data).then(() => {
-        notification.success({ message: '添加成功', description: '添加角色成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.roleFunc?.createRole(data);
+      notification.success({ message: '添加成功', description: '添加角色成功' });
+      actionRef.current?.reload();
     } else if (drawType === 1) {
       data.id = initFromValue.id;
-      props?.roleFunc?.modifyRole(data).then(() => {
-        notification.success({ message: '修改成功', description: '修改角色成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.roleFunc?.modifyRole(data);
+      notification.success({ message: '修改成功', description: '修改角色成功' });
+      actionRef.current?.reload();
     } else if (drawType === 2) {
       data.id = initFromValue.id;
-      props?.roleFunc?.assignPermission(data).then(() => {
-        notification.success({ message: '分配成功', description: '分配角色权限成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.roleFunc?.assignPermission(data);
+      notification.success({ message: '分配成功', description: '分配角色权限成功' });
+      actionRef.current?.reload();
     }
   };
+
+  const tenancyColumn = {
+    title: '租户',
+    dataIndex: 'tenancyId',
+    valueType: 'select',
+    fieldProps: {
+      placeholder: '请选择租户',
+      allowClear: true,
+      options: (props?.tenancyList || []).map((item) => ({ label: item.name, value: item.id })),
+    },
+    formItemProps: { rules: [{ required: true, message: '租户不能为空' }] },
+  };
+  const roleColumns = [
+    {
+      title: '角色名称',
+      dataIndex: 'name',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入角色名称', allowClear: true },
+      formItemProps: { rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的角色名称或最多输入50个字符的角色名称' }] },
+    },
+    {
+      title: '是否启用角色',
+      dataIndex: 'enable',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择是否启用状态',
+        allowClear: true,
+        options: [{ label: '禁用', value: 0 }, { label: '启用', value: 1 }],
+      },
+    },
+    {
+      title: '权限说明',
+      dataIndex: 'description',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入权限说明', allowClear: true },
+      formItemProps: { rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限说明或最多输入50个字符的权限说明' }] },
+    },
+  ];
+  const formColumns = drawType === 2
+    ? [{
+      title: '分配权限',
+      dataIndex: 'ids',
+      valueType: 'select',
+      fieldProps: { mode: 'multiple', placeholder: '请选择权限', allowClear: true, options: permissionOptions },
+      formItemProps: { rules: [{ required: true, message: '权限不能为空' }] },
+    }]
+    : [
+      ...(isSuperAdmin ? [tenancyColumn] : []),
+      ...(drawType === 1 ? [{
+        title: '角色所属权限',
+        dataIndex: 'permissionId',
+        valueType: 'select',
+        fieldProps: { mode: 'multiple', placeholder: '请选择角色所属权限', allowClear: true, options: permissionOptions },
+        formItemProps: { rules: [{ required: true, message: '角色所属权限不能为空' }] },
+      }] : []),
+      ...roleColumns,
+    ];
 
   const list = [
     {
@@ -221,9 +243,22 @@ const Index = (props) => {
           <AuthControl key="add" userInfo={props?.userInfo} list={[{ name: '添加角色', permission: 'role.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} type="button" />,
         ]}
       />
-      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
-      </Drawer>
+      <DrawerForm
+        title={mapTitle[drawType]}
+        open={showDarw}
+        layout="vertical"
+        initialValues={initFromValue || {}}
+        drawerProps={{ width: 720, destroyOnHidden: true }}
+        onOpenChange={setShowDarw}
+        onFinish={async (values) => {
+          await onFinish(values);
+          return true;
+        }}
+        onReset={() => setShowDarw(false)}
+        submitter={{ searchConfig: { submitText: '确定', resetText: '取消' } }}
+      >
+        <BetaSchemaForm layoutType="Embed" submitter={false} columns={formColumns} />
+      </DrawerForm>
     </div>
   );
 };

@@ -1,15 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { tenancyFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as tenancyAction from 'store/actions/tenancy';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ProTable } from '@ant-design/pro-components';
-import { Descriptions, Drawer, Modal, notification, Tag } from 'antd';
+import { BetaSchemaForm, DrawerForm, ProTable } from '@ant-design/pro-components';
+import { Descriptions, Modal, notification, Tag } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { ProTableCompat, AuthControl, BaseFrom } from 'components/index';
+import { ProTableCompat, AuthControl } from 'components/index';
 
 const accountColumns = [
   { title: '账户ID', dataIndex: 'id', key: 'id', width: 80 },
@@ -52,7 +51,6 @@ const accountColumns = [
 const Index = (props) => {
   const actionRef = useRef();
   const [showDarw, setShowDarw] = useState(false);
-  const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
   const [initFromValue, setInitFromValue] = useState(null);
 
@@ -61,27 +59,54 @@ const Index = (props) => {
   const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
       setDrawType(type);
-      setFromData(tenancyFrom());
       setShowDarw(true);
     }
   };
 
-  const onFinish = (data) => {
+  const onFinish = async (data) => {
     if (drawType === 0) {
-      props?.tenancyFunc?.createTenancy(data).then(() => {
-        notification.success({ message: '添加成功', description: '添加租户成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.tenancyFunc?.createTenancy(data);
+      notification.success({ message: '添加成功', description: '添加租户成功' });
+      actionRef.current?.reload();
     } else if (drawType === 1) {
       data.id = initFromValue.id;
-      props?.tenancyFunc?.modifyTenancy(data).then(() => {
-        notification.success({ message: '修改成功', description: '修改租户成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.tenancyFunc?.modifyTenancy(data);
+      notification.success({ message: '修改成功', description: '修改租户成功' });
+      actionRef.current?.reload();
     }
   };
+
+  const formColumns = [
+    {
+      title: '租户名称',
+      dataIndex: 'name',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入租户名称', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '租户名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的租户名称或最多输入50个字符的租户名称' }] },
+    },
+    {
+      title: '排序',
+      dataIndex: 'sort',
+      valueType: 'digit',
+      fieldProps: { placeholder: '请输入租户排序', stringMode: true, style: { width: '100%' } },
+    },
+    {
+      title: '等级',
+      dataIndex: 'level',
+      valueType: 'digit',
+      fieldProps: { placeholder: '请输入租户等级', stringMode: true, style: { width: '100%' } },
+    },
+    {
+      title: '租户状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择租户状态',
+        allowClear: true,
+        options: [{ label: '禁用', value: 0 }, { label: '启用', value: 1 }],
+      },
+    },
+  ];
 
   const list = [
     {
@@ -187,9 +212,22 @@ const Index = (props) => {
           <AuthControl key="add" userInfo={props?.userInfo} list={[{ name: '添加租户', permission: 'tenancy.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} type="button" />,
         ]}
       />
-      <Drawer title={drawType === 0 ? '添加租户' : '修改租户'} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
-      </Drawer>
+      <DrawerForm
+        title={drawType === 0 ? '添加租户' : '修改租户'}
+        open={showDarw}
+        layout="vertical"
+        initialValues={initFromValue || {}}
+        drawerProps={{ width: 720, destroyOnHidden: true }}
+        onOpenChange={setShowDarw}
+        onFinish={async (values) => {
+          await onFinish(values);
+          return true;
+        }}
+        onReset={() => setShowDarw(false)}
+        submitter={{ searchConfig: { submitText: '确定', resetText: '取消' } }}
+      >
+        <BetaSchemaForm layoutType="Embed" submitter={false} columns={formColumns} />
+      </DrawerForm>
     </div>
   );
 };

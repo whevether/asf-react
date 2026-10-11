@@ -1,47 +1,44 @@
 import React, { Fragment, useState, useRef } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { apiFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as apiAuthAction from 'store/actions/authApi';
 import * as permissionAction from 'store/actions/permission';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Drawer, Switch, notification, Modal, Descriptions, Tag } from 'antd';
+import { Switch, notification, Modal, Descriptions, Tag } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { ProTable } from '@ant-design/pro-components';
-import { BaseFrom, AuthControl } from 'components/index';
+import { BetaSchemaForm, DrawerForm, ProTable } from '@ant-design/pro-components';
+import { AuthControl } from 'components/index';
 import { findParentIds } from 'utils/help';
 
 const Index = (props) => {
   const actionRef = useRef();
   const [showDarw, setShowDarw] = useState(false);
-  const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
   const [initFromValue, setInitFromValue] = useState(null);
+  const [permissionTree, setPermissionTree] = useState([]);
 
   head('api列表');
+
+  const isSuperAdmin = props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1';
+  const yesNoOptions = [{ label: '否', value: 0 }, { label: '是', value: 1 }];
+  const httpMethodOptions = [
+    { label: 'get', value: 'get' },
+    { label: 'post', value: 'post' },
+    { label: 'put', value: 'put' },
+    { label: 'delete', value: 'delete' },
+  ];
 
   const onOpenDarw = (type, data) => {
     if (type === 0 || type === 1) {
       props?.permissionFunc?.fetchPermissionList({ pageSize: 9999 })
         .then(res => {
           setDrawType(type);
-          let from = apiFrom(res);
-          if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
-            from.unshift({
-              title: '租户',
-              fromType: 'select',
-              name: 'tenancyId',
-              selOption: props?.tenancyList,
-              placeholder: '请选择租户',
-              rules: [{ required: true, message: '租户不能为空' }],
-              options: { allowClear: true }
-            });
-          }
-          setFromData(from);
+          const permList = Array.isArray(res) ? res : (res?.data || []);
+          setPermissionTree(permList);
           if (data) {
-            let initArr = findParentIds(res, data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
+            let initArr = findParentIds(permList, data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
             if (data?.permission?.parentId !== '0') initArr.push(data?.permission?.parentId);
             initArr.push(data?.permission?.id);
             setInitFromValue({
@@ -65,28 +62,104 @@ const Index = (props) => {
     }
   };
 
-  const onFinish = (data) => {
+  const onFinish = async (data) => {
     if (drawType === 0) {
       data.permissionId = data?.permissionId?.slice(-1)[0];
       data.httpMethods = data?.httpMethods?.join(',');
-      props?.apiAuthFunc?.createApi(data)
-        .then(() => {
-          notification.success({ message: '添加成功', description: '添加api成功' });
-          setShowDarw(false);
-          actionRef.current?.reload();
-        });
+      await props?.apiAuthFunc?.createApi(data);
+      notification.success({ message: '添加成功', description: '添加api成功' });
+      actionRef.current?.reload();
     } else if (drawType === 1) {
       data.permissionId = data?.permissionId?.[data?.permissionId?.length - 1];
       data.httpMethods = data?.httpMethods?.join(',');
       data.id = initFromValue.id;
-      props?.apiAuthFunc?.modifyApi(data)
-        .then(() => {
-          notification.success({ message: '修改成功', description: '修改api成功' });
-          setShowDarw(false);
-          actionRef.current?.reload();
-        });
+      await props?.apiAuthFunc?.modifyApi(data);
+      notification.success({ message: '修改成功', description: '修改api成功' });
+      actionRef.current?.reload();
     }
   };
+
+  const formColumns = [
+    ...(isSuperAdmin ? [{
+      title: '租户',
+      dataIndex: 'tenancyId',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择租户',
+        allowClear: true,
+        options: (props?.tenancyList || []).map((item) => ({ label: item.name, value: item.id })),
+      },
+      formItemProps: { rules: [{ required: true, message: '租户不能为空' }] },
+    }] : []),
+    {
+      title: 'api所属权限',
+      dataIndex: 'permissionId',
+      valueType: 'cascader',
+      fieldProps: { placeholder: '请选择api所属权限', allowClear: true, changeOnSelect: true, options: permissionTree },
+      formItemProps: { rules: [{ required: true, message: 'api所属权限不能为空' }] },
+    },
+    {
+      title: 'api名称',
+      dataIndex: 'name',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入api名称', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: 'api名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的api名称或最多输入50个字符的api名称' }] },
+    },
+    {
+      title: 'api地址',
+      dataIndex: 'path',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入api地址', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: 'api地址不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入1个字符的api地址或最多输入50个字符的api地址' }] },
+    },
+    {
+      title: 'api状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择api状态',
+        allowClear: true,
+        options: [{ label: '禁用', value: 0 }, { label: '启用', value: 1 }],
+      },
+    },
+    {
+      title: '是否记录日志',
+      dataIndex: 'isLogger',
+      valueType: 'select',
+      fieldProps: { placeholder: '请选择是否记录日志', allowClear: true, options: yesNoOptions },
+    },
+    {
+      title: '是否为系统权限',
+      dataIndex: 'isSystem',
+      valueType: 'select',
+      fieldProps: { placeholder: '请选择是否为系统权限', allowClear: true, options: yesNoOptions },
+    },
+    {
+      title: 'api类型',
+      dataIndex: 'type',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择api类型',
+        allowClear: true,
+        options: [{ label: '开放api', value: 1 }, { label: '授权api', value: 2 }],
+      },
+      formItemProps: { rules: [{ required: true, message: 'api类型不能为空' }] },
+    },
+    {
+      title: 'api请求方法',
+      dataIndex: 'httpMethods',
+      valueType: 'select',
+      fieldProps: { mode: 'multiple', placeholder: '请选择api请求方法', allowClear: true, options: httpMethodOptions },
+      formItemProps: { rules: [{ required: true, message: 'api请求方法不能为空' }] },
+    },
+    {
+      title: 'api说明',
+      dataIndex: 'description',
+      valueType: 'textarea',
+      fieldProps: { placeholder: '请输入api说明' },
+      formItemProps: { rules: [{ type: 'string', min: 1, max: 500, message: '最少输入1个字符的api说明或最多输入500个字符的api说明' }] },
+    },
+  ];
 
   const list = [{
     name: '修改api',
@@ -256,9 +329,22 @@ const Index = (props) => {
           />
         ]}
       />
-      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
-      </Drawer>
+      <DrawerForm
+        title={mapTitle[drawType]}
+        open={showDarw}
+        layout="vertical"
+        initialValues={initFromValue || {}}
+        drawerProps={{ width: 720, destroyOnHidden: true }}
+        onOpenChange={setShowDarw}
+        onFinish={async (values) => {
+          await onFinish(values);
+          return true;
+        }}
+        onReset={() => setShowDarw(false)}
+        submitter={{ searchConfig: { submitText: '确定', resetText: '取消' } }}
+      >
+        <BetaSchemaForm layoutType="Embed" submitter={false} columns={formColumns} />
+      </DrawerForm>
     </div>
   );
 };

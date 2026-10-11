@@ -1,99 +1,140 @@
 import React, { useState, useRef } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { departmentFrom, assignFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as departmentAction from 'store/actions/department';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ProTable } from '@ant-design/pro-components';
-import { Drawer, Switch, notification, Modal } from 'antd';
+import { BetaSchemaForm, DrawerForm, ProTable } from '@ant-design/pro-components';
+import { Switch, notification, Modal } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { BaseFrom, AuthControl } from 'components/index';
+import { AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
   const actionRef = useRef();
   const navigate = useNavigate();
   const [showDarw, setShowDarw] = useState(false);
-  const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
   const [initFromValue, setInitFromValue] = useState(null);
+  const [departmentTree, setDepartmentTree] = useState([]);
+  const [roleOptions, setRoleOptions] = useState([]);
 
   head('部门列表');
+
+  const isSuperAdmin = props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1';
+
+  const withTopDepartment = (list) => {
+    const deps = [...(list || [])];
+    if (!deps.some((item) => item.value === 0)) deps.unshift({ label: '顶级部门', value: '0', children: [] });
+    return deps;
+  };
 
   const onOpenDarw = (type) => {
     if (type === 0) {
       props?.commonFunc?.getDepartmentList().then((res) => {
         setDrawType(0);
-        if (!res?.some((f) => f.value === 0)) res?.unshift({ label: '顶级部门', value: '0', children: [] });
-        let from = departmentFrom(res ?? []);
-        if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
-          from.unshift({
-            title: '租户',
-            fromType: 'select',
-            name: 'tenancyId',
-            selOption: props?.tenancyList,
-            placeholder: '请选择租户',
-            rules: [{ required: true, message: '租户不能为空' }],
-            options: { allowClear: true },
-          });
-        }
-        setFromData(from);
+        setDepartmentTree(withTopDepartment(res));
+        setRoleOptions([]);
         setShowDarw(true);
       });
     } else if (type === 1) {
       Promise.all([props?.commonFunc?.getRoleList(), props?.commonFunc?.getDepartmentList()]).then(([roles, deps]) => {
         setDrawType(1);
-        if (!deps?.some((f) => f.value === 0)) deps?.unshift({ label: '顶级部门', value: '0', children: [] });
-        let from = departmentFrom(deps ?? [], roles ?? []);
-        if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
-          from.unshift({
-            title: '租户',
-            fromType: 'select',
-            name: 'tenancyId',
-            selOption: props?.tenancyList,
-            placeholder: '请选择租户',
-            rules: [{ required: true, message: '租户不能为空' }],
-            options: { allowClear: true },
-          });
-        }
-        setFromData(from);
+        setDepartmentTree(withTopDepartment(deps));
+        setRoleOptions((roles ?? []).map((item) => ({ label: item.name, value: item.id })));
         setShowDarw(true);
       });
     } else if (type === 2) {
       props?.commonFunc?.getRoleList().then((res) => {
         setDrawType(2);
-        setFromData(assignFrom('分配角色', '角色', res ?? []));
+        setRoleOptions((res ?? []).map((item) => ({ label: item.name, value: item.id })));
         setShowDarw(true);
       });
     }
   };
 
-  const onFinish = (data) => {
+  const onFinish = async (data) => {
     if (drawType === 0) {
-      props?.departmentFunc?.createDepartment(data).then(() => {
-        notification.success({ message: '添加成功', description: '添加部门成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.departmentFunc?.createDepartment(data);
+      notification.success({ message: '添加成功', description: '添加部门成功' });
+      actionRef.current?.reload();
     } else if (drawType === 1) {
       data.id = initFromValue.id;
-      props?.departmentFunc?.modifyDepartment(data).then(() => {
-        notification.success({ message: '修改成功', description: '修改部门成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.departmentFunc?.modifyDepartment(data);
+      notification.success({ message: '修改成功', description: '修改部门成功' });
+      actionRef.current?.reload();
     } else if (drawType === 2) {
       data.id = initFromValue.id;
-      props?.departmentFunc?.assignRole(data).then(() => {
-        notification.success({ message: '分配成功', description: '分配部门角色成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.departmentFunc?.assignRole(data);
+      notification.success({ message: '分配成功', description: '分配部门角色成功' });
+      actionRef.current?.reload();
     }
   };
+
+  const tenancyColumn = {
+    title: '租户',
+    dataIndex: 'tenancyId',
+    valueType: 'select',
+    fieldProps: {
+      placeholder: '请选择租户',
+      allowClear: true,
+      options: (props?.tenancyList || []).map((item) => ({ label: item.name, value: item.id })),
+    },
+    formItemProps: { rules: [{ required: true, message: '租户不能为空' }] },
+  };
+  const departmentColumns = [
+    {
+      title: '父级部门',
+      dataIndex: 'departmentId',
+      valueType: 'cascader',
+      fieldProps: { placeholder: '请选择部门', allowClear: true, changeOnSelect: true, options: departmentTree },
+      formItemProps: { rules: [{ required: true, message: '部门不能为空' }] },
+    },
+    {
+      title: '部门名称',
+      dataIndex: 'name',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入部门名称', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '部门名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的部门名称或最多输入50个字符的部门名称' }] },
+    },
+    {
+      title: '排序',
+      dataIndex: 'sort',
+      valueType: 'digit',
+      fieldProps: { placeholder: '请输入租户排序', stringMode: true, style: { width: '100%' } },
+    },
+    {
+      title: '部门状态',
+      dataIndex: 'enable',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择部门状态',
+        allowClear: true,
+        options: [{ label: '禁用', value: 0 }, { label: '启用', value: 1 }],
+      },
+    },
+  ];
+  const formColumns = drawType === 2
+    ? [{
+      title: '分配角色',
+      dataIndex: 'ids',
+      valueType: 'select',
+      fieldProps: { mode: 'multiple', placeholder: '请选择角色', allowClear: true, options: roleOptions },
+      formItemProps: { rules: [{ required: true, message: '角色不能为空' }] },
+    }]
+    : [
+      ...(isSuperAdmin ? [tenancyColumn] : []),
+      ...(drawType === 1 ? [{
+        title: '分配角色',
+        dataIndex: 'roleIds',
+        valueType: 'select',
+        fieldProps: { mode: 'multiple', placeholder: '请选择角色', allowClear: true, options: roleOptions },
+        formItemProps: { rules: [{ required: true, message: '角色不能为空' }] },
+      }] : []),
+      ...departmentColumns,
+    ];
 
   const list = [
     {
@@ -225,9 +266,22 @@ const Index = (props) => {
           <AuthControl key="add" userInfo={props?.userInfo} list={[{ name: '添加部门', permission: 'department.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} type="button" />,
         ]}
       />
-      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
-      </Drawer>
+      <DrawerForm
+        title={mapTitle[drawType]}
+        open={showDarw}
+        layout="vertical"
+        initialValues={initFromValue || {}}
+        drawerProps={{ width: 720, destroyOnHidden: true }}
+        onOpenChange={setShowDarw}
+        onFinish={async (values) => {
+          await onFinish(values);
+          return true;
+        }}
+        onReset={() => setShowDarw(false)}
+        submitter={{ searchConfig: { submitText: '确定', resetText: '取消' } }}
+      >
+        <BetaSchemaForm layoutType="Embed" submitter={false} columns={formColumns} />
+      </DrawerForm>
     </div>
   );
 };

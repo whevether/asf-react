@@ -1,26 +1,25 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { permissionFrom, assignFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as permissionAction from 'store/actions/permission';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Drawer, Switch, notification, Modal } from 'antd';
+import { BetaSchemaForm, DrawerForm, ProTable } from '@ant-design/pro-components';
+import { Switch, notification, Modal } from 'antd';
 import { CloudSyncOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { ProTable } from '@ant-design/pro-components';
-import { BaseFrom, AuthControl } from 'components/index';
+import { AuthControl } from 'components/index';
 import { findParentIds } from 'utils/help';
 import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
   const actionRef = useRef();
   const [showDarw, setShowDarw] = useState(false);
-  const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
   const [initFromValue, setInitFromValue] = useState(null);
   const [permissionIds, setPermissionIds] = useState([]);
+  const [roleOptions, setRoleOptions] = useState([]);
   const navigate = useNavigate();
 
   head('权限列表');
@@ -37,64 +36,122 @@ const Index = (props) => {
     return list;
   };
 
+  const isSuperAdmin = props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1';
+
   const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
-      let from = permissionFrom(onAddTree());
-      if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
-        from.unshift({
-          title: '租户',
-          fromType: 'select',
-          name: 'tenancyId',
-          selOption: props?.tenancyList,
-          placeholder: '请选择租户',
-          rules: [{ required: true, message: '租户不能为空' }],
-          options: { allowClear: true }
-        });
-      }
       setDrawType(type);
-      setFromData(from);
       setShowDarw(true);
     } else if (type === 2) {
-      props?.commonFunc?.getRoleList()
-        .then(res => {
-          let from = assignFrom('分配角色', '角色', res, 'id', 'select', '');
-          setDrawType(type);
-          setFromData(from);
-          setShowDarw(true);
-        });
+      props?.commonFunc?.getRoleList().then((res) => {
+        setRoleOptions((res || []).map((item) => ({ label: item.name, value: item.id })));
+        setDrawType(type);
+        setShowDarw(true);
+      });
     }
   };
 
-  const onFinish = (data) => {
+  const onFinish = async (data) => {
     if (drawType === 0) {
       data.parentId = data?.parentId?.slice(-1)[0];
-      props?.permissionFunc?.createPermission(data)
-        .then(() => {
-          notification.success({ message: '添加成功', description: '添加权限成功' });
-          setShowDarw(false);
-          props?.permissionFunc?.fetchPermissionList({ pageSize: 200 });
-          actionRef.current?.reload();
-        });
+      await props?.permissionFunc?.createPermission(data);
+      notification.success({ message: '添加成功', description: '添加权限成功' });
+      props?.permissionFunc?.fetchPermissionList({ pageSize: 200 });
+      actionRef.current?.reload();
     } else if (drawType === 1) {
       data.parentId = data?.parentId?.[data?.parentId?.length - 2];
       data.id = initFromValue.id;
-      props?.permissionFunc?.modifyPermission(data)
-        .then(() => {
-          notification.success({ message: '修改成功', description: '修改权限成功' });
-          setShowDarw(false);
-          props?.permissionFunc?.fetchPermissionList({ pageSize: 200 });
-          actionRef.current?.reload();
-        });
+      await props?.permissionFunc?.modifyPermission(data);
+      notification.success({ message: '修改成功', description: '修改权限成功' });
+      props?.permissionFunc?.fetchPermissionList({ pageSize: 200 });
+      actionRef.current?.reload();
     } else if (drawType === 2) {
-      props?.permissionFunc?.assignPermission({ ...data, ids: permissionIds })
-        .then(() => {
-          notification.success({ message: '分配成功', description: '分配权限成功' });
-          setShowDarw(false);
-          props?.permissionFunc?.fetchPermissionList({ pageSize: 200 });
-          actionRef.current?.reload();
-        });
+      await props?.permissionFunc?.assignPermission({ ...data, ids: permissionIds });
+      notification.success({ message: '分配成功', description: '分配权限成功' });
+      props?.permissionFunc?.fetchPermissionList({ pageSize: 200 });
+      actionRef.current?.reload();
     }
   };
+
+  const yesNoOptions = [{ label: '否', value: 0 }, { label: '是', value: 1 }];
+  const formColumns = drawType === 2
+    ? [{
+      title: '分配角色',
+      dataIndex: 'id',
+      valueType: 'select',
+      fieldProps: { placeholder: '请选择角色', allowClear: true, options: roleOptions },
+      formItemProps: { rules: [{ required: true, message: '角色不能为空' }] },
+    }]
+    : [
+      ...(isSuperAdmin ? [{
+        title: '租户',
+        dataIndex: 'tenancyId',
+        valueType: 'select',
+        fieldProps: {
+          placeholder: '请选择租户',
+          allowClear: true,
+          options: (props?.tenancyList || []).map((item) => ({ label: item.name, value: item.id })),
+        },
+        formItemProps: { rules: [{ required: true, message: '租户不能为空' }] },
+      }] : []),
+      {
+        title: '父级权限',
+        dataIndex: 'parentId',
+        valueType: 'cascader',
+        fieldProps: { placeholder: '父级权限', allowClear: true, changeOnSelect: true, options: onAddTree() },
+        formItemProps: { rules: [{ required: true, message: '父级权限不能为空' }] },
+      },
+      {
+        title: '权限代码(页面路径,不包含域名)',
+        dataIndex: 'code',
+        valueType: 'text',
+        fieldProps: { placeholder: '请输入权限代码(页面路径)', allowClear: true },
+        formItemProps: { rules: [{ required: true, message: '权限类型不能为空' }, { type: 'string', min: 1, max: 50, message: '最少输入1个字符的权限代码(页面路径)或最多输入50个字符的权限代码(页面路径)' }] },
+      },
+      {
+        title: '权限名称',
+        dataIndex: 'name',
+        valueType: 'text',
+        fieldProps: { placeholder: '请输入权限名称', allowClear: true },
+        formItemProps: { rules: [{ required: true, message: '权限类型不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限名或最多输入50个字符的权限名称' }] },
+      },
+      {
+        title: '权限说明',
+        dataIndex: 'description',
+        valueType: 'text',
+        fieldProps: { placeholder: '请输入权限说明', allowClear: true },
+        formItemProps: { rules: [{ type: 'string', min: 2, max: 50, message: '最少输入2个字符的权限说明或最多输入50个字符的权限说明' }] },
+      },
+      {
+        title: '权限类型',
+        dataIndex: 'type',
+        valueType: 'select',
+        fieldProps: {
+          placeholder: '请选择权限类型',
+          allowClear: true,
+          options: [{ label: '菜单', value: 1 }, { label: '菜单条目', value: 2 }, { label: '功能', value: 3 }],
+        },
+        formItemProps: { rules: [{ required: true, message: '权限类型不能为空' }] },
+      },
+      {
+        title: '是否为系统权限',
+        dataIndex: 'isSystem',
+        valueType: 'select',
+        fieldProps: { placeholder: '请选择是否为系统权限', allowClear: true, options: yesNoOptions },
+      },
+      {
+        title: '排序',
+        dataIndex: 'sort',
+        valueType: 'digit',
+        fieldProps: { placeholder: '请输入排序', stringMode: true, style: { width: '100%' } },
+      },
+      {
+        title: '是否启用',
+        dataIndex: 'enable',
+        valueType: 'select',
+        fieldProps: { placeholder: '请选择是否启用', allowClear: true, options: yesNoOptions },
+      },
+    ];
 
   const list = [{
     name: '修改权限',
@@ -283,9 +340,22 @@ const Index = (props) => {
           />
         ]}
       />
-      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
-      </Drawer>
+      <DrawerForm
+        title={mapTitle[drawType]}
+        open={showDarw}
+        layout="vertical"
+        initialValues={initFromValue || {}}
+        drawerProps={{ width: 720, destroyOnHidden: true }}
+        onOpenChange={setShowDarw}
+        onFinish={async (values) => {
+          await onFinish(values);
+          return true;
+        }}
+        onReset={() => setShowDarw(false)}
+        submitter={{ searchConfig: { submitText: '确定', resetText: '取消' } }}
+      >
+        <BetaSchemaForm layoutType="Embed" submitter={false} columns={formColumns} />
+      </DrawerForm>
     </div>
   );
 };

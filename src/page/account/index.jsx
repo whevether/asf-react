@@ -1,150 +1,245 @@
 import React, { useState, useRef } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { accountFrom, assignFrom, passwordFrom, emailFrom, telphoneFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as accountAction from 'store/actions/account';
 import * as commonAction from 'store/actions/common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Drawer, notification, Switch, Modal, Upload, Image, Tooltip } from 'antd';
+import { notification, Switch, Modal, Upload, Image, Tooltip } from 'antd';
 import { ExclamationCircleOutlined, InboxOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
-import { ProTable } from '@ant-design/pro-components';
-import { BaseFrom, AuthControl } from 'components/index';
+import { BetaSchemaForm, DrawerForm, ProTable } from '@ant-design/pro-components';
+import { AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
   const actionRef = useRef();
   const [showDarw, setShowDarw] = useState(false);
-  const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
   const [initFromValue, setInitFromValue] = useState(null);
+  const [departmentTree, setDepartmentTree] = useState([]);
+  const [postOptions, setPostOptions] = useState([]);
+  const [roleOptions, setRoleOptions] = useState([]);
   const [account, setAccount] = useState(null);
   const navigate = useNavigate();
 
   head('账户列表');
 
+  const isSuperAdmin = props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1';
+  const toOptions = (list) => (list || []).map((item) => ({ label: item.name, value: item.id }));
+
   const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
       Promise.all([props?.commonFunc?.getDepartmentList(), props?.commonFunc?.getPostList()])
         .then(res => {
-          let from = accountFrom.filter(f => {
-            if (f.name === 'departmentId') f.selOption = res[0];
-            if (f.name === 'postId') f.selOption = res[1];
-            return f;
-          });
-          if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
-            from.unshift({
-              title: '租户',
-              fromType: 'select',
-              name: 'tenancyId',
-              selOption: props?.tenancyList,
-              placeholder: '请选择租户',
-              rules: [{ required: true, message: '租户不能为空' }],
-              options: { allowClear: true }
-            });
-          }
+          setDepartmentTree(res[0] || []);
+          setPostOptions(toOptions(res[1]));
           setDrawType(type);
-          setFromData(from);
           setShowDarw(true);
         });
     } else if (type === 2) {
       props?.commonFunc?.getRoleList().then(res => {
-        let from = assignFrom('分配角色', '角色', res);
+        setRoleOptions(toOptions(res));
         setDrawType(type);
-        setFromData(from);
         setShowDarw(true);
       });
     } else if (type === 3) {
       props?.commonFunc?.getDepartmentList().then(res => {
-        let from = assignFrom('分配部门', '部门', res, 'departmentId', 'cascader', '');
+        setDepartmentTree(res || []);
         setDrawType(type);
-        setFromData(from);
         setShowDarw(true);
       });
     } else if (type === 4) {
       props?.commonFunc?.getPostList().then(res => {
-        let from = assignFrom('分配岗位', '岗位', res);
+        setPostOptions(toOptions(res));
         setDrawType(type);
-        setFromData(from);
         setShowDarw(true);
       });
-    } else if (type === 5) {
+    } else if (type === 5 || type === 6 || type === 7) {
       setDrawType(type);
-      setFromData(passwordFrom());
-      setShowDarw(true);
-    } else if (type === 6) {
-      setDrawType(type);
-      setFromData(telphoneFrom());
-      setShowDarw(true);
-    } else if (type === 7) {
-      setDrawType(type);
-      setFromData(emailFrom());
       setShowDarw(true);
     }
   };
 
-  const onFinish = (data) => {
+  const onFinish = async (data) => {
     if (drawType === 0) {
       data.departmentId = data.departmentId?.slice(-1)[0];
-      props?.accountFunc?.createAccount(data).then(() => {
-        notification.success({ message: '添加成功', description: '添加账户成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.accountFunc?.createAccount(data);
+      notification.success({ message: '添加成功', description: '添加账户成功' });
+      actionRef.current?.reload();
     } else if (drawType === 1) {
       data.departmentId = data.departmentId?.slice(-1)[0];
       data.id = initFromValue.id;
-      props?.accountFunc?.modifyAccount(data).then(() => {
-        notification.success({ message: '修改成功', description: '修改账户成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.accountFunc?.modifyAccount(data);
+      notification.success({ message: '修改成功', description: '修改账户成功' });
+      actionRef.current?.reload();
     } else if (drawType === 2) {
       data.id = initFromValue.id;
-      props?.accountFunc?.assignAccountRole(data).then(() => {
-        notification.success({ message: '分配角色', description: '分配角色成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.accountFunc?.assignAccountRole(data);
+      notification.success({ message: '分配角色', description: '分配角色成功' });
+      actionRef.current?.reload();
     } else if (drawType === 3) {
       data.id = initFromValue.id;
       data.departmentId = data.departmentId?.slice(-1)[0];
-      props?.accountFunc?.assignAccountDepartment(data).then(() => {
-        notification.success({ message: '分配部门', description: '分配部门成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.accountFunc?.assignAccountDepartment(data);
+      notification.success({ message: '分配部门', description: '分配部门成功' });
+      actionRef.current?.reload();
     } else if (drawType === 4) {
       data.id = initFromValue.id;
-      props?.accountFunc?.assignAccountPost(data).then(() => {
-        notification.success({ message: '分配岗位', description: '分配岗位成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.accountFunc?.assignAccountPost(data);
+      notification.success({ message: '分配岗位', description: '分配岗位成功' });
+      actionRef.current?.reload();
     } else if (drawType === 5) {
       data.id = initFromValue.id;
-      props?.accountFunc?.resetAccountPassword(data).then(() => {
-        notification.success({ message: '修改密码', description: '修改密码成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.accountFunc?.resetAccountPassword(data);
+      notification.success({ message: '修改密码', description: '修改密码成功' });
+      actionRef.current?.reload();
     } else if (drawType === 6) {
       data.id = initFromValue.id;
-      props?.accountFunc?.modifyAccountTelPhone(data).then(() => {
-        notification.success({ message: '修改手机', description: '修改手机成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.accountFunc?.modifyAccountTelPhone(data);
+      notification.success({ message: '修改手机', description: '修改手机成功' });
+      actionRef.current?.reload();
     } else if (drawType === 7) {
       data.id = initFromValue.id;
-      props?.accountFunc?.modifyAccountEmail(data).then(() => {
-        notification.success({ message: '修改邮箱', description: '修改邮箱成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.accountFunc?.modifyAccountEmail(data);
+      notification.success({ message: '修改邮箱', description: '修改邮箱成功' });
+      actionRef.current?.reload();
     }
   };
+
+  const tenancyColumn = {
+    title: '租户',
+    dataIndex: 'tenancyId',
+    valueType: 'select',
+    fieldProps: {
+      placeholder: '请选择租户',
+      allowClear: true,
+      options: (props?.tenancyList || []).map((item) => ({ label: item.name, value: item.id })),
+    },
+    formItemProps: { rules: [{ required: true, message: '租户不能为空' }] },
+  };
+  const accountColumns = [
+    {
+      title: '部门',
+      dataIndex: 'departmentId',
+      valueType: 'cascader',
+      fieldProps: { placeholder: '请选择部门', allowClear: true, changeOnSelect: true, options: departmentTree },
+      formItemProps: { rules: [{ required: true, message: '部门不能为空' }] },
+    },
+    {
+      title: '岗位',
+      dataIndex: 'postId',
+      valueType: 'select',
+      fieldProps: { mode: 'multiple', placeholder: '请选择岗位', allowClear: true, options: postOptions },
+      formItemProps: { rules: [{ required: true, message: '岗位不能为空' }] },
+    },
+    {
+      title: '账户名',
+      dataIndex: 'username',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入账户名', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '账户名不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的账户名或最多输入50个字符的账户名' }] },
+    },
+    {
+      title: '密码',
+      dataIndex: 'password',
+      valueType: 'password',
+      fieldProps: { placeholder: '请输入账户密码', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '账户密码不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的账户密码或最多输入50个字符的账户密码' }] },
+    },
+    {
+      title: '昵称',
+      dataIndex: 'name',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入昵称', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '昵称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的昵称或最多输入50个字符的昵称' }] },
+    },
+    {
+      title: '账户状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择账户状态',
+        allowClear: true,
+        options: [{ label: '禁用', value: 0 }, { label: '启用', value: 1 }],
+      },
+      formItemProps: { rules: [{ required: true, message: '账户状态不能为空' }] },
+    },
+    {
+      title: '性别',
+      dataIndex: 'sex',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择性别',
+        allowClear: true,
+        options: [{ label: '未知', value: 0 }, { label: '男', value: 1 }, { label: '女', value: 2 }],
+      },
+      formItemProps: { rules: [{ required: true, message: '性别不能为空' }] },
+    },
+    {
+      title: '手机号码',
+      dataIndex: 'telphone',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入手机号码', allowClear: true },
+      formItemProps: { rules: [{ type: 'string', pattern: /^1[0-9]{10}$/, message: '输入的手机号码不正确' }] },
+    },
+    {
+      title: '邮箱地址',
+      dataIndex: 'email',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入邮箱地址', allowClear: true },
+      formItemProps: { rules: [{ type: 'string', pattern: /^[-\w+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/, message: '输入的邮箱地址不正确不正确' }] },
+    },
+  ];
+  const formColumns = (drawType === 0 || drawType === 1)
+    ? [...(isSuperAdmin ? [tenancyColumn] : []), ...accountColumns]
+    : drawType === 2
+      ? [{
+        title: '分配角色',
+        dataIndex: 'ids',
+        valueType: 'select',
+        fieldProps: { mode: 'multiple', placeholder: '请选择角色', allowClear: true, options: roleOptions },
+        formItemProps: { rules: [{ required: true, message: '角色不能为空' }] },
+      }]
+      : drawType === 3
+        ? [{
+          title: '分配部门',
+          dataIndex: 'departmentId',
+          valueType: 'cascader',
+          fieldProps: { placeholder: '请选择部门', allowClear: true, changeOnSelect: true, options: departmentTree },
+          formItemProps: { rules: [{ required: true, message: '部门不能为空' }] },
+        }]
+        : drawType === 4
+          ? [{
+            title: '分配岗位',
+            dataIndex: 'ids',
+            valueType: 'select',
+            fieldProps: { mode: 'multiple', placeholder: '请选择岗位', allowClear: true, options: postOptions },
+            formItemProps: { rules: [{ required: true, message: '岗位不能为空' }] },
+          }]
+          : drawType === 5
+            ? [{
+              title: '密码',
+              dataIndex: 'password',
+              valueType: 'password',
+              fieldProps: { placeholder: '请输入账户密码', allowClear: true },
+              formItemProps: { rules: [{ required: true, message: '账户密码不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的账户密码或最多输入50个字符的账户密码' }] },
+            }]
+            : drawType === 6
+              ? [{
+                title: '手机号码',
+                dataIndex: 'telphone',
+                valueType: 'text',
+                fieldProps: { placeholder: '请输入手机号码' },
+                formItemProps: { rules: [{ type: 'string', pattern: /^1[0-9]{10}$/, message: '输入的手机号码不正确' }] },
+              }]
+              : [{
+                title: '邮箱地址',
+                dataIndex: 'email',
+                valueType: 'text',
+                fieldProps: { placeholder: '请输入邮箱地址', allowClear: true },
+                formItemProps: { rules: [{ type: 'string', pattern: /^[-\w+]+(?:\.[-\w]+)*@[-a-z0-9]+(?:\.[a-z0-9]+)*(?:\.[a-z]{2,})$/, message: '输入的邮箱地址不正确不正确' }] },
+              }];
 
   const list = [
     { name: '账户详情', permission: 'account.details', click: (data) => navigate(`/control/account/details?id=${data?.id}`) },
@@ -338,9 +433,22 @@ const Index = (props) => {
           />
         ]}
       />
-      <Drawer title={mapDrawTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
-      </Drawer>
+      <DrawerForm
+        title={mapDrawTitle[drawType]}
+        open={showDarw}
+        layout="vertical"
+        initialValues={initFromValue || {}}
+        drawerProps={{ width: 720, destroyOnHidden: true }}
+        onOpenChange={setShowDarw}
+        onFinish={async (values) => {
+          await onFinish(values);
+          return true;
+        }}
+        onReset={() => setShowDarw(false)}
+        submitter={{ searchConfig: { submitText: '确定', resetText: '取消' } }}
+      >
+        <BetaSchemaForm layoutType="Embed" submitter={false} columns={formColumns} />
+      </DrawerForm>
       <Modal title="修改头像" open={!!account} closable onCancel={() => setAccount(null)} onOk={() => setAccount(null)} footer={null}>
         {account?.avatar && (
           <div className="remove-avatar">

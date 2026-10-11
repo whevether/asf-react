@@ -1,20 +1,18 @@
 import React, { useState, useRef } from 'react';
 import { head } from 'utils/head';
-import { countryFrom } from 'utils/json';
 import { timeToDate } from 'utils/storage';
 import PropTypes from 'prop-types';
 import * as countryAction from 'store/actions/country';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ProTable } from '@ant-design/pro-components';
-import { Modal, notification, Drawer, Tag } from 'antd';
+import { BetaSchemaForm, DrawerForm, ProTable } from '@ant-design/pro-components';
+import { Modal, notification, Tag } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { AuthControl, BaseFrom } from 'components/index';
+import { AuthControl } from 'components/index';
 
 const Index = (props) => {
   const actionRef = useRef();
   const [showDarw, setShowDarw] = useState(false);
-  const [fromData, setFromData] = useState(countryFrom());
   const [drawType, setDrawType] = useState(0);
   const [initFromValue, setInitFromValue] = useState(null);
 
@@ -22,26 +20,69 @@ const Index = (props) => {
 
   const onOpenDarw = (type) => {
     setDrawType(type);
-    setFromData(countryFrom());
     setShowDarw(true);
   };
 
-  const onFinish = (data) => {
+  const onFinish = async (data) => {
     if (drawType === 0) {
-      props?.countryFunc?.createCountry(data).then(() => {
-        notification.success({ message: '添加成功', description: '添加国家成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.countryFunc?.createCountry(data);
+      notification.success({ message: '添加成功', description: '添加国家成功' });
+      actionRef.current?.reload();
     } else if (drawType === 1) {
       data.id = initFromValue.id;
-      props?.countryFunc?.modifyCountry(data).then(() => {
-        notification.success({ message: '修改成功', description: '修改国家成功' });
-        setShowDarw(false);
-        actionRef.current?.reload();
-      });
+      await props?.countryFunc?.modifyCountry(data);
+      notification.success({ message: '修改成功', description: '修改国家成功' });
+      actionRef.current?.reload();
     }
   };
+
+  const formColumns = [
+    {
+      title: '国家名称',
+      dataIndex: 'name',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入国家名称', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '国家名称不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的国家名称或最多输入50个字符的国家名称' }] },
+    },
+    {
+      title: '国家code',
+      dataIndex: 'languageCode',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入国家code', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '国家code不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的国家code或最多输入50个字符的国家code' }] },
+    },
+    {
+      title: '国家币种代码',
+      dataIndex: 'currencyType',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入国家币种代码', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '国家币种代码不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的国家币种代码或最多输入50个字符的国家币种代码' }] },
+    },
+    {
+      title: '目标国与RMB之间汇率',
+      dataIndex: 'ratio',
+      valueType: 'digit',
+      fieldProps: { placeholder: '请输入目标国与RMB之间汇率', stringMode: true, style: { width: '100%' } },
+      formItemProps: { rules: [{ required: true, message: '目标国与RMB之间汇率不能为空' }] },
+    },
+    {
+      title: '目标国提现手续费利率',
+      dataIndex: 'withdrawalRatio',
+      valueType: 'digit',
+      fieldProps: { placeholder: '请输入目标提现手续费利率', stringMode: true, style: { width: '100%' } },
+      formItemProps: { rules: [{ required: true, message: '目标提现手续费利率不能为空' }] },
+    },
+    {
+      title: '国家状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择国家状态',
+        allowClear: true,
+        options: [{ label: '禁用', value: 0 }, { label: '启用', value: 1 }],
+      },
+    },
+  ];
 
   const list = [
     {
@@ -155,14 +196,22 @@ const Index = (props) => {
           />,
         ]}
       />
-      <Drawer
+      <DrawerForm
         title={drawType === 0 ? '添加国家' : '修改国家'}
-        width={720}
         open={showDarw}
-        onClose={() => setShowDarw(false)}
+        layout="vertical"
+        initialValues={initFromValue || {}}
+        drawerProps={{ width: 720, destroyOnHidden: true }}
+        onOpenChange={setShowDarw}
+        onFinish={async (values) => {
+          await onFinish(values);
+          return true;
+        }}
+        onReset={() => setShowDarw(false)}
+        submitter={{ searchConfig: { submitText: '确定', resetText: '取消' } }}
       >
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
-      </Drawer>
+        <BetaSchemaForm layoutType="Embed" submitter={false} columns={formColumns} />
+      </DrawerForm>
     </div>
   );
 };

@@ -1,17 +1,16 @@
 import React, { Fragment, useState, useRef } from 'react';
 import { head } from 'utils/head';
 import { timeToDate } from 'utils/storage';
-import { menuFrom } from 'utils/json';
 import PropTypes from 'prop-types';
 import * as menuAction from 'store/actions/menu';
 import * as permissionAction from 'store/actions/permission';
 import * as translateAction from 'store/actions/translate';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Drawer, Switch, notification, Modal, Descriptions, Tag } from 'antd';
+import { Switch, notification, Modal, Descriptions, Tag } from 'antd';
 import { createFromIconfontCN, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { ProTable } from '@ant-design/pro-components';
-import { BaseFrom, AuthControl } from 'components/index';
+import { BetaSchemaForm, DrawerForm, ProTable } from '@ant-design/pro-components';
+import { AuthControl } from 'components/index';
 import { findParentIds } from 'utils/help';
 
 const IconFont = createFromIconfontCN({
@@ -21,11 +20,15 @@ const IconFont = createFromIconfontCN({
 const Index = (props) => {
   const actionRef = useRef();
   const [showDarw, setShowDarw] = useState(false);
-  const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
   const [initFromValue, setInitFromValue] = useState(null);
+  const [permissionTree, setPermissionTree] = useState([]);
+  const [translateOptions, setTranslateOptions] = useState([]);
 
   head('菜单列表');
+
+  const isSuperAdmin = props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1';
+  const yesNoOptions = [{ label: '否', value: 0 }, { label: '是', value: 1 }];
 
   const onOpenDarw = (type, data) => {
     if (type === 0 || type === 1) {
@@ -34,21 +37,11 @@ const Index = (props) => {
         props?.permissionFunc?.fetchPermissionList({ pageNo: 1, pageSize: 200 })
       ]).then(res => {
         setDrawType(type);
-        let from = menuFrom(res[1], res[0]?.filter(f => f?.countryCode?.toLocaleLowerCase() === 'cn')?.map(m => ({ id: m?.keys, name: m?.value })));
-        if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
-          from.unshift({
-            title: '租户',
-            fromType: 'select',
-            name: 'tenancyId',
-            selOption: props?.tenancyList,
-            placeholder: '请选择租户',
-            rules: [{ required: true, message: '租户不能为空' }],
-            options: { allowClear: true }
-          });
-        }
-        setFromData(from);
+        const permList = Array.isArray(res[1]) ? res[1] : (res[1]?.data || []);
+        const translateList = Array.isArray(res[0]) ? res[0] : (res[0]?.data || []);
+        setPermissionTree(permList);
+        setTranslateOptions(translateList.filter(f => f?.countryCode?.toLocaleLowerCase() === 'cn').map(m => ({ label: m?.value, value: m?.keys })));
         if (data) {
-          let permList = res[1];
           let initArr = findParentIds(permList, data?.permission?.parentId).filter(f => data?.permission?.parentId !== f && data?.permission?.id !== f).map(m => m);
           if (data?.permission?.parentId !== '0') initArr.push(data?.permission?.parentId);
           initArr.push(data?.permission?.id);
@@ -75,26 +68,108 @@ const Index = (props) => {
     }
   };
 
-  const onFinish = (data) => {
+  const onFinish = async (data) => {
     if (drawType === 0) {
       data.permissionId = data?.permissionId?.slice(-1)[0];
-      props?.menuFunc?.createMenu(data)
-        .then(() => {
-          notification.success({ message: '添加成功', description: '添加菜单成功' });
-          setShowDarw(false);
-          actionRef.current?.reload();
-        });
+      await props?.menuFunc?.createMenu(data);
+      notification.success({ message: '添加成功', description: '添加菜单成功' });
+      actionRef.current?.reload();
     } else if (drawType === 1) {
       data.permissionId = data?.permissionId?.[data?.permissionId?.length - 1];
       data.id = initFromValue.id;
-      props?.menuFunc?.modifyMenu(data)
-        .then(() => {
-          notification.success({ message: '修改成功', description: '修改菜单成功' });
-          setShowDarw(false);
-          actionRef.current?.reload();
-        });
+      await props?.menuFunc?.modifyMenu(data);
+      notification.success({ message: '修改成功', description: '修改菜单成功' });
+      actionRef.current?.reload();
     }
   };
+
+  const formColumns = [
+    ...(isSuperAdmin ? [{
+      title: '租户',
+      dataIndex: 'tenancyId',
+      valueType: 'select',
+      fieldProps: {
+        placeholder: '请选择租户',
+        allowClear: true,
+        options: (props?.tenancyList || []).map((item) => ({ label: item.name, value: item.id })),
+      },
+      formItemProps: { rules: [{ required: true, message: '租户不能为空' }] },
+    }] : []),
+    {
+      title: '菜单所属权限',
+      dataIndex: 'permissionId',
+      valueType: 'cascader',
+      fieldProps: { placeholder: '请选择菜单所属权限', allowClear: true, changeOnSelect: true, options: permissionTree },
+      formItemProps: { rules: [{ required: true, message: '菜单所属权限不能为空' }] },
+    },
+    {
+      title: '菜单标题',
+      dataIndex: 'title',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入菜单标题', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '菜单标题不能为空' }, { type: 'string', min: 2, max: 50, message: '最少输入2个字符的菜单名或最多输入50个字符的菜单标题' }] },
+    },
+    {
+      title: '菜单地址',
+      dataIndex: 'menuUrl',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入菜单地址', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '菜单地址不能为空' }, { type: 'string', min: 1, max: 50, message: '最少输入1个字符的菜单地址或最多输入50个字符的菜单地址' }] },
+    },
+    {
+      title: '菜单图标',
+      dataIndex: 'icon',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入菜单图标', allowClear: true },
+      formItemProps: { rules: [{ required: true, message: '菜单图标不能为空' }, { type: 'string', min: 1, max: 50, message: '最少输入1个字符的菜单图标或最多输入50个字符的菜单图标' }] },
+    },
+    {
+      title: '菜单多语言',
+      dataIndex: 'translate',
+      valueType: 'select',
+      fieldProps: { placeholder: '请选择多语言', allowClear: true, options: translateOptions },
+    },
+    {
+      title: '菜单副标题',
+      dataIndex: 'subtitle',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入菜单副标题', allowClear: true },
+      formItemProps: { rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单副标题或最多输入50个字符的菜单副标题' }] },
+    },
+    {
+      title: '菜单外部链接',
+      dataIndex: 'externalLink',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入菜单外部链接', allowClear: true },
+      formItemProps: { rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单外部链接或最多输入50个字符的菜单外部链接' }] },
+    },
+    {
+      title: '菜单重定向地址',
+      dataIndex: 'menuRedirect',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入菜单重定向地址', allowClear: true },
+      formItemProps: { rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单重定向地址或最多输入50个字符的菜单重定向地址' }] },
+    },
+    {
+      title: '菜单说明',
+      dataIndex: 'description',
+      valueType: 'text',
+      fieldProps: { placeholder: '请输入菜单说明', allowClear: true },
+      formItemProps: { rules: [{ type: 'string', min: 2, max: 50, message: '最少输入1个字符的菜单说明或最多输入50个字符的菜单说明' }] },
+    },
+    {
+      title: '是否隐藏菜单',
+      dataIndex: 'menuHidden',
+      valueType: 'select',
+      fieldProps: { placeholder: '请选择是否隐藏菜单', allowClear: true, options: yesNoOptions },
+    },
+    {
+      title: '是否为系统菜单',
+      dataIndex: 'isSystem',
+      valueType: 'select',
+      fieldProps: { placeholder: '请选择是否为系统菜单', allowClear: true, options: yesNoOptions },
+    },
+  ];
 
   const list = [{
     name: '修改菜单',
@@ -249,9 +324,22 @@ const Index = (props) => {
           />
         ]}
       />
-      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
-      </Drawer>
+      <DrawerForm
+        title={mapTitle[drawType]}
+        open={showDarw}
+        layout="vertical"
+        initialValues={initFromValue || {}}
+        drawerProps={{ width: 720, destroyOnHidden: true }}
+        onOpenChange={setShowDarw}
+        onFinish={async (values) => {
+          await onFinish(values);
+          return true;
+        }}
+        onReset={() => setShowDarw(false)}
+        submitter={{ searchConfig: { submitText: '确定', resetText: '取消' } }}
+      >
+        <BetaSchemaForm layoutType="Embed" submitter={false} columns={formColumns} />
+      </DrawerForm>
     </div>
   );
 };
