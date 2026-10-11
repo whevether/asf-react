@@ -12,22 +12,22 @@ export const fetchPostList = (params) => async (dispatch,getState,api)=> {
 // 添加岗位
 export const createPost = (params) => async(dispatch,getState,api) => {
   const res = await api.post('/asf/post/create',params);
-  return res?.result;
+  return res?.data;
 };
 //修改岗位
 export const modifyPost = (params) => async(dispatch,getState,api) => {
   const res = await api.put('/asf/post/modify',params);
-  return res?.result;
+  return res?.data;
 };
 // 岗位详情
 export const detailsPost = (params) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/post/details',{
     params: params
   });
-  return res?.result;
+  return res?.data;
 };
 // 删除岗位
 export const deletePost = (id) => async(dispatch,getState,api) => {
   const res = await api.post(`/asf/post/delete/${id}`);
-  return res?.result;
+  return res?.data;
 };

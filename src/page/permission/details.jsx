@@ -8,7 +8,7 @@ import { apiFrom } from 'utils/json';
 import { useSearchParams } from 'react-router-dom';
 import { head } from 'utils/head';
 import { Badge, Descriptions, Drawer, Modal, notification, Switch, Tag } from 'antd';
-import { ProForm, ProTableCompat, AuthControl } from 'components/index';
+import { BaseFrom, ProTableCompat, AuthControl } from 'components/index';
 import * as apiAuthAction from 'store/actions/authApi';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 const Details = (props) => {
@@ -280,11 +280,11 @@ const Details = (props) => {
           <ProTableCompat dataSource={details?.apis} columns={columns} />
           <Drawer
             title="修改api"
-            size={720}
+            width={720}
             open={showDarw}
             onClose={() => setShowDarw(false)}
           >
-            <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+            <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
           </Drawer>
         </Fragment>
       }

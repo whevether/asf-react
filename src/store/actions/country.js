@@ -12,22 +12,22 @@ export const fetchCountryList = (params) => async (dispatch,getState,api)=> {
 // 添加国家
 export const createCountry = (params) => async(dispatch,getState,api) => {
   const res = await api.post('/asf/country/create',params);
-  return res?.result;
+  return res?.data;
 };
 //修改国家
 export const modifyCountry = (params) => async(dispatch,getState,api) => {
   const res = await api.put('/asf/country/modify',params);
-  return res?.result;
+  return res?.data;
 };
 // 国家详情
 export const detailsCountry = (params) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/country/details',{
     params: params
   });
-  return res?.result;
+  return res?.data;
 };
 // 删除国家
 export const deleteCountry = (id) => async(dispatch,getState,api) => {
   const res = await api.post(`/asf/country/delete/${id}`);
-  return res?.result;
+  return res?.data;
 };

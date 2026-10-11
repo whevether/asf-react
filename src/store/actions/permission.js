@@ -13,22 +13,22 @@ export const fetchPermissionList = (params) => async (dispatch,getState,api)=> {
 // 创建权限
 export const createPermission = (data) => async (dispatch,getState,api)=> {
   const res = await api.post('/asf/permission/create',data);
-  return res?.result;
+  return res?.data;
 };
 // 修改权限
 export const modifyPermission = (data) => async (dispatch,getState,api)=> {
   const res = await api.put('/asf/permission/modify',data);
-  return res?.result;
+  return res?.data;
 };
 // 修改权限
 export const modifyStatus = (data) => async (dispatch,getState,api)=> {
   const res = await api.put('/asf/permission/modifyStatus',data);
-  return res?.result;
+  return res?.data;
 };
 //删除权限
 export const deletePermission = (id) => async (dispatch,getState,api)=> {
   const res = await api.post(`/asf/permission/delete/${id}`);
-  return res?.result;
+  return res?.data;
 };
 
 //获取权限详情
@@ -36,11 +36,11 @@ export const detailsPermission = (params) => async (dispatch,getState,api)=> {
   const res = await api.get('/asf/permission/details',{
     params: params
   });
-  return res?.result;
+  return res?.data;
 };
 
 // 分配权限到角色
 export const assignPermission = (data) => async (dispatch,getState,api)=> {
   const res = await api.put('/asf/permission/assignPermission',data);
-  return res?.result;
+  return res?.data;
 };

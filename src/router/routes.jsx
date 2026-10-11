@@ -91,7 +91,7 @@ const routeConfig = [{
     }, {
       path: 'user/center',
       element: <UserCenter />
-    },]
+    }]
   }, {
     path: '/login',
     element: <LoginLayout />,

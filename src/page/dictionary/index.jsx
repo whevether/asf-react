@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import { ProTable } from '@ant-design/pro-components';
 import { Modal, notification, Drawer } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { AuthControl, ProForm } from 'components/index';
+import { AuthControl, BaseFrom } from 'components/index';
 
 const Index = (props) => {
   const actionRef = useRef();
@@ -60,7 +60,7 @@ const Index = (props) => {
   const request = async (params) => {
     const { current, pageSize, ...rest } = params || {};
     const res = await props?.dictionaryFunc?.fetchDictionaryList({ pageNo: current, pageSize, ...rest });
-    return { data: res?.result ?? [], total: res?.totalCount ?? 0, success: true };
+    return { data: res?.data ?? [], total: res?.totalCount ?? 0, success: true };
   };
 
   const list = [
@@ -155,8 +155,8 @@ const Index = (props) => {
           />,
         ]}
       />
-      <Drawer title={mapTitle[drawType]} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
   );

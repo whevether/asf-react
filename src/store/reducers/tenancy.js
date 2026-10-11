@@ -7,7 +7,7 @@ export default function tenancy(state = initState, action){
   switch(action.type){
     case types.GET_TENANCY_LIST:
       if(action.payload){
-        return {...state,list:action?.payload?.result,listTotal: action.payload.totalCount};
+        return {...state,list:action?.payload?.data,listTotal: action.payload.totalCount};
       }
       break;
     default:

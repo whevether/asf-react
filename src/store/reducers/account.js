@@ -7,7 +7,7 @@ export default function account(state = initState, action){
   switch(action.type){
     case types.GET_ACCOUNT_LIST:
       if(action.payload){
-        return {...state,list:action?.payload?.result,listTotal: action.payload.totalCount};
+        return {...state,list:action?.payload?.data,listTotal: action.payload.totalCount};
       }
       break;
     default:

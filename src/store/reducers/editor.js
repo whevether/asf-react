@@ -12,7 +12,7 @@ export default function editor(state = initState, action){
       break;
     case types.GET_EDITOR_LIST:
       if(action?.payload){
-        return {...state,list:action?.payload?.result,listTotal: action?.payload?.totalCount};
+        return {...state,list:action?.payload?.data,listTotal: action?.payload?.totalCount};
       }
       break;
     default:

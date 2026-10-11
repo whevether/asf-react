@@ -35,18 +35,18 @@ const STORAGE_KEY = 'pro_layout_collapsed';
 function ProLayoutWrapper(props) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { common } = props;
   const userinfo = common?.data;
   const permissionMenu = userinfo?.permissionMenu;
-  const languages = common?.countryList || [];
+  const layoutLocale = i18n.language?.toLowerCase() === 'en' ? 'en-US' : 'zh-CN';
 
   const route = useMemo(() => {
-    const routes = convertBackendMenuToPro(permissionMenu, t);
-    return { path: '/', routes };
+    const children = convertBackendMenuToPro(permissionMenu, t);
+    return { path: '/', children };
   }, [permissionMenu, t]);
 
-  const menuDataFlat = useMemo(() => flattenMenuItems(route?.routes || []), [route?.routes]);
+  const menuDataFlat = useMemo(() => flattenMenuItems(route?.children || []), [route?.children]);
 
   const { tabList, activeKey, onEdit, onTabClick } = useMultiTab(menuDataFlat, t);
 
@@ -63,7 +63,7 @@ function ProLayoutWrapper(props) {
     setCollapsed(next);
     try {
       localStorage.setItem(STORAGE_KEY, String(next));
-    } catch {}
+    } catch { /* ignore */ }
   }, []);
 
   const menuItemRender = useCallback((item, dom) => {
@@ -82,7 +82,7 @@ function ProLayoutWrapper(props) {
       return;
     }
     setToken(getCookie('token'));
-    if (!userinfo) props.fetchUserInfo();
+    props.fetchUserInfo();
   }, []);
 
   if (!userinfo) {
@@ -93,18 +93,19 @@ function ProLayoutWrapper(props) {
   if (!grantedPermission(permissionMenu, pathname)) {
     return <Navigate to="/403" replace />;
   }
+
   const layoutContent = (
     <ProLayout
-      locale="zh-CN"
+      locale={layoutLocale}
       location={location}
       route={route}
-      menuDataRender={() => route?.routes || []}
+      menuDataRender={() => route?.children || []}
       menuItemRender={menuItemRender}
       collapsed={collapsed}
       onCollapse={onCollapse}
       avatarProps={false}
       actionsRender={() => (
-        <RightContent userinfo={userinfo} languages={languages} />
+        <RightContent userinfo={userinfo} />
       )}
       layout="mix"
       fixSiderbar

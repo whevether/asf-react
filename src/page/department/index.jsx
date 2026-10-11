@@ -10,13 +10,11 @@ import { bindActionCreators } from 'redux';
 import { ProTable } from '@ant-design/pro-components';
 import { Drawer, Switch, notification, Modal } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { ProForm, AuthControl } from 'components/index';
+import { BaseFrom, AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
   const actionRef = useRef();
-  const formRef = useRef(null);
-  const allDepartmentsRef = useRef([]);
   const navigate = useNavigate();
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
@@ -25,56 +23,12 @@ const Index = (props) => {
 
   head('部门列表');
 
-  const setFromOptions = (list, name, selOption) =>
-    (list || []).map((f) => (f?.name === name ? { ...f, selOption } : f));
-
-  const ensureTopDepartment = (deps) => {
-    const list = Array.isArray(deps) ? deps : [];
-    if (list?.some((f) => String(f?.value) === '0')) return list;
-    return [{ label: '顶级部门', value: '0', children: [] }, ...list];
-  };
-
-  const filterDepartmentTreeByTenancy = (nodes, tenancyId) => {
-    const list = ensureTopDepartment(nodes);
-    if (!tenancyId) return list;
-    const t = String(tenancyId);
-
-    const walk = (arr) =>
-      (arr ?? [])
-        .map((n) => {
-          // 顶级部门永远保留
-          if (String(n?.value) === '0') return { ...n, children: [] };
-
-          const children = walk(n?.children);
-          const nodeTenancyId = n?.tenancyId ?? n?.tenantId ?? n?.tenancy_id;
-          const matchSelf = nodeTenancyId == null ? true : String(nodeTenancyId) === t;
-          if (matchSelf || children.length) return { ...n, children };
-          return null;
-        })
-        .filter(Boolean);
-
-    return walk(list);
-  };
-
-  const updateParentDepartmentByTenancy = (tenancyId) => {
-    const filtered = filterDepartmentTreeByTenancy(allDepartmentsRef.current, tenancyId);
-    setFromData((prev) => setFromOptions(prev, 'departmentId', filtered));
-    formRef.current?.setFieldsValue({ departmentId: undefined });
-  };
-
   const onOpenDarw = (type) => {
     if (type === 0) {
       props?.commonFunc?.getDepartmentList().then((res) => {
         setDrawType(0);
-        allDepartmentsRef.current = ensureTopDepartment(res ?? []);
-
-        const currentTenancyId =
-          props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1'
-            ? initFromValue?.tenancyId
-            : props?.userInfo?.tenancyId;
-
-        const filtered = filterDepartmentTreeByTenancy(allDepartmentsRef.current, currentTenancyId);
-        let from = departmentFrom(filtered ?? []);
+        if (!res?.some((f) => f.value === 0)) res?.unshift({ label: '顶级部门', value: '0', children: [] });
+        let from = departmentFrom(res ?? []);
         if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
           from.unshift({
             title: '租户',
@@ -92,15 +46,8 @@ const Index = (props) => {
     } else if (type === 1) {
       Promise.all([props?.commonFunc?.getRoleList(), props?.commonFunc?.getDepartmentList()]).then(([roles, deps]) => {
         setDrawType(1);
-        allDepartmentsRef.current = ensureTopDepartment(deps ?? []);
-
-        const currentTenancyId =
-          props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1'
-            ? initFromValue?.tenancyId
-            : props?.userInfo?.tenancyId;
-
-        const filtered = filterDepartmentTreeByTenancy(allDepartmentsRef.current, currentTenancyId);
-        let from = departmentFrom(filtered ?? [], roles ?? []);
+        if (!deps?.some((f) => f.value === 0)) deps?.unshift({ label: '顶级部门', value: '0', children: [] });
+        let from = departmentFrom(deps ?? [], roles ?? []);
         if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
           from.unshift({
             title: '租户',
@@ -268,7 +215,7 @@ const Index = (props) => {
         request={async (params) => {
           const { current, pageSize, ...rest } = params || {};
           const res = await props?.departmentFunc?.fetchDepartmentList({ pageNo: current, pageSize, ...rest });
-          return { data: res?.result ?? [], total: res?.totalCount ?? 0, success: true };
+          return { data: res?.data ?? [], total: res?.totalCount ?? 0, success: true };
         }}
         columns={columns}
         scroll={{ x: 968 }}
@@ -278,19 +225,8 @@ const Index = (props) => {
           <AuthControl key="add" userInfo={props?.userInfo} list={[{ name: '添加部门', permission: 'department.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} type="button" />,
         ]}
       />
-      <Drawer title={mapTitle[drawType]} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <ProForm
-          formRef={formRef}
-          list={fromData}
-          onFinish={onFinish}
-          initialValues={initFromValue}
-          onClose={() => setShowDarw(false)}
-          onValuesChange={(changed) => {
-            if (Object.prototype.hasOwnProperty.call(changed ?? {}, 'tenancyId')) {
-              updateParentDepartmentByTenancy(changed?.tenancyId);
-            }
-          }}
-        />
+      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
   );

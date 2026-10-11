@@ -84,7 +84,7 @@ const LogsList = (props) => {
   const request = async (params) => {
     const { current, pageSize, ...rest } = params || {};
     const res = await props?.audioFunc?.fetchAudioList({ pageNo: current, pageSize, ...rest });
-    return { data: res?.result ?? [], total: res?.totalCount ?? 0, success: true };
+    return { data: res?.data ?? [], total: res?.totalCount ?? 0, success: true };
   };
 
   const rowSelection = {

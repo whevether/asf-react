@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { ProTable } from '@ant-design/pro-components';
 import { Drawer, Switch, notification, Modal } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { ProForm, AuthControl } from 'components/index';
+import { BaseFrom, AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
@@ -211,7 +211,7 @@ const Index = (props) => {
         request={async (params) => {
           const { current, pageSize, ...rest } = params || {};
           const res = await props?.roleFunc?.fetchRoleList({ pageNo: current, pageSize, ...rest });
-          return { data: res?.result ?? [], total: res?.totalCount ?? 0, success: true };
+          return { data: res?.data ?? [], total: res?.totalCount ?? 0, success: true };
         }}
         columns={columns}
         scroll={{ x: 968 }}
@@ -221,8 +221,8 @@ const Index = (props) => {
           <AuthControl key="add" userInfo={props?.userInfo} list={[{ name: '添加角色', permission: 'role.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} type="button" />,
         ]}
       />
-      <Drawer title={mapTitle[drawType]} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+      <Drawer title={mapTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
   );

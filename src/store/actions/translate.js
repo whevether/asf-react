@@ -12,22 +12,22 @@ export const fetchTranslateList = (params) => async (dispatch,getState,api)=> {
 // 添加多语言
 export const createTranslate = (params) => async(dispatch,getState,api) => {
   const res = await api.post('/asf/translate/create',params);
-  return res?.result;
+  return res?.data;
 };
 //修改多语言
 export const modifyTranslate = (params) => async(dispatch,getState,api) => {
   const res = await api.put('/asf/translate/modify',params);
-  return res?.result;
+  return res?.data;
 };
 // 多语言详情
 export const detailsTranslate = (params) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/translate/details',{
     params: params
   });
-  return res?.result;
+  return res?.data;
 };
 // 删除多语言
 export const deleteTranslate = (id) => async(dispatch,getState,api) => {
   const res = await api.post(`/asf/translate/delete/${id}`);
-  return res?.result;
+  return res?.data;
 };

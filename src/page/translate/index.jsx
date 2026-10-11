@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import { ProTable } from '@ant-design/pro-components';
 import { Drawer, Modal, notification } from 'antd';
 import { ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { AuthControl, ProForm } from 'components/index';
+import { AuthControl, BaseFrom } from 'components/index';
 
 const Index = (props) => {
   const actionRef = useRef();
@@ -137,7 +137,7 @@ const Index = (props) => {
         request={async (params) => {
           const { current, pageSize, ...rest } = params || {};
           const res = await props?.translateFunc?.fetchTranslateList({ pageNo: current, pageSize, ...rest });
-          return { data: res?.result ?? [], total: res?.totalCount ?? 0, success: true };
+          return { data: res?.data ?? [], total: res?.totalCount ?? 0, success: true };
         }}
         columns={columns}
         scroll={{ x: 968 }}
@@ -147,8 +147,8 @@ const Index = (props) => {
           <AuthControl key="add" userInfo={props?.userInfo} list={[{ name: '添加多语言', permission: 'translate.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]} type="button" />,
         ]}
       />
-      <Drawer title={drawType === 0 ? '添加多语言' : '修改多语言'} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <ProForm list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
+      <Drawer title={drawType === 0 ? '添加多语言' : '修改多语言'} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
     </div>
   );

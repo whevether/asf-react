@@ -48,7 +48,6 @@ const SmilingMoon = () => (
 );
 
 // 登入页布局：P5 背景 + 笑脸月亮贴图 + 登录表单
-// eslint-disable-next-line react/no-multi-comp
 const LoginLayout = () => {
   return (
     <div className="login-wrapper">

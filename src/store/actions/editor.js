@@ -14,23 +14,23 @@ export const getEditorList = () => async (dispatch,getState,api)=>{
   const res = await api.get('/asf/editor/getlists');
   dispatch({
     type: types.GET_EDITOR_LISTTITLE,
-    payload: res?.result
+    payload: res?.data
   });
 };
 // 修改富文本
 export const createEditor = (params) => async (dispatch,getState,api) => {
   const res = await api.post('/asf/editor/create',params);
-  return res?.result;
+  return res?.data;
 };
 // 修改富文本
 export const modifyEditor = (params) => async (dispatch,getState,api) => {
   const res = await api.put('/asf/editor/modify',params);
-  return res?.result;
+  return res?.data;
 };
 // 获取富文本内容
 export const getEditor = (params)=>async(dispatch,getState,api)=>{
   const res = await api.get('/asf/editor/getEditor',{
     params: params
   });
-  return res?.result;
+  return res?.data;
 };

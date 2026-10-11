@@ -12,19 +12,14 @@ const RootLayout = (props) => {
       props?.getCountryList();
     }
     props?.getTranslatetList()
-      .then(res => {
-        initI18n(res);
-      });
+      .then((res) => initI18n(res))
+      .catch(() => {});
     //当没有租户列表就获取租户列表
     if (!props?.common?.tenancyList) {
       props?.fetchTenancyList();
     }
   }, []);
-  return (
-
-    props?.common?.tenancyList && <Outlet />
-
-  );
+  return <Outlet />;
 };
 RootLayout.propTypes = {
   fetchTenancyList: PropTypes.func,

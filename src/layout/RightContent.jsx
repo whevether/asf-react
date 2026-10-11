@@ -18,7 +18,12 @@ import { useTranslation } from 'react-i18next';
 import screenfull from 'screenfull';
 import PropTypes from 'prop-types';
 
-export default function RightContent({ userinfo, languages }) {
+const UI_LANGUAGES = [
+  { code: 'cn', name: '中文' },
+  { code: 'en', name: 'English' },
+];
+
+export default function RightContent({ userinfo }) {
   const navigate = useNavigate();
   const { i18n, t } = useTranslation();
   const dispatch = useDispatch();
@@ -29,18 +34,10 @@ export default function RightContent({ userinfo, languages }) {
   const onToggleTheme = () => dispatch(commonAction.setTheme(theme === 'light' ? 'dark' : 'light'));
 
   useEffect(() => {
-    if (Array.isArray(languages) && languages.length > 0) {
-      const currentLng = i18n.language?.toLowerCase?.();
-      const mapCode = { cn: 'cn', idn: 'id', mys: 'my', vn: 'vn', tb: 'th', ind: 'in', phl: 'ph', en: 'en' };
-      const match = languages.find(
-        (item) =>
-          item?.languageCode?.toLowerCase() === currentLng ||
-          item?.languageCode?.toLowerCase() === mapCode[currentLng] ||
-          currentLng === (item?.languageCode ?? '').toLowerCase()
-      );
-      setLanguageName(match?.name ?? '中文');
-    }
-  }, [languages, i18n.language]);
+    const currentLng = i18n.language?.toLowerCase?.();
+    const match = UI_LANGUAGES.find((item) => item.code === currentLng);
+    setLanguageName(match?.name ?? '中文');
+  }, [i18n.language]);
 
   const handleGoNav = (path, params = {}) => navigate(path, params);
 
@@ -59,18 +56,7 @@ export default function RightContent({ userinfo, languages }) {
     screenfull.on('change', () => setFull((prev) => !prev));
   };
 
-  const onChangeLanguage = (lng, name) => {
-    const mapData = {
-      cn: 'cn',
-      id: 'idn',
-      my: 'mys',
-      vn: 'vn',
-      th: 'tb',
-      in: 'ind',
-      ph: 'phl',
-      en: 'en',
-    };
-    const code = mapData[lng?.toLowerCase()] || lng?.toLowerCase();
+  const onChangeLanguage = (code, name) => {
     i18n.changeLanguage(code);
     setLanguageName(name);
   };
@@ -92,16 +78,15 @@ export default function RightContent({ userinfo, languages }) {
     },
   ];
 
-  const langMenuItems =
-    languages?.map((item, index) => ({
-      key: String(index),
-      icon: <GlobalOutlined />,
-      label: (
-        <span onClick={() => onChangeLanguage(item?.languageCode, item?.name)}>
-          {item?.name}
-        </span>
-      ),
-    })) || [];
+  const langMenuItems = UI_LANGUAGES.map((item) => ({
+    key: item.code,
+    icon: <GlobalOutlined />,
+    label: (
+      <span onClick={() => onChangeLanguage(item.code, item.name)}>
+        {item.name}
+      </span>
+    ),
+  }));
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
@@ -110,14 +95,12 @@ export default function RightContent({ userinfo, languages }) {
           {theme === 'light' ? <MoonOutlined /> : <SunOutlined />}
         </span>
       </Tooltip>
-      {Array.isArray(languages) && languages.length > 0 && (
-        <Dropdown menu={{ items: langMenuItems }} placement="bottomRight">
-          <span style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
-            <GlobalOutlined />
-            {languageName}
-          </span>
-        </Dropdown>
-      )}
+      <Dropdown menu={{ items: langMenuItems }} placement="bottomRight">
+        <span style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <GlobalOutlined />
+          {languageName}
+        </span>
+      </Dropdown>
       <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
         <span style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
           <Avatar src={userinfo?.avatar ? decodeURIComponent(userinfo.avatar) : undefined} icon={!userinfo?.avatar && <UserOutlined />} />
@@ -135,5 +118,4 @@ export default function RightContent({ userinfo, languages }) {
 
 RightContent.propTypes = {
   userinfo: PropTypes.object,
-  languages: PropTypes.arrayOf(PropTypes.object),
 };

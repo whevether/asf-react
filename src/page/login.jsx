@@ -63,13 +63,14 @@ const Login = (props) => {
             onFinish={onFinish}
           >
             <Form.Item name="tenancyId" rules={[{ required: true, message: '请选择需要登录的租户' }]}>
-              <Select style={{ width: '100%' }} placeholder="选择需要登录的租户">
-                {
-                  props?.tenancyList && props?.tenancyList.map((value, index) => (
-                    <Select.Option value={value.id} key={index}>{value.name}</Select.Option>
-                  ))
-                }
-              </Select>
+              <Select
+                style={{ width: '100%' }}
+                placeholder="选择需要登录的租户"
+                options={(props?.tenancyList || []).map((value) => ({
+                  value: value.id,
+                  label: value.name,
+                }))}
+              />
             </Form.Item>
             {
               type === 'account' &&

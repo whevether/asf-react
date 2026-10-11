@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import * as commonAction from 'store/actions/common';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from "redux";
-/* eslint-disable react/no-danger */
 const  HtmlRender = (props)=>{
   let [searchParams] = useSearchParams();
 	const [data,setData] = useState({});

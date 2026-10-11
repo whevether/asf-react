@@ -12,32 +12,32 @@ export const fetchDepartmentList = (params) => async (dispatch,getState,api)=> {
 // 添加部门
 export const createDepartment = (params) => async(dispatch,getState,api) => {
   const res = await api.post('/asf/department/create',params);
-  return res?.result;
+  return res?.data;
 };
 //修改部门
 export const modifyDepartment = (params) => async(dispatch,getState,api) => {
   const res = await api.put('/asf/department/modify',params);
-  return res?.result;
+  return res?.data;
 };
 //修改部门状态
 export const modifyStatus = (params) => async(dispatch,getState,api) => {
   const res = await api.put('/asf/department/modifyStatus',params);
-  return res?.result;
+  return res?.data;
 };
 // 部门详情
 export const detailsDepartment = (params) => async(dispatch,getState,api) => {
   const res = await api.get('/asf/department/details',{
     params: params
   });
-  return res?.result;
+  return res?.data;
 };
 // 删除部门
 export const deleteDepartment = (id) => async(dispatch,getState,api) => {
   const res = await api.post(`/asf/department/delete/${id}`);
-  return res?.result;
+  return res?.data;
 };
 //分配角色到部门
 export const assignRole = (params) => async(dispatch,getState,api) => {
   const res = await api.put('/asf/department/assign',params);
-  return res?.result;
+  return res?.data;
 };

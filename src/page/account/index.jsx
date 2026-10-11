@@ -10,14 +10,11 @@ import { bindActionCreators } from 'redux';
 import { Drawer, notification, Switch, Modal, Upload, Image, Tooltip } from 'antd';
 import { ExclamationCircleOutlined, InboxOutlined, PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { ProForm, AuthControl } from 'components/index';
+import { BaseFrom, AuthControl } from 'components/index';
 import { useNavigate } from 'react-router-dom';
 
 const Index = (props) => {
   const actionRef = useRef();
-  const formRef = useRef(null);
-  const allDepartmentsRef = useRef([]);
-  const allPostsRef = useRef([]);
   const [showDarw, setShowDarw] = useState(false);
   const [fromData, setFromData] = useState(null);
   const [drawType, setDrawType] = useState(0);
@@ -27,66 +24,15 @@ const Index = (props) => {
 
   head('账户列表');
 
-  const setFromOptions = (list, name, selOption) =>
-    (list || []).map((f) => (f?.name === name ? { ...f, selOption } : f));
-
-  const filterDepartmentTreeByTenancy = (nodes, tenancyId) => {
-    if (!tenancyId) return nodes ?? [];
-    const t = String(tenancyId);
-    const walk = (arr) =>
-      (arr ?? [])
-        .map((n) => {
-          const children = walk(n?.children);
-          const nodeTenancyId = n?.tenancyId ?? n?.tenantId ?? n?.tenancy_id;
-          const matchSelf = nodeTenancyId == null ? true : String(nodeTenancyId) === t;
-          if (matchSelf || children.length) return { ...n, children };
-          return null;
-        })
-        .filter(Boolean);
-    return walk(nodes);
-  };
-
-  const filterPostsByTenancy = (posts, tenancyId) => {
-    if (!tenancyId) return posts ?? [];
-    const t = String(tenancyId);
-    return (posts ?? []).filter((p) => {
-      const postTenancyId = p?.tenancyId ?? p?.tenantId ?? p?.tenancy_id;
-      return postTenancyId == null ? true : String(postTenancyId) === t;
-    });
-  };
-
-  const updateDeptPostByTenancy = (tenancyId) => {
-    const dept = filterDepartmentTreeByTenancy(allDepartmentsRef.current, tenancyId);
-    const post = filterPostsByTenancy(allPostsRef.current, tenancyId);
-
-    setFromData((prev) => {
-      let next = prev;
-      next = setFromOptions(next, 'departmentId', dept);
-      next = setFromOptions(next, 'postId', post);
-      return next;
-    });
-
-    formRef.current?.setFieldsValue({ departmentId: undefined, postId: undefined });
-  };
-
-  const onOpenDarw = (type, nextInitFromValue) => {
+  const onOpenDarw = (type) => {
     if (type === 0 || type === 1) {
-      const currentTenancyId =
-        props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1'
-          ? nextInitFromValue?.tenancyId
-          : props?.userInfo?.tenancyId;
-
       Promise.all([props?.commonFunc?.getDepartmentList(), props?.commonFunc?.getPostList()])
         .then(res => {
-          let from = accountFrom.map((f) => ({ ...f }));
-          allDepartmentsRef.current = res[0] || [];
-          allPostsRef.current = res[1] || [];
-
-          const filteredDept = filterDepartmentTreeByTenancy(allDepartmentsRef.current, currentTenancyId);
-          const filteredPost = filterPostsByTenancy(allPostsRef.current, currentTenancyId);
-
-          from = setFromOptions(from, 'departmentId', filteredDept);
-          from = setFromOptions(from, 'postId', filteredPost);
+          let from = accountFrom.filter(f => {
+            if (f.name === 'departmentId') f.selOption = res[0];
+            if (f.name === 'postId') f.selOption = res[1];
+            return f;
+          });
           if (props?.userInfo?.roleName?.indexOf('superadmin') > -1 && props?.userInfo?.tenancyId === '1') {
             from.unshift({
               title: '租户',
@@ -95,7 +41,7 @@ const Index = (props) => {
               selOption: props?.tenancyList,
               placeholder: '请选择租户',
               rules: [{ required: true, message: '租户不能为空' }],
-              options: { allowClear: true },
+              options: { allowClear: true }
             });
           }
           setDrawType(type);
@@ -206,7 +152,7 @@ const Index = (props) => {
       name: '修改账户',
       permission: 'account.modify',
       click: (data) => {
-        const next = {
+        setInitFromValue({
           id: data?.id,
           tenancyId: data?.tenancyId,
           status: data?.status,
@@ -218,9 +164,8 @@ const Index = (props) => {
           email: data?.email,
           name: data?.name,
           sex: data?.sex
-        };
-        setInitFromValue(next);
-        onOpenDarw(1, next);
+        });
+        onOpenDarw(1);
       }
     },
     {
@@ -378,7 +323,7 @@ const Index = (props) => {
         request={async (params) => {
           const { current, pageSize, ...rest } = params || {};
           const res = await props?.accountFunc?.fetchAccountList({ pageNo: current, pageSize, ...rest });
-          return { data: res?.result ?? [], total: res?.totalCount ?? 0, success: true };
+          return { data: res?.data ?? [], total: res?.totalCount ?? 0, success: true };
         }}
         columns={columns}
         scroll={{ x: 1400 }}
@@ -388,24 +333,13 @@ const Index = (props) => {
           <AuthControl
             key="add"
             userInfo={props?.userInfo}
-            list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0, null); } }]}
+            list={[{ name: '添加账户', permission: 'account.create', type: 'primary', icon: <PlusCircleOutlined />, click: () => { setInitFromValue(null); onOpenDarw(0); } }]}
             type="button"
           />
         ]}
       />
-      <Drawer title={mapDrawTitle[drawType]} size={720} open={showDarw} onClose={() => setShowDarw(false)}>
-        <ProForm
-          formRef={formRef}
-          list={fromData}
-          onFinish={onFinish}
-          initialValues={initFromValue}
-          onClose={() => setShowDarw(false)}
-          onValuesChange={(changed) => {
-            if (Object.prototype.hasOwnProperty.call(changed ?? {}, 'tenancyId')) {
-              updateDeptPostByTenancy(changed?.tenancyId);
-            }
-          }}
-        />
+      <Drawer title={mapDrawTitle[drawType]} width={720} open={showDarw} onClose={() => setShowDarw(false)}>
+        <BaseFrom list={fromData} onFinish={onFinish} initialValues={initFromValue} onClose={() => setShowDarw(false)} />
       </Drawer>
       <Modal title="修改头像" open={!!account} closable onCancel={() => setAccount(null)} onOk={() => setAccount(null)} footer={null}>
         {account?.avatar && (

@@ -35,7 +35,11 @@ body {
     border-radius: 12px;
   }
 
-
+  >svg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
 }
 .remove-avatar{
   position: relative;
@@ -47,6 +51,9 @@ body {
     z-index: 10;
     cursor: pointer;
   }
+}
+.ant-form-item-label>label {
+  min-width: 78px;
 }
 
 
@@ -69,7 +76,10 @@ canvas {
   }
 }
 
-
+.ant-select-dropdown,
+.ant-notification {
+  z-index: 9999;
+}
 
 // 登录页面布局
 .login-wrapper {
@@ -234,27 +244,27 @@ canvas {
 }
 
 
-// // 错误页面布局
+// 错误页面布局
 
 
-// .error-403 {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-//   height: 100%;
-//   width: 100%;
-//   background-color: #eee;
-// }
+.error-403 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: #eee;
+}
 
-// .notfound {
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: center;
-//   align-items: center;
-//   width: 100%;
-//   height: 100%;
-// }
+.notfound {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
 
 // chart
 .chart {
@@ -263,83 +273,92 @@ canvas {
   padding-bottom: 30px;
 }
 
+.anticon.anticon-exclamation-circle{
+  display: none;
+}
+/* ProLayout + ProTable：防止右侧内容区（搜索表单等）溢出侵入左侧菜单 */
+.ant-pro-layout-content {
+  overflow-x: hidden;
+  min-width: 0;
+}
+.ant-pro-page-container {
+  overflow-x: hidden;
+  min-width: 0;
+}
 
+.account-details {
+  margin: 15px;
 
+  p {
+    position: relative;
+    margin-bottom: 8px;
+    padding-left: 26px;
 
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 
-// .account-details {
-//   margin: 15px;
+  i {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 14px;
+    height: 14px;
+  }
 
-//   p {
-//     position: relative;
-//     margin-bottom: 8px;
-//     padding-left: 26px;
+  .m-10 {
+    margin: 10px 0px;
+  }
 
-//     &:last-child {
-//       margin-bottom: 0;
-//     }
-//   }
+  .tabsCard {
+    :global {
+      .ant-card-head {
+        padding: 0 16px;
+      }
+    }
+  }
 
-//   i {
-//     position: absolute;
-//     top: 4px;
-//     left: 0;
-//     width: 14px;
-//     height: 14px;
-//   }
+  .avatarHolder {
+    margin-bottom: 24px;
+    text-align: center;
 
-//   .m-10 {
-//     margin: 10px 0px;
-//   }
+    .avatar {
+      width: 104px;
+      height: 104px;
+      margin-bottom: 20px;
+    }
 
-//   .tabsCard {
-//     :global {
-//       .ant-card-head {
-//         padding: 0 16px;
-//       }
-//     }
-//   }
+    .name {
+      margin-bottom: 4px;
+      color: rgba(0, 0, 0, .85);
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 28px;
+    }
+  }
+}
 
-//   .avatarHolder {
-//     margin-bottom: 24px;
-//     text-align: center;
+.department-details {
+  margin: 15px;
 
-//     .avatar {
-//       width: 104px;
-//       height: 104px;
-//       margin-bottom: 20px;
-//     }
+  .ant-descriptions-bordered .ant-descriptions-item-content {
+    background-color: aliceblue;
+  }
+}
 
-//     .name {
-//       margin-bottom: 4px;
-//       color: rgba(0, 0, 0, .85);
-//       font-weight: 500;
-//       font-size: 20px;
-//       line-height: 28px;
-//     }
-//   }
-// }
+.permission-details {
+  margin: 15px;
 
-// .department-details {
-//   margin: 15px;
+  .ant-descriptions-bordered .ant-descriptions-item-content {
+    background-color: aliceblue;
+  }
+}
 
-//   .ant-descriptions-bordered .ant-descriptions-item-content {
-//     background-color: aliceblue;
-//   }
-// }
+.role-details {
+  margin: 15px;
 
-// .permission-details {
-//   margin: 15px;
-
-//   .ant-descriptions-bordered .ant-descriptions-item-content {
-//     background-color: aliceblue;
-//   }
-// }
-
-// .role-details {
-//   margin: 15px;
-
-//   .ant-descriptions-bordered .ant-descriptions-item-content {
-//     background-color: aliceblue;
-//   }
-// }
+  .ant-descriptions-bordered .ant-descriptions-item-content {
+    background-color: aliceblue;
+  }
+}

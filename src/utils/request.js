@@ -3,8 +3,6 @@ import { removeCookie } from 'utils/storage';
 import { notification } from 'antd';
 import * as types from 'constants/types';
 import { aesEncrypt, aesDecrypt, isAesEnabled } from 'utils/aes';
-import { router } from 'router/routes';
-
 
 // Webpack 通过 DefinePlugin 注入 __VITE_APP_API_BASE_URL__；Vite 从 .env 注入 import.meta.env.VITE_APP_API_BASE_URL
 const apiBaseURL =
@@ -16,6 +14,10 @@ export const axiosInstance = axios.create({
   baseURL: apiBaseURL,
   timeout: 15000
 });
+
+const navigateToLogin = () => {
+  import('router/routes').then(({ router }) => router.navigate('/login'));
+};
 
 //设置 token api 请求头
 export const setToken = (token) => {
@@ -108,7 +110,7 @@ export const request = (store) => {
       try {
         const decrypted = aesDecrypt(response.data);
         if (decrypted) response.data = JSON.parse(decrypted);
-      } catch {}
+      } catch { /* ignore */ }
     }
     if ([401, 403].indexOf(response?.status) > -1) {
       notification['error']({
@@ -121,7 +123,7 @@ export const request = (store) => {
         type: types.FETCH_USER_DATA,
         payload: null
       });
-      router.navigate('/login');
+      navigateToLogin();
     }
     if ([400].indexOf(response?.status) > -1) {
       notification['error']({

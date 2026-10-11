@@ -10,14 +10,14 @@ function getStorageTabs() {
   try {
     const raw = sessionStorage.getItem(TAB_STORAGE_KEY);
     if (raw) return JSON.parse(raw);
-  } catch {}
+  } catch { /* ignore */ }
   return [];
 }
 
 function setStorageTabs(tabs) {
   try {
     sessionStorage.setItem(TAB_STORAGE_KEY, JSON.stringify(tabs));
-  } catch {}
+  } catch { /* ignore */ }
 }
 
 export default function MultiTab({ tabs, activeKey, onEdit, onTabClick }) {

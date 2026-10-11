@@ -127,7 +127,7 @@ const Details = (props) => {
       {head('账户详情')}
       <Row gutter={24}>
         <Col lg={8} md={24} sm={24}>
-          <Card bordered={false} style={{ marginBottom: 24 }} loading={loading}>
+          <Card variant="borderless" style={{ marginBottom: 24 }} loading={loading}>
             <Fragment>
               <div className="avatarHolder">
                 <Avatar alt="" src={decodeURIComponent(details?.avatar)} className="avatar" onClick={() => setShowModal(true)} style={{cursor: 'pointer'}}/>
@@ -187,7 +187,7 @@ const Details = (props) => {
         <Col lg={16} md={24} sm={24}>
           <Card
             className="tabsCard"
-            bordered={false}
+            variant="borderless"
             loading={loading}
           >
             {
